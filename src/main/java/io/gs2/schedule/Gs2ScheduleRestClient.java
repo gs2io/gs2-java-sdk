@@ -2242,6 +2242,185 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyTriggerTask extends Gs2RestSessionTask<VerifyTriggerResult> {
+        private VerifyTriggerRequest request;
+
+        public VerifyTriggerTask(
+            VerifyTriggerRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyTriggerResult parse(JsonNode data) {
+            return VerifyTriggerResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/trigger/{triggerName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("elapsedMinutes", request.getElapsedMinutes());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyTriggerAsync(
+            VerifyTriggerRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerResult>> callback
+    ) {
+        VerifyTriggerTask task = new VerifyTriggerTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyTriggerResult verifyTrigger(
+            VerifyTriggerRequest request
+    ) {
+        final AsyncResult<VerifyTriggerResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyTriggerAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyTriggerByUserIdTask extends Gs2RestSessionTask<VerifyTriggerByUserIdResult> {
+        private VerifyTriggerByUserIdRequest request;
+
+        public VerifyTriggerByUserIdTask(
+            VerifyTriggerByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyTriggerByUserIdResult parse(JsonNode data) {
+            return VerifyTriggerByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/trigger/{triggerName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("elapsedMinutes", request.getElapsedMinutes());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyTriggerByUserIdAsync(
+            VerifyTriggerByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerByUserIdResult>> callback
+    ) {
+        VerifyTriggerByUserIdTask task = new VerifyTriggerByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyTriggerByUserIdResult verifyTriggerByUserId(
+            VerifyTriggerByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyTriggerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyTriggerByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteTriggerByStampTaskTask extends Gs2RestSessionTask<DeleteTriggerByStampTaskResult> {
         private DeleteTriggerByStampTaskRequest request;
 
@@ -2306,6 +2485,86 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
     ) {
         final AsyncResult<DeleteTriggerByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteTriggerByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyTriggerByStampTaskTask extends Gs2RestSessionTask<VerifyTriggerByStampTaskResult> {
+        private VerifyTriggerByStampTaskRequest request;
+
+        public VerifyTriggerByStampTaskTask(
+            VerifyTriggerByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyTriggerByStampTaskResult parse(JsonNode data) {
+            return VerifyTriggerByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/trigger/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyTriggerByStampTaskAsync(
+            VerifyTriggerByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyTriggerByStampTaskResult>> callback
+    ) {
+        VerifyTriggerByStampTaskTask task = new VerifyTriggerByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyTriggerByStampTaskResult verifyTriggerByStampTask(
+            VerifyTriggerByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyTriggerByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyTriggerByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
