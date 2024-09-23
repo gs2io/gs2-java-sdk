@@ -409,6 +409,203 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class BatchCompleteTask extends Gs2RestSessionTask<BatchCompleteResult> {
+        private BatchCompleteRequest request;
+
+        public BatchCompleteTask(
+            BatchCompleteRequest request,
+            AsyncAction<AsyncResult<BatchCompleteResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchCompleteResult parse(JsonNode data) {
+            return BatchCompleteResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/complete/group/{missionGroupName}/task/any/batch";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                        request.getMissionTaskNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchCompleteAsync(
+            BatchCompleteRequest request,
+            AsyncAction<AsyncResult<BatchCompleteResult>> callback
+    ) {
+        BatchCompleteTask task = new BatchCompleteTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchCompleteResult batchComplete(
+            BatchCompleteRequest request
+    ) {
+        final AsyncResult<BatchCompleteResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchCompleteAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class BatchCompleteByUserIdTask extends Gs2RestSessionTask<BatchCompleteByUserIdResult> {
+        private BatchCompleteByUserIdRequest request;
+
+        public BatchCompleteByUserIdTask(
+            BatchCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<BatchCompleteByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchCompleteByUserIdResult parse(JsonNode data) {
+            return BatchCompleteByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/complete/group/{missionGroupName}/task/any/batch";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                        request.getMissionTaskNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchCompleteByUserIdAsync(
+            BatchCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<BatchCompleteByUserIdResult>> callback
+    ) {
+        BatchCompleteByUserIdTask task = new BatchCompleteByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchCompleteByUserIdResult batchCompleteByUserId(
+            BatchCompleteByUserIdRequest request
+    ) {
+        final AsyncResult<BatchCompleteByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchCompleteByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ReceiveByUserIdTask extends Gs2RestSessionTask<ReceiveByUserIdResult> {
         private ReceiveByUserIdRequest request;
 
@@ -482,6 +679,99 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<ReceiveByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         receiveByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class BatchReceiveByUserIdTask extends Gs2RestSessionTask<BatchReceiveByUserIdResult> {
+        private BatchReceiveByUserIdRequest request;
+
+        public BatchReceiveByUserIdTask(
+            BatchReceiveByUserIdRequest request,
+            AsyncAction<AsyncResult<BatchReceiveByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchReceiveByUserIdResult parse(JsonNode data) {
+            return BatchReceiveByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/complete/group/{missionGroupName}/task/any/receive/batch";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                        request.getMissionTaskNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchReceiveByUserIdAsync(
+            BatchReceiveByUserIdRequest request,
+            AsyncAction<AsyncResult<BatchReceiveByUserIdResult>> callback
+    ) {
+        BatchReceiveByUserIdTask task = new BatchReceiveByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchReceiveByUserIdResult batchReceiveByUserId(
+            BatchReceiveByUserIdRequest request
+    ) {
+        final AsyncResult<BatchReceiveByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchReceiveByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1089,6 +1379,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<ReceiveByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         receiveByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class BatchReceiveByStampTaskTask extends Gs2RestSessionTask<BatchReceiveByStampTaskResult> {
+        private BatchReceiveByStampTaskRequest request;
+
+        public BatchReceiveByStampTaskTask(
+            BatchReceiveByStampTaskRequest request,
+            AsyncAction<AsyncResult<BatchReceiveByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchReceiveByStampTaskResult parse(JsonNode data) {
+            return BatchReceiveByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/receive";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchReceiveByStampTaskAsync(
+            BatchReceiveByStampTaskRequest request,
+            AsyncAction<AsyncResult<BatchReceiveByStampTaskResult>> callback
+    ) {
+        BatchReceiveByStampTaskTask task = new BatchReceiveByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchReceiveByStampTaskResult batchReceiveByStampTask(
+            BatchReceiveByStampTaskRequest request
+    ) {
+        final AsyncResult<BatchReceiveByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchReceiveByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
