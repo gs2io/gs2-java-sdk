@@ -1420,7 +1420,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/stamp/receive";
+                + "/stamp/receive/batch";
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
