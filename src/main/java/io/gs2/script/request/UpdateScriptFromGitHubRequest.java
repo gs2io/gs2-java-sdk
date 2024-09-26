@@ -33,6 +33,7 @@ public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptF
     private String scriptName;
     private String description;
     private GitHubCheckoutSetting checkoutSetting;
+    private Boolean disableStringNumberToNumber;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -73,6 +74,16 @@ public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptF
 		this.checkoutSetting = checkoutSetting;
 		return this;
 	}
+	public Boolean getDisableStringNumberToNumber() {
+		return disableStringNumberToNumber;
+	}
+	public void setDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+	}
+	public UpdateScriptFromGitHubRequest withDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+		return this;
+	}
 
     public static UpdateScriptFromGitHubRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptF
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withScriptName(data.get("scriptName") == null || data.get("scriptName").isNull() ? null : data.get("scriptName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withCheckoutSetting(data.get("checkoutSetting") == null || data.get("checkoutSetting").isNull() ? null : GitHubCheckoutSetting.fromJson(data.get("checkoutSetting")));
+            .withCheckoutSetting(data.get("checkoutSetting") == null || data.get("checkoutSetting").isNull() ? null : GitHubCheckoutSetting.fromJson(data.get("checkoutSetting")))
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptF
                 put("scriptName", getScriptName());
                 put("description", getDescription());
                 put("checkoutSetting", getCheckoutSetting() != null ? getCheckoutSetting().toJson() : null);
+                put("disableStringNumberToNumber", getDisableStringNumberToNumber());
             }}
         );
     }

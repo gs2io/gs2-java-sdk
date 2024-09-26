@@ -157,6 +157,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("allowCreateRoom", request.getAllowCreateRoom());
+                    put("messageLifeTimeDays", request.getMessageLifeTimeDays());
                     put("postMessageScript", request.getPostMessageScript() != null ? request.getPostMessageScript().toJson() : null);
                     put("createRoomScript", request.getCreateRoomScript() != null ? request.getCreateRoomScript().toJson() : null);
                     put("deleteRoomScript", request.getDeleteRoomScript() != null ? request.getDeleteRoomScript().toJson() : null);
@@ -406,6 +407,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("allowCreateRoom", request.getAllowCreateRoom());
+                    put("messageLifeTimeDays", request.getMessageLifeTimeDays());
                     put("postMessageScript", request.getPostMessageScript() != null ? request.getPostMessageScript().toJson() : null);
                     put("createRoomScript", request.getCreateRoomScript() != null ? request.getCreateRoomScript().toJson() : null);
                     put("deleteRoomScript", request.getDeleteRoomScript() != null ? request.getDeleteRoomScript().toJson() : null);
@@ -2020,6 +2022,189 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
     ) {
         final AsyncResult<DescribeMessagesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         describeMessagesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeLatestMessagesTask extends Gs2RestSessionTask<DescribeLatestMessagesResult> {
+        private DescribeLatestMessagesRequest request;
+
+        public DescribeLatestMessagesTask(
+            DescribeLatestMessagesRequest request,
+            AsyncAction<AsyncResult<DescribeLatestMessagesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeLatestMessagesResult parse(JsonNode data) {
+            return DescribeLatestMessagesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/room/{roomName}/message/latest";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{roomName}", this.request.getRoomName() == null || this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPassword() != null) {
+                queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeLatestMessagesAsync(
+            DescribeLatestMessagesRequest request,
+            AsyncAction<AsyncResult<DescribeLatestMessagesResult>> callback
+    ) {
+        DescribeLatestMessagesTask task = new DescribeLatestMessagesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeLatestMessagesResult describeLatestMessages(
+            DescribeLatestMessagesRequest request
+    ) {
+        final AsyncResult<DescribeLatestMessagesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeLatestMessagesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeLatestMessagesByUserIdTask extends Gs2RestSessionTask<DescribeLatestMessagesByUserIdResult> {
+        private DescribeLatestMessagesByUserIdRequest request;
+
+        public DescribeLatestMessagesByUserIdTask(
+            DescribeLatestMessagesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeLatestMessagesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeLatestMessagesByUserIdResult parse(JsonNode data) {
+            return DescribeLatestMessagesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/room/{roomName}/message/latest/get";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{roomName}", this.request.getRoomName() == null || this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPassword() != null) {
+                queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
+            }
+            if (this.request.getUserId() != null) {
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeLatestMessagesByUserIdAsync(
+            DescribeLatestMessagesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeLatestMessagesByUserIdResult>> callback
+    ) {
+        DescribeLatestMessagesByUserIdTask task = new DescribeLatestMessagesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeLatestMessagesByUserIdResult describeLatestMessagesByUserId(
+            DescribeLatestMessagesByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeLatestMessagesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeLatestMessagesByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

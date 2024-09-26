@@ -33,6 +33,7 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
     private String script;
     private String args;
     private RandomStatus randomStatus;
+    private Boolean disableStringNumberToNumber;
 	public String getScript() {
 		return script;
 	}
@@ -63,6 +64,16 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
 		this.randomStatus = randomStatus;
 		return this;
 	}
+	public Boolean getDisableStringNumberToNumber() {
+		return disableStringNumberToNumber;
+	}
+	public void setDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+	}
+	public DebugInvokeRequest withDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+		return this;
+	}
 
     public static DebugInvokeRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -71,7 +82,8 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
         return new DebugInvokeRequest()
             .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")));
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -80,6 +92,7 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
                 put("script", getScript());
                 put("args", getArgs());
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
+                put("disableStringNumberToNumber", getDisableStringNumberToNumber());
             }}
         );
     }

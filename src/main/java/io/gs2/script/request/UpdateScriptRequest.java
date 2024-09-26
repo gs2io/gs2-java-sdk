@@ -32,6 +32,7 @@ public class UpdateScriptRequest extends Gs2BasicRequest<UpdateScriptRequest> {
     private String scriptName;
     private String description;
     private String script;
+    private Boolean disableStringNumberToNumber;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class UpdateScriptRequest extends Gs2BasicRequest<UpdateScriptRequest> {
 		this.script = script;
 		return this;
 	}
+	public Boolean getDisableStringNumberToNumber() {
+		return disableStringNumberToNumber;
+	}
+	public void setDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+	}
+	public UpdateScriptRequest withDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+		return this;
+	}
 
     public static UpdateScriptRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class UpdateScriptRequest extends Gs2BasicRequest<UpdateScriptRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withScriptName(data.get("scriptName") == null || data.get("scriptName").isNull() ? null : data.get("scriptName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText());
+            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class UpdateScriptRequest extends Gs2BasicRequest<UpdateScriptRequest> {
                 put("scriptName", getScriptName());
                 put("description", getDescription());
                 put("script", getScript());
+                put("disableStringNumberToNumber", getDisableStringNumberToNumber());
             }}
         );
     }

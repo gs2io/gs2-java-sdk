@@ -650,6 +650,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("script", request.getScript());
+                    put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -733,6 +734,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -897,6 +899,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("script", request.getScript());
+                    put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -980,6 +983,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1227,6 +1231,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                     put("script", request.getScript());
                     put("args", request.getArgs());
                     put("randomStatus", request.getRandomStatus() != null ? request.getRandomStatus().toJson() : null);
+                    put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

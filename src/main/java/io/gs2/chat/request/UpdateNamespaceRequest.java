@@ -34,6 +34,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String namespaceName;
     private String description;
     private Boolean allowCreateRoom;
+    private Integer messageLifeTimeDays;
     private ScriptSetting postMessageScript;
     private ScriptSetting createRoomScript;
     private ScriptSetting deleteRoomScript;
@@ -69,6 +70,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
 		this.allowCreateRoom = allowCreateRoom;
+		return this;
+	}
+	public Integer getMessageLifeTimeDays() {
+		return messageLifeTimeDays;
+	}
+	public void setMessageLifeTimeDays(Integer messageLifeTimeDays) {
+		this.messageLifeTimeDays = messageLifeTimeDays;
+	}
+	public UpdateNamespaceRequest withMessageLifeTimeDays(Integer messageLifeTimeDays) {
+		this.messageLifeTimeDays = messageLifeTimeDays;
 		return this;
 	}
 	public ScriptSetting getPostMessageScript() {
@@ -150,6 +161,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAllowCreateRoom(data.get("allowCreateRoom") == null || data.get("allowCreateRoom").isNull() ? null : data.get("allowCreateRoom").booleanValue())
+            .withMessageLifeTimeDays(data.get("messageLifeTimeDays") == null || data.get("messageLifeTimeDays").isNull() ? null : data.get("messageLifeTimeDays").intValue())
             .withPostMessageScript(data.get("postMessageScript") == null || data.get("postMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("postMessageScript")))
             .withCreateRoomScript(data.get("createRoomScript") == null || data.get("createRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("createRoomScript")))
             .withDeleteRoomScript(data.get("deleteRoomScript") == null || data.get("deleteRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteRoomScript")))
@@ -165,6 +177,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
                 put("allowCreateRoom", getAllowCreateRoom());
+                put("messageLifeTimeDays", getMessageLifeTimeDays());
                 put("postMessageScript", getPostMessageScript() != null ? getPostMessageScript().toJson() : null);
                 put("createRoomScript", getCreateRoomScript() != null ? getCreateRoomScript().toJson() : null);
                 put("deleteRoomScript", getDeleteRoomScript() != null ? getDeleteRoomScript().toJson() : null);

@@ -33,6 +33,7 @@ public class Script implements IModel, Serializable, Comparable<Script> {
 	private String name;
 	private String description;
 	private String script;
+	private Boolean disableStringNumberToNumber;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -76,6 +77,16 @@ public class Script implements IModel, Serializable, Comparable<Script> {
 		this.script = script;
 		return this;
 	}
+	public Boolean getDisableStringNumberToNumber() {
+		return disableStringNumberToNumber;
+	}
+	public void setDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+	}
+	public Script withDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -116,6 +127,7 @@ public class Script implements IModel, Serializable, Comparable<Script> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -128,6 +140,7 @@ public class Script implements IModel, Serializable, Comparable<Script> {
                 put("name", getName());
                 put("description", getDescription());
                 put("script", getScript());
+                put("disableStringNumberToNumber", getDisableStringNumberToNumber());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -148,6 +161,7 @@ public class Script implements IModel, Serializable, Comparable<Script> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.script == null) ? 0 : this.script.hashCode());
+        result = prime * result + ((this.disableStringNumberToNumber == null) ? 0 : this.disableStringNumberToNumber.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -181,6 +195,11 @@ public class Script implements IModel, Serializable, Comparable<Script> {
 		if (script == null) {
 			return other.script == null;
 		} else if (!script.equals(other.script)) {
+			return false;
+		}
+		if (disableStringNumberToNumber == null) {
+			return other.disableStringNumberToNumber == null;
+		} else if (!disableStringNumberToNumber.equals(other.disableStringNumberToNumber)) {
 			return false;
 		}
 		if (createdAt == null) {

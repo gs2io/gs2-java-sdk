@@ -32,6 +32,7 @@ public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
     private String name;
     private String description;
     private String script;
+    private Boolean disableStringNumberToNumber;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
 		this.script = script;
 		return this;
 	}
+	public Boolean getDisableStringNumberToNumber() {
+		return disableStringNumberToNumber;
+	}
+	public void setDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+	}
+	public CreateScriptRequest withDisableStringNumberToNumber(Boolean disableStringNumberToNumber) {
+		this.disableStringNumberToNumber = disableStringNumberToNumber;
+		return this;
+	}
 
     public static CreateScriptRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText());
+            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
                 put("name", getName());
                 put("description", getDescription());
                 put("script", getScript());
+                put("disableStringNumberToNumber", getDisableStringNumberToNumber());
             }}
         );
     }
