@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.script.request;
+package io.gs2.serialKey.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,26 +24,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.script.model.RandomUsed;
-import io.gs2.script.model.RandomStatus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
-    private String scriptId;
+public class VerifyCodeByUserIdRequest extends Gs2BasicRequest<VerifyCodeByUserIdRequest> {
+    private String namespaceName;
     private String userId;
-    private String args;
-    private RandomStatus randomStatus;
+    private String code;
+    private String verifyType;
     private String timeOffsetToken;
     private String duplicationAvoider;
-	public String getScriptId() {
-		return scriptId;
+	public String getNamespaceName() {
+		return namespaceName;
 	}
-	public void setScriptId(String scriptId) {
-		this.scriptId = scriptId;
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 	}
-	public InvokeScriptRequest withScriptId(String scriptId) {
-		this.scriptId = scriptId;
+	public VerifyCodeByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 		return this;
 	}
 	public String getUserId() {
@@ -52,28 +50,28 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public InvokeScriptRequest withUserId(String userId) {
+	public VerifyCodeByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	public String getArgs() {
-		return args;
+	public String getCode() {
+		return code;
 	}
-	public void setArgs(String args) {
-		this.args = args;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public InvokeScriptRequest withArgs(String args) {
-		this.args = args;
+	public VerifyCodeByUserIdRequest withCode(String code) {
+		this.code = code;
 		return this;
 	}
-	public RandomStatus getRandomStatus() {
-		return randomStatus;
+	public String getVerifyType() {
+		return verifyType;
 	}
-	public void setRandomStatus(RandomStatus randomStatus) {
-		this.randomStatus = randomStatus;
+	public void setVerifyType(String verifyType) {
+		this.verifyType = verifyType;
 	}
-	public InvokeScriptRequest withRandomStatus(RandomStatus randomStatus) {
-		this.randomStatus = randomStatus;
+	public VerifyCodeByUserIdRequest withVerifyType(String verifyType) {
+		this.verifyType = verifyType;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -82,7 +80,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 	public void setTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 	}
-	public InvokeScriptRequest withTimeOffsetToken(String timeOffsetToken) {
+	public VerifyCodeByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
@@ -95,30 +93,30 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public InvokeScriptRequest withDuplicationAvoider(String duplicationAvoider) {
+	public VerifyCodeByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static InvokeScriptRequest fromJson(JsonNode data) {
+    public static VerifyCodeByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new InvokeScriptRequest()
-            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+        return new VerifyCodeByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
+            .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").asText())
+            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("scriptId", getScriptId());
+                put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("args", getArgs());
-                put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
+                put("code", getCode());
+                put("verifyType", getVerifyType());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

@@ -1533,6 +1533,88 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class IssueOnceTask extends Gs2RestSessionTask<IssueOnceResult> {
+        private IssueOnceRequest request;
+
+        public IssueOnceTask(
+            IssueOnceRequest request,
+            AsyncAction<AsyncResult<IssueOnceResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IssueOnceResult parse(JsonNode data) {
+            return IssueOnceResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/campaign/{campaignModelName}/serialKey";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{campaignModelName}", this.request.getCampaignModelName() == null || this.request.getCampaignModelName().length() == 0 ? "null" : String.valueOf(this.request.getCampaignModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void issueOnceAsync(
+            IssueOnceRequest request,
+            AsyncAction<AsyncResult<IssueOnceResult>> callback
+    ) {
+        IssueOnceTask task = new IssueOnceTask(request, callback);
+        session.execute(task);
+    }
+
+    public IssueOnceResult issueOnce(
+            IssueOnceRequest request
+    ) {
+        final AsyncResult<IssueOnceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        issueOnceAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetSerialKeyTask extends Gs2RestSessionTask<GetSerialKeyResult> {
         private GetSerialKeyRequest request;
 
@@ -1598,6 +1680,183 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
     ) {
         final AsyncResult<GetSerialKeyResult>[] resultAsyncResult = new AsyncResult[]{null};
         getSerialKeyAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCodeTask extends Gs2RestSessionTask<VerifyCodeResult> {
+        private VerifyCodeRequest request;
+
+        public VerifyCodeTask(
+            VerifyCodeRequest request,
+            AsyncAction<AsyncResult<VerifyCodeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCodeResult parse(JsonNode data) {
+            return VerifyCodeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/serialKey/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("code", request.getCode());
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCodeAsync(
+            VerifyCodeRequest request,
+            AsyncAction<AsyncResult<VerifyCodeResult>> callback
+    ) {
+        VerifyCodeTask task = new VerifyCodeTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCodeResult verifyCode(
+            VerifyCodeRequest request
+    ) {
+        final AsyncResult<VerifyCodeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCodeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCodeByUserIdTask extends Gs2RestSessionTask<VerifyCodeByUserIdResult> {
+        private VerifyCodeByUserIdRequest request;
+
+        public VerifyCodeByUserIdTask(
+            VerifyCodeByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCodeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCodeByUserIdResult parse(JsonNode data) {
+            return VerifyCodeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/serialKey/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("code", request.getCode());
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCodeByUserIdAsync(
+            VerifyCodeByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCodeByUserIdResult>> callback
+    ) {
+        VerifyCodeByUserIdTask task = new VerifyCodeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCodeByUserIdResult verifyCodeByUserId(
+            VerifyCodeByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyCodeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCodeByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2021,6 +2280,86 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
     ) {
         final AsyncResult<RevertUseByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         revertUseByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyByStampTaskTask extends Gs2RestSessionTask<VerifyByStampTaskResult> {
+        private VerifyByStampTaskRequest request;
+
+        public VerifyByStampTaskTask(
+            VerifyByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyByStampTaskResult parse(JsonNode data) {
+            return VerifyByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/serialKey/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyByStampTaskAsync(
+            VerifyByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyByStampTaskResult>> callback
+    ) {
+        VerifyByStampTaskTask task = new VerifyByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyByStampTaskResult verifyByStampTask(
+            VerifyByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

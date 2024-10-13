@@ -1792,6 +1792,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                         }
                     ).collect(Collectors.toList()));
                     put("includeFullMembersGuild", request.getIncludeFullMembersGuild());
+                    put("orderBy", request.getOrderBy());
                     put("pageToken", request.getPageToken());
                     put("limit", request.getLimit());
                     put("contextStack", request.getContextStack());
@@ -1914,6 +1915,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                         }
                     ).collect(Collectors.toList()));
                     put("includeFullMembersGuild", request.getIncludeFullMembersGuild());
+                    put("orderBy", request.getOrderBy());
                     put("pageToken", request.getPageToken());
                     put("limit", request.getLimit());
                     put("contextStack", request.getContextStack());

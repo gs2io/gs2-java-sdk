@@ -39,6 +39,7 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
     private List<Integer> attributes5;
     private List<String> joinPolicies;
     private Boolean includeFullMembersGuild;
+    private String orderBy;
     private String pageToken;
     private Integer limit;
     private String duplicationAvoider;
@@ -152,6 +153,16 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
 		this.includeFullMembersGuild = includeFullMembersGuild;
 		return this;
 	}
+	public String getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	public SearchGuildsRequest withOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+		return this;
+	}
 	public String getPageToken() {
 		return pageToken;
 	}
@@ -226,6 +237,7 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
                 }
             ).collect(Collectors.toList()))
             .withIncludeFullMembersGuild(data.get("includeFullMembersGuild") == null || data.get("includeFullMembersGuild").isNull() ? null : data.get("includeFullMembersGuild").booleanValue())
+            .withOrderBy(data.get("orderBy") == null || data.get("orderBy").isNull() ? null : data.get("orderBy").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -268,6 +280,7 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
                     }
                 ).collect(Collectors.toList()));
                 put("includeFullMembersGuild", getIncludeFullMembersGuild());
+                put("orderBy", getOrderBy());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

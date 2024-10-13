@@ -1160,6 +1160,9 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -1265,6 +1268,86 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
     ) {
         final AsyncResult<DebugInvokeResult>[] resultAsyncResult = new AsyncResult[]{null};
         debugInvokeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class InvokeByStampSheetTask extends Gs2RestSessionTask<InvokeByStampSheetResult> {
+        private InvokeByStampSheetRequest request;
+
+        public InvokeByStampSheetTask(
+            InvokeByStampSheetRequest request,
+            AsyncAction<AsyncResult<InvokeByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public InvokeByStampSheetResult parse(JsonNode data) {
+            return InvokeByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "script")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/script/invoke";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void invokeByStampSheetAsync(
+            InvokeByStampSheetRequest request,
+            AsyncAction<AsyncResult<InvokeByStampSheetResult>> callback
+    ) {
+        InvokeByStampSheetTask task = new InvokeByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public InvokeByStampSheetResult invokeByStampSheet(
+            InvokeByStampSheetRequest request
+    ) {
+        final AsyncResult<InvokeByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        invokeByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

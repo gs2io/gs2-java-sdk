@@ -38,7 +38,6 @@ public class QueryAccessLogRequest extends Gs2BasicRequest<QueryAccessLogRequest
     private String pageToken;
     private Integer limit;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -137,19 +136,6 @@ public class QueryAccessLogRequest extends Gs2BasicRequest<QueryAccessLogRequest
 	}
 	public QueryAccessLogRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public QueryAccessLogRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

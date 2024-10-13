@@ -39,7 +39,6 @@ public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueSt
     private String pageToken;
     private Integer limit;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -148,19 +147,6 @@ public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueSt
 	}
 	public QueryIssueStampSheetLogRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public QueryIssueStampSheetLogRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

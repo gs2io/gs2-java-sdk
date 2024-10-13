@@ -36,7 +36,6 @@ public class QueryAccessLogWithTelemetryRequest extends Gs2BasicRequest<QueryAcc
     private String pageToken;
     private Integer limit;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -115,19 +114,6 @@ public class QueryAccessLogWithTelemetryRequest extends Gs2BasicRequest<QueryAcc
 	}
 	public QueryAccessLogWithTelemetryRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public QueryAccessLogWithTelemetryRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
