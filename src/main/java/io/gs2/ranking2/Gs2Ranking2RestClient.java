@@ -2342,6 +2342,269 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyGlobalRankingScoreTask extends Gs2RestSessionTask<VerifyGlobalRankingScoreResult> {
+        private VerifyGlobalRankingScoreRequest request;
+
+        public VerifyGlobalRankingScoreTask(
+            VerifyGlobalRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyGlobalRankingScoreResult parse(JsonNode data) {
+            return VerifyGlobalRankingScoreResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/global/{rankingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyGlobalRankingScoreAsync(
+            VerifyGlobalRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreResult>> callback
+    ) {
+        VerifyGlobalRankingScoreTask task = new VerifyGlobalRankingScoreTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyGlobalRankingScoreResult verifyGlobalRankingScore(
+            VerifyGlobalRankingScoreRequest request
+    ) {
+        final AsyncResult<VerifyGlobalRankingScoreResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyGlobalRankingScoreAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyGlobalRankingScoreByUserIdTask extends Gs2RestSessionTask<VerifyGlobalRankingScoreByUserIdResult> {
+        private VerifyGlobalRankingScoreByUserIdRequest request;
+
+        public VerifyGlobalRankingScoreByUserIdTask(
+            VerifyGlobalRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyGlobalRankingScoreByUserIdResult parse(JsonNode data) {
+            return VerifyGlobalRankingScoreByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/global/{rankingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyGlobalRankingScoreByUserIdAsync(
+            VerifyGlobalRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreByUserIdResult>> callback
+    ) {
+        VerifyGlobalRankingScoreByUserIdTask task = new VerifyGlobalRankingScoreByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyGlobalRankingScoreByUserIdResult verifyGlobalRankingScoreByUserId(
+            VerifyGlobalRankingScoreByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyGlobalRankingScoreByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyGlobalRankingScoreByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyGlobalRankingScoreByStampTaskTask extends Gs2RestSessionTask<VerifyGlobalRankingScoreByStampTaskResult> {
+        private VerifyGlobalRankingScoreByStampTaskRequest request;
+
+        public VerifyGlobalRankingScoreByStampTaskTask(
+            VerifyGlobalRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyGlobalRankingScoreByStampTaskResult parse(JsonNode data) {
+            return VerifyGlobalRankingScoreByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/global/score/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyGlobalRankingScoreByStampTaskAsync(
+            VerifyGlobalRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyGlobalRankingScoreByStampTaskResult>> callback
+    ) {
+        VerifyGlobalRankingScoreByStampTaskTask task = new VerifyGlobalRankingScoreByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyGlobalRankingScoreByStampTaskResult verifyGlobalRankingScoreByStampTask(
+            VerifyGlobalRankingScoreByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyGlobalRankingScoreByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyGlobalRankingScoreByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeGlobalRankingReceivedRewardsTask extends Gs2RestSessionTask<DescribeGlobalRankingReceivedRewardsResult> {
         private DescribeGlobalRankingReceivedRewardsRequest request;
 
@@ -4841,6 +5104,271 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
     ) {
         final AsyncResult<DeleteClusterRankingScoreByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteClusterRankingScoreByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyClusterRankingScoreTask extends Gs2RestSessionTask<VerifyClusterRankingScoreResult> {
+        private VerifyClusterRankingScoreRequest request;
+
+        public VerifyClusterRankingScoreTask(
+            VerifyClusterRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyClusterRankingScoreResult parse(JsonNode data) {
+            return VerifyClusterRankingScoreResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/cluster/{rankingName}/{clusterName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{clusterName}", this.request.getClusterName() == null || this.request.getClusterName().length() == 0 ? "null" : String.valueOf(this.request.getClusterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyClusterRankingScoreAsync(
+            VerifyClusterRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreResult>> callback
+    ) {
+        VerifyClusterRankingScoreTask task = new VerifyClusterRankingScoreTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyClusterRankingScoreResult verifyClusterRankingScore(
+            VerifyClusterRankingScoreRequest request
+    ) {
+        final AsyncResult<VerifyClusterRankingScoreResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyClusterRankingScoreAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyClusterRankingScoreByUserIdTask extends Gs2RestSessionTask<VerifyClusterRankingScoreByUserIdResult> {
+        private VerifyClusterRankingScoreByUserIdRequest request;
+
+        public VerifyClusterRankingScoreByUserIdTask(
+            VerifyClusterRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyClusterRankingScoreByUserIdResult parse(JsonNode data) {
+            return VerifyClusterRankingScoreByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/cluster/{rankingName}/{clusterName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{clusterName}", this.request.getClusterName() == null || this.request.getClusterName().length() == 0 ? "null" : String.valueOf(this.request.getClusterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyClusterRankingScoreByUserIdAsync(
+            VerifyClusterRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreByUserIdResult>> callback
+    ) {
+        VerifyClusterRankingScoreByUserIdTask task = new VerifyClusterRankingScoreByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyClusterRankingScoreByUserIdResult verifyClusterRankingScoreByUserId(
+            VerifyClusterRankingScoreByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyClusterRankingScoreByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyClusterRankingScoreByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyClusterRankingScoreByStampTaskTask extends Gs2RestSessionTask<VerifyClusterRankingScoreByStampTaskResult> {
+        private VerifyClusterRankingScoreByStampTaskRequest request;
+
+        public VerifyClusterRankingScoreByStampTaskTask(
+            VerifyClusterRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyClusterRankingScoreByStampTaskResult parse(JsonNode data) {
+            return VerifyClusterRankingScoreByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/cluster/score/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyClusterRankingScoreByStampTaskAsync(
+            VerifyClusterRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyClusterRankingScoreByStampTaskResult>> callback
+    ) {
+        VerifyClusterRankingScoreByStampTaskTask task = new VerifyClusterRankingScoreByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyClusterRankingScoreByStampTaskResult verifyClusterRankingScoreByStampTask(
+            VerifyClusterRankingScoreByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyClusterRankingScoreByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyClusterRankingScoreByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -7704,6 +8232,269 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
     ) {
         final AsyncResult<DeleteSubscribeRankingScoreByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteSubscribeRankingScoreByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifySubscribeRankingScoreTask extends Gs2RestSessionTask<VerifySubscribeRankingScoreResult> {
+        private VerifySubscribeRankingScoreRequest request;
+
+        public VerifySubscribeRankingScoreTask(
+            VerifySubscribeRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySubscribeRankingScoreResult parse(JsonNode data) {
+            return VerifySubscribeRankingScoreResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/subscribe/{rankingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySubscribeRankingScoreAsync(
+            VerifySubscribeRankingScoreRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreResult>> callback
+    ) {
+        VerifySubscribeRankingScoreTask task = new VerifySubscribeRankingScoreTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySubscribeRankingScoreResult verifySubscribeRankingScore(
+            VerifySubscribeRankingScoreRequest request
+    ) {
+        final AsyncResult<VerifySubscribeRankingScoreResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySubscribeRankingScoreAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifySubscribeRankingScoreByUserIdTask extends Gs2RestSessionTask<VerifySubscribeRankingScoreByUserIdResult> {
+        private VerifySubscribeRankingScoreByUserIdRequest request;
+
+        public VerifySubscribeRankingScoreByUserIdTask(
+            VerifySubscribeRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySubscribeRankingScoreByUserIdResult parse(JsonNode data) {
+            return VerifySubscribeRankingScoreByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/score/subscribe/{rankingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rankingName}", this.request.getRankingName() == null || this.request.getRankingName().length() == 0 ? "null" : String.valueOf(this.request.getRankingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
+                    put("score", request.getScore());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySubscribeRankingScoreByUserIdAsync(
+            VerifySubscribeRankingScoreByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreByUserIdResult>> callback
+    ) {
+        VerifySubscribeRankingScoreByUserIdTask task = new VerifySubscribeRankingScoreByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySubscribeRankingScoreByUserIdResult verifySubscribeRankingScoreByUserId(
+            VerifySubscribeRankingScoreByUserIdRequest request
+    ) {
+        final AsyncResult<VerifySubscribeRankingScoreByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySubscribeRankingScoreByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifySubscribeRankingScoreByStampTaskTask extends Gs2RestSessionTask<VerifySubscribeRankingScoreByStampTaskResult> {
+        private VerifySubscribeRankingScoreByStampTaskRequest request;
+
+        public VerifySubscribeRankingScoreByStampTaskTask(
+            VerifySubscribeRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySubscribeRankingScoreByStampTaskResult parse(JsonNode data) {
+            return VerifySubscribeRankingScoreByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking2")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/subscribe/score/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySubscribeRankingScoreByStampTaskAsync(
+            VerifySubscribeRankingScoreByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifySubscribeRankingScoreByStampTaskResult>> callback
+    ) {
+        VerifySubscribeRankingScoreByStampTaskTask task = new VerifySubscribeRankingScoreByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySubscribeRankingScoreByStampTaskResult verifySubscribeRankingScoreByStampTask(
+            VerifySubscribeRankingScoreByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifySubscribeRankingScoreByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySubscribeRankingScoreByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
