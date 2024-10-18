@@ -2446,6 +2446,179 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class FreezeMasterDataTask extends Gs2RestSessionTask<FreezeMasterDataResult> {
+        private FreezeMasterDataRequest request;
+
+        public FreezeMasterDataTask(
+            FreezeMasterDataRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FreezeMasterDataResult parse(JsonNode data) {
+            return FreezeMasterDataResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/masterdata/freeze";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void freezeMasterDataAsync(
+            FreezeMasterDataRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataResult>> callback
+    ) {
+        FreezeMasterDataTask task = new FreezeMasterDataTask(request, callback);
+        session.execute(task);
+    }
+
+    public FreezeMasterDataResult freezeMasterData(
+            FreezeMasterDataRequest request
+    ) {
+        final AsyncResult<FreezeMasterDataResult>[] resultAsyncResult = new AsyncResult[]{null};
+        freezeMasterDataAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class FreezeMasterDataByUserIdTask extends Gs2RestSessionTask<FreezeMasterDataByUserIdResult> {
+        private FreezeMasterDataByUserIdRequest request;
+
+        public FreezeMasterDataByUserIdTask(
+            FreezeMasterDataByUserIdRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FreezeMasterDataByUserIdResult parse(JsonNode data) {
+            return FreezeMasterDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/masterdata/freeze";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void freezeMasterDataByUserIdAsync(
+            FreezeMasterDataByUserIdRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataByUserIdResult>> callback
+    ) {
+        FreezeMasterDataByUserIdTask task = new FreezeMasterDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public FreezeMasterDataByUserIdResult freezeMasterDataByUserId(
+            FreezeMasterDataByUserIdRequest request
+    ) {
+        final AsyncResult<FreezeMasterDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        freezeMasterDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IfExpressionByUserIdTask extends Gs2RestSessionTask<IfExpressionByUserIdResult> {
         private IfExpressionByUserIdRequest request;
 
