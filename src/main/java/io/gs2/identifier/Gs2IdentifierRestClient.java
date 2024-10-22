@@ -1267,6 +1267,251 @@ import io.gs2.identifier.model.*;public class Gs2IdentifierRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeAttachedGuardsTask extends Gs2RestSessionTask<DescribeAttachedGuardsResult> {
+        private DescribeAttachedGuardsRequest request;
+
+        public DescribeAttachedGuardsTask(
+            DescribeAttachedGuardsRequest request,
+            AsyncAction<AsyncResult<DescribeAttachedGuardsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeAttachedGuardsResult parse(JsonNode data) {
+            return DescribeAttachedGuardsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/identifier/{clientId}/guard";
+
+            url = url.replace("{clientId}", this.request.getClientId() == null || this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeAttachedGuardsAsync(
+            DescribeAttachedGuardsRequest request,
+            AsyncAction<AsyncResult<DescribeAttachedGuardsResult>> callback
+    ) {
+        DescribeAttachedGuardsTask task = new DescribeAttachedGuardsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeAttachedGuardsResult describeAttachedGuards(
+            DescribeAttachedGuardsRequest request
+    ) {
+        final AsyncResult<DescribeAttachedGuardsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeAttachedGuardsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AttachGuardTask extends Gs2RestSessionTask<AttachGuardResult> {
+        private AttachGuardRequest request;
+
+        public AttachGuardTask(
+            AttachGuardRequest request,
+            AsyncAction<AsyncResult<AttachGuardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AttachGuardResult parse(JsonNode data) {
+            return AttachGuardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/identifier/{clientId}/guard";
+
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{clientId}", this.request.getClientId() == null || this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("guardNamespaceId", request.getGuardNamespaceId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void attachGuardAsync(
+            AttachGuardRequest request,
+            AsyncAction<AsyncResult<AttachGuardResult>> callback
+    ) {
+        AttachGuardTask task = new AttachGuardTask(request, callback);
+        session.execute(task);
+    }
+
+    public AttachGuardResult attachGuard(
+            AttachGuardRequest request
+    ) {
+        final AsyncResult<AttachGuardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        attachGuardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DetachGuardTask extends Gs2RestSessionTask<DetachGuardResult> {
+        private DetachGuardRequest request;
+
+        public DetachGuardTask(
+            DetachGuardRequest request,
+            AsyncAction<AsyncResult<DetachGuardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DetachGuardResult parse(JsonNode data) {
+            return DetachGuardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/identifier/{clientId}/guard/{guardNamespaceId}";
+
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{clientId}", this.request.getClientId() == null || this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
+            url = url.replace("{guardNamespaceId}", this.request.getGuardNamespaceId() == null || this.request.getGuardNamespaceId().length() == 0 ? "null" : String.valueOf(this.request.getGuardNamespaceId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void detachGuardAsync(
+            DetachGuardRequest request,
+            AsyncAction<AsyncResult<DetachGuardResult>> callback
+    ) {
+        DetachGuardTask task = new DetachGuardTask(request, callback);
+        session.execute(task);
+    }
+
+    public DetachGuardResult detachGuard(
+            DetachGuardRequest request
+    ) {
+        final AsyncResult<DetachGuardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        detachGuardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribePasswordsTask extends Gs2RestSessionTask<DescribePasswordsResult> {
         private DescribePasswordsRequest request;
 
