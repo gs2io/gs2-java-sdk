@@ -156,12 +156,14 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("changeNotification", request.getChangeNotification() != null ? request.getChangeNotification().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
+                    put("updateGuildScript", request.getUpdateGuildScript() != null ? request.getUpdateGuildScript().toJson() : null);
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
@@ -407,12 +409,14 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("changeNotification", request.getChangeNotification() != null ? request.getChangeNotification().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
+                    put("updateGuildScript", request.getUpdateGuildScript() != null ? request.getUpdateGuildScript().toJson() : null);
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);

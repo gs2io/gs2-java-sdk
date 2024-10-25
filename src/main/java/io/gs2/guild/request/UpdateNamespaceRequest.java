@@ -33,12 +33,14 @@ import io.gs2.guild.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
+    private NotificationSetting changeNotification;
     private NotificationSetting joinNotification;
     private NotificationSetting leaveNotification;
     private NotificationSetting changeMemberNotification;
     private NotificationSetting receiveRequestNotification;
     private NotificationSetting removeRequestNotification;
     private ScriptSetting createGuildScript;
+    private ScriptSetting updateGuildScript;
     private ScriptSetting joinGuildScript;
     private ScriptSetting leaveGuildScript;
     private ScriptSetting changeRoleScript;
@@ -61,6 +63,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public NotificationSetting getChangeNotification() {
+		return changeNotification;
+	}
+	public void setChangeNotification(NotificationSetting changeNotification) {
+		this.changeNotification = changeNotification;
+	}
+	public UpdateNamespaceRequest withChangeNotification(NotificationSetting changeNotification) {
+		this.changeNotification = changeNotification;
 		return this;
 	}
 	public NotificationSetting getJoinNotification() {
@@ -123,6 +135,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.createGuildScript = createGuildScript;
 		return this;
 	}
+	public ScriptSetting getUpdateGuildScript() {
+		return updateGuildScript;
+	}
+	public void setUpdateGuildScript(ScriptSetting updateGuildScript) {
+		this.updateGuildScript = updateGuildScript;
+	}
+	public UpdateNamespaceRequest withUpdateGuildScript(ScriptSetting updateGuildScript) {
+		this.updateGuildScript = updateGuildScript;
+		return this;
+	}
 	public ScriptSetting getJoinGuildScript() {
 		return joinGuildScript;
 	}
@@ -171,12 +193,14 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withChangeNotification(data.get("changeNotification") == null || data.get("changeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeNotification")))
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withChangeMemberNotification(data.get("changeMemberNotification") == null || data.get("changeMemberNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeMemberNotification")))
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
             .withRemoveRequestNotification(data.get("removeRequestNotification") == null || data.get("removeRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("removeRequestNotification")))
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
+            .withUpdateGuildScript(data.get("updateGuildScript") == null || data.get("updateGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateGuildScript")))
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
@@ -188,12 +212,14 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
+                put("changeNotification", getChangeNotification() != null ? getChangeNotification().toJson() : null);
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("changeMemberNotification", getChangeMemberNotification() != null ? getChangeMemberNotification().toJson() : null);
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
                 put("removeRequestNotification", getRemoveRequestNotification() != null ? getRemoveRequestNotification().toJson() : null);
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);
+                put("updateGuildScript", getUpdateGuildScript() != null ? getUpdateGuildScript().toJson() : null);
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);

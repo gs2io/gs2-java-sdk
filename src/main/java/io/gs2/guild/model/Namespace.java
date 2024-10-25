@@ -32,12 +32,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private NotificationSetting changeNotification;
 	private NotificationSetting joinNotification;
 	private NotificationSetting leaveNotification;
 	private NotificationSetting changeMemberNotification;
 	private NotificationSetting receiveRequestNotification;
 	private NotificationSetting removeRequestNotification;
 	private ScriptSetting createGuildScript;
+	private ScriptSetting updateGuildScript;
 	private ScriptSetting joinGuildScript;
 	private ScriptSetting leaveGuildScript;
 	private ScriptSetting changeRoleScript;
@@ -73,6 +75,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public NotificationSetting getChangeNotification() {
+		return changeNotification;
+	}
+	public void setChangeNotification(NotificationSetting changeNotification) {
+		this.changeNotification = changeNotification;
+	}
+	public Namespace withChangeNotification(NotificationSetting changeNotification) {
+		this.changeNotification = changeNotification;
 		return this;
 	}
 	public NotificationSetting getJoinNotification() {
@@ -133,6 +145,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withCreateGuildScript(ScriptSetting createGuildScript) {
 		this.createGuildScript = createGuildScript;
+		return this;
+	}
+	public ScriptSetting getUpdateGuildScript() {
+		return updateGuildScript;
+	}
+	public void setUpdateGuildScript(ScriptSetting updateGuildScript) {
+		this.updateGuildScript = updateGuildScript;
+	}
+	public Namespace withUpdateGuildScript(ScriptSetting updateGuildScript) {
+		this.updateGuildScript = updateGuildScript;
 		return this;
 	}
 	public ScriptSetting getJoinGuildScript() {
@@ -214,12 +236,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withChangeNotification(data.get("changeNotification") == null || data.get("changeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeNotification")))
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withChangeMemberNotification(data.get("changeMemberNotification") == null || data.get("changeMemberNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeMemberNotification")))
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
             .withRemoveRequestNotification(data.get("removeRequestNotification") == null || data.get("removeRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("removeRequestNotification")))
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
+            .withUpdateGuildScript(data.get("updateGuildScript") == null || data.get("updateGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateGuildScript")))
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
@@ -235,12 +259,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("changeNotification", getChangeNotification() != null ? getChangeNotification().toJson() : null);
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("changeMemberNotification", getChangeMemberNotification() != null ? getChangeMemberNotification().toJson() : null);
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
                 put("removeRequestNotification", getRemoveRequestNotification() != null ? getRemoveRequestNotification().toJson() : null);
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);
+                put("updateGuildScript", getUpdateGuildScript() != null ? getUpdateGuildScript().toJson() : null);
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);
@@ -264,12 +290,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.changeNotification == null) ? 0 : this.changeNotification.hashCode());
         result = prime * result + ((this.joinNotification == null) ? 0 : this.joinNotification.hashCode());
         result = prime * result + ((this.leaveNotification == null) ? 0 : this.leaveNotification.hashCode());
         result = prime * result + ((this.changeMemberNotification == null) ? 0 : this.changeMemberNotification.hashCode());
         result = prime * result + ((this.receiveRequestNotification == null) ? 0 : this.receiveRequestNotification.hashCode());
         result = prime * result + ((this.removeRequestNotification == null) ? 0 : this.removeRequestNotification.hashCode());
         result = prime * result + ((this.createGuildScript == null) ? 0 : this.createGuildScript.hashCode());
+        result = prime * result + ((this.updateGuildScript == null) ? 0 : this.updateGuildScript.hashCode());
         result = prime * result + ((this.joinGuildScript == null) ? 0 : this.joinGuildScript.hashCode());
         result = prime * result + ((this.leaveGuildScript == null) ? 0 : this.leaveGuildScript.hashCode());
         result = prime * result + ((this.changeRoleScript == null) ? 0 : this.changeRoleScript.hashCode());
@@ -304,6 +332,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
+		if (changeNotification == null) {
+			return other.changeNotification == null;
+		} else if (!changeNotification.equals(other.changeNotification)) {
+			return false;
+		}
 		if (joinNotification == null) {
 			return other.joinNotification == null;
 		} else if (!joinNotification.equals(other.joinNotification)) {
@@ -332,6 +365,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (createGuildScript == null) {
 			return other.createGuildScript == null;
 		} else if (!createGuildScript.equals(other.createGuildScript)) {
+			return false;
+		}
+		if (updateGuildScript == null) {
+			return other.updateGuildScript == null;
+		} else if (!updateGuildScript.equals(other.updateGuildScript)) {
 			return false;
 		}
 		if (joinGuildScript == null) {
