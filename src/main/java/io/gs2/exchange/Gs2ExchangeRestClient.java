@@ -4277,6 +4277,86 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class AcquireForceByStampSheetTask extends Gs2RestSessionTask<AcquireForceByStampSheetResult> {
+        private AcquireForceByStampSheetRequest request;
+
+        public AcquireForceByStampSheetTask(
+            AcquireForceByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireForceByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireForceByStampSheetResult parse(JsonNode data) {
+            return AcquireForceByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/await/acquire/force";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireForceByStampSheetAsync(
+            AcquireForceByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireForceByStampSheetResult>> callback
+    ) {
+        AcquireForceByStampSheetTask task = new AcquireForceByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireForceByStampSheetResult acquireForceByStampSheet(
+            AcquireForceByStampSheetRequest request
+    ) {
+        final AsyncResult<AcquireForceByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireForceByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SkipByStampSheetTask extends Gs2RestSessionTask<SkipByStampSheetResult> {
         private SkipByStampSheetRequest request;
 
