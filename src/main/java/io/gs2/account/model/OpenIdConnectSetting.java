@@ -35,6 +35,7 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 	private String appleTeamId;
 	private String appleKeyId;
 	private String applePrivateKeyPem;
+	private String doneEndpointUrl;
 	public String getConfigurationPath() {
 		return configurationPath;
 	}
@@ -95,6 +96,16 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 		this.applePrivateKeyPem = applePrivateKeyPem;
 		return this;
 	}
+	public String getDoneEndpointUrl() {
+		return doneEndpointUrl;
+	}
+	public void setDoneEndpointUrl(String doneEndpointUrl) {
+		this.doneEndpointUrl = doneEndpointUrl;
+	}
+	public OpenIdConnectSetting withDoneEndpointUrl(String doneEndpointUrl) {
+		this.doneEndpointUrl = doneEndpointUrl;
+		return this;
+	}
 
     public static OpenIdConnectSetting fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class OpenIdConnectSetting implements IModel, Serializable {
             .withClientSecret(data.get("clientSecret") == null || data.get("clientSecret").isNull() ? null : data.get("clientSecret").asText())
             .withAppleTeamId(data.get("appleTeamId") == null || data.get("appleTeamId").isNull() ? null : data.get("appleTeamId").asText())
             .withAppleKeyId(data.get("appleKeyId") == null || data.get("appleKeyId").isNull() ? null : data.get("appleKeyId").asText())
-            .withApplePrivateKeyPem(data.get("applePrivateKeyPem") == null || data.get("applePrivateKeyPem").isNull() ? null : data.get("applePrivateKeyPem").asText());
+            .withApplePrivateKeyPem(data.get("applePrivateKeyPem") == null || data.get("applePrivateKeyPem").isNull() ? null : data.get("applePrivateKeyPem").asText())
+            .withDoneEndpointUrl(data.get("doneEndpointUrl") == null || data.get("doneEndpointUrl").isNull() ? null : data.get("doneEndpointUrl").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class OpenIdConnectSetting implements IModel, Serializable {
                 put("appleTeamId", getAppleTeamId());
                 put("appleKeyId", getAppleKeyId());
                 put("applePrivateKeyPem", getApplePrivateKeyPem());
+                put("doneEndpointUrl", getDoneEndpointUrl());
             }}
         );
     }
@@ -132,6 +145,7 @@ public class OpenIdConnectSetting implements IModel, Serializable {
         result = prime * result + ((this.appleTeamId == null) ? 0 : this.appleTeamId.hashCode());
         result = prime * result + ((this.appleKeyId == null) ? 0 : this.appleKeyId.hashCode());
         result = prime * result + ((this.applePrivateKeyPem == null) ? 0 : this.applePrivateKeyPem.hashCode());
+        result = prime * result + ((this.doneEndpointUrl == null) ? 0 : this.doneEndpointUrl.hashCode());
 		return result;
 	}
 
@@ -172,6 +186,11 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 		if (applePrivateKeyPem == null) {
 			return other.applePrivateKeyPem == null;
 		} else if (!applePrivateKeyPem.equals(other.applePrivateKeyPem)) {
+			return false;
+		}
+		if (doneEndpointUrl == null) {
+			return other.doneEndpointUrl == null;
+		} else if (!doneEndpointUrl.equals(other.doneEndpointUrl)) {
 			return false;
 		}
 		return true;
