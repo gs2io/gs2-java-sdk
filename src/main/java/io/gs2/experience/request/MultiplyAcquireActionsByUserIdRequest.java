@@ -35,6 +35,7 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
     private String propertyId;
     private String rateName;
     private List<AcquireAction> acquireActions;
+    private Float baseRate;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -97,6 +98,16 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
 		this.acquireActions = acquireActions;
 		return this;
 	}
+	public Float getBaseRate() {
+		return baseRate;
+	}
+	public void setBaseRate(Float baseRate) {
+		this.baseRate = baseRate;
+	}
+	public MultiplyAcquireActionsByUserIdRequest withBaseRate(Float baseRate) {
+		this.baseRate = baseRate;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -137,6 +148,7 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withBaseRate(data.get("baseRate") == null || data.get("baseRate").isNull() ? null : data.get("baseRate").floatValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -154,6 +166,7 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("baseRate", getBaseRate());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

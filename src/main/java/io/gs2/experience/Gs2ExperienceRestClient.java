@@ -4692,6 +4692,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("baseRate", request.getBaseRate());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
