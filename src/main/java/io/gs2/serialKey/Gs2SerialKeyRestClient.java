@@ -1728,6 +1728,7 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("code", request.getCode());
+                    put("campaignModelName", request.getCampaignModelName());
                     put("verifyType", request.getVerifyType());
                     put("contextStack", request.getContextStack());
                 }}
@@ -1817,6 +1818,7 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("code", request.getCode());
+                    put("campaignModelName", request.getCampaignModelName());
                     put("verifyType", request.getVerifyType());
                     put("contextStack", request.getContextStack());
                 }}
@@ -2360,6 +2362,86 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
     ) {
         final AsyncResult<VerifyByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         verifyByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IssueOnceByStampSheetTask extends Gs2RestSessionTask<IssueOnceByStampSheetResult> {
+        private IssueOnceByStampSheetRequest request;
+
+        public IssueOnceByStampSheetTask(
+            IssueOnceByStampSheetRequest request,
+            AsyncAction<AsyncResult<IssueOnceByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IssueOnceByStampSheetResult parse(JsonNode data) {
+            return IssueOnceByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/serialKey/issueOnce";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void issueOnceByStampSheetAsync(
+            IssueOnceByStampSheetRequest request,
+            AsyncAction<AsyncResult<IssueOnceByStampSheetResult>> callback
+    ) {
+        IssueOnceByStampSheetTask task = new IssueOnceByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public IssueOnceByStampSheetResult issueOnceByStampSheet(
+            IssueOnceByStampSheetRequest request
+    ) {
+        final AsyncResult<IssueOnceByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        issueOnceByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

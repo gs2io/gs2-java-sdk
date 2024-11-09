@@ -31,6 +31,7 @@ public class VerifyCodeRequest extends Gs2BasicRequest<VerifyCodeRequest> {
     private String namespaceName;
     private String accessToken;
     private String code;
+    private String campaignModelName;
     private String verifyType;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -61,6 +62,16 @@ public class VerifyCodeRequest extends Gs2BasicRequest<VerifyCodeRequest> {
 	}
 	public VerifyCodeRequest withCode(String code) {
 		this.code = code;
+		return this;
+	}
+	public String getCampaignModelName() {
+		return campaignModelName;
+	}
+	public void setCampaignModelName(String campaignModelName) {
+		this.campaignModelName = campaignModelName;
+	}
+	public VerifyCodeRequest withCampaignModelName(String campaignModelName) {
+		this.campaignModelName = campaignModelName;
 		return this;
 	}
 	public String getVerifyType() {
@@ -95,6 +106,7 @@ public class VerifyCodeRequest extends Gs2BasicRequest<VerifyCodeRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").asText())
+            .withCampaignModelName(data.get("campaignModelName") == null || data.get("campaignModelName").isNull() ? null : data.get("campaignModelName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText());
     }
 
@@ -104,6 +116,7 @@ public class VerifyCodeRequest extends Gs2BasicRequest<VerifyCodeRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("code", getCode());
+                put("campaignModelName", getCampaignModelName());
                 put("verifyType", getVerifyType());
             }}
         );

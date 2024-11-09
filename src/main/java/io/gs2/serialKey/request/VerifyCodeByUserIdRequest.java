@@ -31,6 +31,7 @@ public class VerifyCodeByUserIdRequest extends Gs2BasicRequest<VerifyCodeByUserI
     private String namespaceName;
     private String userId;
     private String code;
+    private String campaignModelName;
     private String verifyType;
     private String timeOffsetToken;
     private String duplicationAvoider;
@@ -62,6 +63,16 @@ public class VerifyCodeByUserIdRequest extends Gs2BasicRequest<VerifyCodeByUserI
 	}
 	public VerifyCodeByUserIdRequest withCode(String code) {
 		this.code = code;
+		return this;
+	}
+	public String getCampaignModelName() {
+		return campaignModelName;
+	}
+	public void setCampaignModelName(String campaignModelName) {
+		this.campaignModelName = campaignModelName;
+	}
+	public VerifyCodeByUserIdRequest withCampaignModelName(String campaignModelName) {
+		this.campaignModelName = campaignModelName;
 		return this;
 	}
 	public String getVerifyType() {
@@ -106,6 +117,7 @@ public class VerifyCodeByUserIdRequest extends Gs2BasicRequest<VerifyCodeByUserI
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").asText())
+            .withCampaignModelName(data.get("campaignModelName") == null || data.get("campaignModelName").isNull() ? null : data.get("campaignModelName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
@@ -116,6 +128,7 @@ public class VerifyCodeByUserIdRequest extends Gs2BasicRequest<VerifyCodeByUserI
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("code", getCode());
+                put("campaignModelName", getCampaignModelName());
                 put("verifyType", getVerifyType());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
