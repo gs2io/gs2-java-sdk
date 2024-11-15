@@ -26,11 +26,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.serialKey.model.*;
 import io.gs2.serialKey.model.SerialKey;
+import io.gs2.serialKey.model.CampaignModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCodeResult implements IResult, Serializable {
     private SerialKey item;
+    private CampaignModel campaignModel;
 
 	public SerialKey getItem() {
 		return item;
@@ -45,18 +47,33 @@ public class VerifyCodeResult implements IResult, Serializable {
 		return this;
 	}
 
+	public CampaignModel getCampaignModel() {
+		return campaignModel;
+	}
+
+	public void setCampaignModel(CampaignModel campaignModel) {
+		this.campaignModel = campaignModel;
+	}
+
+	public VerifyCodeResult withCampaignModel(CampaignModel campaignModel) {
+		this.campaignModel = campaignModel;
+		return this;
+	}
+
     public static VerifyCodeResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new VerifyCodeResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SerialKey.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SerialKey.fromJson(data.get("item")))
+            .withCampaignModel(data.get("campaignModel") == null || data.get("campaignModel").isNull() ? null : CampaignModel.fromJson(data.get("campaignModel")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("campaignModel", getCampaignModel() != null ? getCampaignModel().toJson() : null);
             }}
         );
     }

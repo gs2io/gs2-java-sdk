@@ -1265,6 +1265,8 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("guildMasterRole", request.getGuildMasterRole());
                     put("guildMemberDefaultRole", request.getGuildMemberDefaultRole());
                     put("rejoinCoolTimeMinutes", request.getRejoinCoolTimeMinutes());
+                    put("maxConcurrentJoinGuilds", request.getMaxConcurrentJoinGuilds());
+                    put("maxConcurrentGuildMasterCount", request.getMaxConcurrentGuildMasterCount());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1441,6 +1443,8 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("guildMasterRole", request.getGuildMasterRole());
                     put("guildMemberDefaultRole", request.getGuildMemberDefaultRole());
                     put("rejoinCoolTimeMinutes", request.getRejoinCoolTimeMinutes());
+                    put("maxConcurrentJoinGuilds", request.getMaxConcurrentJoinGuilds());
+                    put("maxConcurrentGuildMasterCount", request.getMaxConcurrentGuildMasterCount());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2885,6 +2889,190 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
     ) {
         final AsyncResult<UpdateMemberRoleByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
         updateMemberRoleByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class BatchUpdateMemberRoleTask extends Gs2RestSessionTask<BatchUpdateMemberRoleResult> {
+        private BatchUpdateMemberRoleRequest request;
+
+        public BatchUpdateMemberRoleTask(
+            BatchUpdateMemberRoleRequest request,
+            AsyncAction<AsyncResult<BatchUpdateMemberRoleResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchUpdateMemberRoleResult parse(JsonNode data) {
+            return BatchUpdateMemberRoleResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/batch/member/role";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("members", request.getMembers() == null ? new ArrayList<Member>() :
+                        request.getMembers().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchUpdateMemberRoleAsync(
+            BatchUpdateMemberRoleRequest request,
+            AsyncAction<AsyncResult<BatchUpdateMemberRoleResult>> callback
+    ) {
+        BatchUpdateMemberRoleTask task = new BatchUpdateMemberRoleTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchUpdateMemberRoleResult batchUpdateMemberRole(
+            BatchUpdateMemberRoleRequest request
+    ) {
+        final AsyncResult<BatchUpdateMemberRoleResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchUpdateMemberRoleAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class BatchUpdateMemberRoleByGuildNameTask extends Gs2RestSessionTask<BatchUpdateMemberRoleByGuildNameResult> {
+        private BatchUpdateMemberRoleByGuildNameRequest request;
+
+        public BatchUpdateMemberRoleByGuildNameTask(
+            BatchUpdateMemberRoleByGuildNameRequest request,
+            AsyncAction<AsyncResult<BatchUpdateMemberRoleByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchUpdateMemberRoleByGuildNameResult parse(JsonNode data) {
+            return BatchUpdateMemberRoleByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/batch/member/role";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("members", request.getMembers() == null ? new ArrayList<Member>() :
+                        request.getMembers().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchUpdateMemberRoleByGuildNameAsync(
+            BatchUpdateMemberRoleByGuildNameRequest request,
+            AsyncAction<AsyncResult<BatchUpdateMemberRoleByGuildNameResult>> callback
+    ) {
+        BatchUpdateMemberRoleByGuildNameTask task = new BatchUpdateMemberRoleByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchUpdateMemberRoleByGuildNameResult batchUpdateMemberRoleByGuildName(
+            BatchUpdateMemberRoleByGuildNameRequest request
+    ) {
+        final AsyncResult<BatchUpdateMemberRoleByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchUpdateMemberRoleByGuildNameAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

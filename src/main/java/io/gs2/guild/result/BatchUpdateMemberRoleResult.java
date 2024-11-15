@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.serialKey.result;
+package io.gs2.guild.result;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,56 +24,41 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
-import io.gs2.serialKey.model.*;
-import io.gs2.serialKey.model.SerialKey;
-import io.gs2.serialKey.model.CampaignModel;
+import io.gs2.guild.model.*;
+import io.gs2.guild.model.RoleModel;
+import io.gs2.guild.model.Member;
+import io.gs2.guild.model.Guild;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VerifyCodeByUserIdResult implements IResult, Serializable {
-    private SerialKey item;
-    private CampaignModel campaignModel;
+public class BatchUpdateMemberRoleResult implements IResult, Serializable {
+    private Guild item;
 
-	public SerialKey getItem() {
+	public Guild getItem() {
 		return item;
 	}
 
-	public void setItem(SerialKey item) {
+	public void setItem(Guild item) {
 		this.item = item;
 	}
 
-	public VerifyCodeByUserIdResult withItem(SerialKey item) {
+	public BatchUpdateMemberRoleResult withItem(Guild item) {
 		this.item = item;
 		return this;
 	}
 
-	public CampaignModel getCampaignModel() {
-		return campaignModel;
-	}
-
-	public void setCampaignModel(CampaignModel campaignModel) {
-		this.campaignModel = campaignModel;
-	}
-
-	public VerifyCodeByUserIdResult withCampaignModel(CampaignModel campaignModel) {
-		this.campaignModel = campaignModel;
-		return this;
-	}
-
-    public static VerifyCodeByUserIdResult fromJson(JsonNode data) {
+    public static BatchUpdateMemberRoleResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyCodeByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SerialKey.fromJson(data.get("item")))
-            .withCampaignModel(data.get("campaignModel") == null || data.get("campaignModel").isNull() ? null : CampaignModel.fromJson(data.get("campaignModel")));
+        return new BatchUpdateMemberRoleResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Guild.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("campaignModel", getCampaignModel() != null ? getCampaignModel().toJson() : null);
             }}
         );
     }

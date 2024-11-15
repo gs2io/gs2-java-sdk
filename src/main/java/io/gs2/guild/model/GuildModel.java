@@ -39,6 +39,8 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
 	private String guildMasterRole;
 	private String guildMemberDefaultRole;
 	private Integer rejoinCoolTimeMinutes;
+	private Integer maxConcurrentJoinGuilds;
+	private Integer maxConcurrentGuildMasterCount;
 	public String getGuildModelId() {
 		return guildModelId;
 	}
@@ -139,6 +141,26 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
 		this.rejoinCoolTimeMinutes = rejoinCoolTimeMinutes;
 		return this;
 	}
+	public Integer getMaxConcurrentJoinGuilds() {
+		return maxConcurrentJoinGuilds;
+	}
+	public void setMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+	}
+	public GuildModel withMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+		return this;
+	}
+	public Integer getMaxConcurrentGuildMasterCount() {
+		return maxConcurrentGuildMasterCount;
+	}
+	public void setMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+	}
+	public GuildModel withMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+		return this;
+	}
 
     public static GuildModel fromJson(JsonNode data) {
         if (data == null) {
@@ -159,7 +181,9 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
             ).collect(Collectors.toList()))
             .withGuildMasterRole(data.get("guildMasterRole") == null || data.get("guildMasterRole").isNull() ? null : data.get("guildMasterRole").asText())
             .withGuildMemberDefaultRole(data.get("guildMemberDefaultRole") == null || data.get("guildMemberDefaultRole").isNull() ? null : data.get("guildMemberDefaultRole").asText())
-            .withRejoinCoolTimeMinutes(data.get("rejoinCoolTimeMinutes") == null || data.get("rejoinCoolTimeMinutes").isNull() ? null : data.get("rejoinCoolTimeMinutes").intValue());
+            .withRejoinCoolTimeMinutes(data.get("rejoinCoolTimeMinutes") == null || data.get("rejoinCoolTimeMinutes").isNull() ? null : data.get("rejoinCoolTimeMinutes").intValue())
+            .withMaxConcurrentJoinGuilds(data.get("maxConcurrentJoinGuilds") == null || data.get("maxConcurrentJoinGuilds").isNull() ? null : data.get("maxConcurrentJoinGuilds").intValue())
+            .withMaxConcurrentGuildMasterCount(data.get("maxConcurrentGuildMasterCount") == null || data.get("maxConcurrentGuildMasterCount").isNull() ? null : data.get("maxConcurrentGuildMasterCount").intValue());
     }
 
     public JsonNode toJson() {
@@ -180,6 +204,8 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
                 put("guildMasterRole", getGuildMasterRole());
                 put("guildMemberDefaultRole", getGuildMemberDefaultRole());
                 put("rejoinCoolTimeMinutes", getRejoinCoolTimeMinutes());
+                put("maxConcurrentJoinGuilds", getMaxConcurrentJoinGuilds());
+                put("maxConcurrentGuildMasterCount", getMaxConcurrentGuildMasterCount());
             }}
         );
     }
@@ -203,6 +229,8 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
         result = prime * result + ((this.guildMasterRole == null) ? 0 : this.guildMasterRole.hashCode());
         result = prime * result + ((this.guildMemberDefaultRole == null) ? 0 : this.guildMemberDefaultRole.hashCode());
         result = prime * result + ((this.rejoinCoolTimeMinutes == null) ? 0 : this.rejoinCoolTimeMinutes.hashCode());
+        result = prime * result + ((this.maxConcurrentJoinGuilds == null) ? 0 : this.maxConcurrentJoinGuilds.hashCode());
+        result = prime * result + ((this.maxConcurrentGuildMasterCount == null) ? 0 : this.maxConcurrentGuildMasterCount.hashCode());
 		return result;
 	}
 
@@ -263,6 +291,16 @@ public class GuildModel implements IModel, Serializable, Comparable<GuildModel> 
 		if (rejoinCoolTimeMinutes == null) {
 			return other.rejoinCoolTimeMinutes == null;
 		} else if (!rejoinCoolTimeMinutes.equals(other.rejoinCoolTimeMinutes)) {
+			return false;
+		}
+		if (maxConcurrentJoinGuilds == null) {
+			return other.maxConcurrentJoinGuilds == null;
+		} else if (!maxConcurrentJoinGuilds.equals(other.maxConcurrentJoinGuilds)) {
+			return false;
+		}
+		if (maxConcurrentGuildMasterCount == null) {
+			return other.maxConcurrentGuildMasterCount == null;
+		} else if (!maxConcurrentGuildMasterCount.equals(other.maxConcurrentGuildMasterCount)) {
 			return false;
 		}
 		return true;

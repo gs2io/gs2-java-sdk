@@ -30,6 +30,7 @@ import io.gs2.gateway.model.*;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SendNotificationResult implements IResult, Serializable {
     private String protocol;
+    private List<String> sendConnectionIds;
 
 	public String getProtocol() {
 		return protocol;
@@ -44,18 +45,41 @@ public class SendNotificationResult implements IResult, Serializable {
 		return this;
 	}
 
+	public List<String> getSendConnectionIds() {
+		return sendConnectionIds;
+	}
+
+	public void setSendConnectionIds(List<String> sendConnectionIds) {
+		this.sendConnectionIds = sendConnectionIds;
+	}
+
+	public SendNotificationResult withSendConnectionIds(List<String> sendConnectionIds) {
+		this.sendConnectionIds = sendConnectionIds;
+		return this;
+	}
+
     public static SendNotificationResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new SendNotificationResult()
-            .withProtocol(data.get("protocol") == null || data.get("protocol").isNull() ? null : data.get("protocol").asText());
+            .withProtocol(data.get("protocol") == null || data.get("protocol").isNull() ? null : data.get("protocol").asText())
+            .withSendConnectionIds(data.get("sendConnectionIds") == null || data.get("sendConnectionIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("sendConnectionIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("protocol", getProtocol());
+                put("sendConnectionIds", getSendConnectionIds() == null ? new ArrayList<String>() :
+                    getSendConnectionIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

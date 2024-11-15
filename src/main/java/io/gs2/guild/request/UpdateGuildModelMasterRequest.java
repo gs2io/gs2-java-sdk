@@ -40,6 +40,8 @@ public class UpdateGuildModelMasterRequest extends Gs2BasicRequest<UpdateGuildMo
     private String guildMasterRole;
     private String guildMemberDefaultRole;
     private Integer rejoinCoolTimeMinutes;
+    private Integer maxConcurrentJoinGuilds;
+    private Integer maxConcurrentGuildMasterCount;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -150,6 +152,26 @@ public class UpdateGuildModelMasterRequest extends Gs2BasicRequest<UpdateGuildMo
 		this.rejoinCoolTimeMinutes = rejoinCoolTimeMinutes;
 		return this;
 	}
+	public Integer getMaxConcurrentJoinGuilds() {
+		return maxConcurrentJoinGuilds;
+	}
+	public void setMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+	}
+	public UpdateGuildModelMasterRequest withMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+		return this;
+	}
+	public Integer getMaxConcurrentGuildMasterCount() {
+		return maxConcurrentGuildMasterCount;
+	}
+	public void setMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+	}
+	public UpdateGuildModelMasterRequest withMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+		return this;
+	}
 
     public static UpdateGuildModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -171,7 +193,9 @@ public class UpdateGuildModelMasterRequest extends Gs2BasicRequest<UpdateGuildMo
             ).collect(Collectors.toList()))
             .withGuildMasterRole(data.get("guildMasterRole") == null || data.get("guildMasterRole").isNull() ? null : data.get("guildMasterRole").asText())
             .withGuildMemberDefaultRole(data.get("guildMemberDefaultRole") == null || data.get("guildMemberDefaultRole").isNull() ? null : data.get("guildMemberDefaultRole").asText())
-            .withRejoinCoolTimeMinutes(data.get("rejoinCoolTimeMinutes") == null || data.get("rejoinCoolTimeMinutes").isNull() ? null : data.get("rejoinCoolTimeMinutes").intValue());
+            .withRejoinCoolTimeMinutes(data.get("rejoinCoolTimeMinutes") == null || data.get("rejoinCoolTimeMinutes").isNull() ? null : data.get("rejoinCoolTimeMinutes").intValue())
+            .withMaxConcurrentJoinGuilds(data.get("maxConcurrentJoinGuilds") == null || data.get("maxConcurrentJoinGuilds").isNull() ? null : data.get("maxConcurrentJoinGuilds").intValue())
+            .withMaxConcurrentGuildMasterCount(data.get("maxConcurrentGuildMasterCount") == null || data.get("maxConcurrentGuildMasterCount").isNull() ? null : data.get("maxConcurrentGuildMasterCount").intValue());
     }
 
     public JsonNode toJson() {
@@ -193,6 +217,8 @@ public class UpdateGuildModelMasterRequest extends Gs2BasicRequest<UpdateGuildMo
                 put("guildMasterRole", getGuildMasterRole());
                 put("guildMemberDefaultRole", getGuildMemberDefaultRole());
                 put("rejoinCoolTimeMinutes", getRejoinCoolTimeMinutes());
+                put("maxConcurrentJoinGuilds", getMaxConcurrentJoinGuilds());
+                put("maxConcurrentGuildMasterCount", getMaxConcurrentGuildMasterCount());
             }}
         );
     }

@@ -26,11 +26,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.serialKey.model.*;
 import io.gs2.serialKey.model.SerialKey;
+import io.gs2.serialKey.model.CampaignModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyByStampTaskResult implements IResult, Serializable {
     private SerialKey item;
+    private CampaignModel campaignModel;
     private String newContextStack;
 
 	public SerialKey getItem() {
@@ -43,6 +45,19 @@ public class VerifyByStampTaskResult implements IResult, Serializable {
 
 	public VerifyByStampTaskResult withItem(SerialKey item) {
 		this.item = item;
+		return this;
+	}
+
+	public CampaignModel getCampaignModel() {
+		return campaignModel;
+	}
+
+	public void setCampaignModel(CampaignModel campaignModel) {
+		this.campaignModel = campaignModel;
+	}
+
+	public VerifyByStampTaskResult withCampaignModel(CampaignModel campaignModel) {
+		this.campaignModel = campaignModel;
 		return this;
 	}
 
@@ -65,6 +80,7 @@ public class VerifyByStampTaskResult implements IResult, Serializable {
         }
         return new VerifyByStampTaskResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : SerialKey.fromJson(data.get("item")))
+            .withCampaignModel(data.get("campaignModel") == null || data.get("campaignModel").isNull() ? null : CampaignModel.fromJson(data.get("campaignModel")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
@@ -72,6 +88,7 @@ public class VerifyByStampTaskResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("campaignModel", getCampaignModel() != null ? getCampaignModel().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

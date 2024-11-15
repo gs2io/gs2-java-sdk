@@ -40,6 +40,8 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 	private String guildMasterRole;
 	private String guildMemberDefaultRole;
 	private Integer rejoinCoolTimeMinutes;
+	private Integer maxConcurrentJoinGuilds;
+	private Integer maxConcurrentGuildMasterCount;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -153,6 +155,26 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 		this.rejoinCoolTimeMinutes = rejoinCoolTimeMinutes;
 		return this;
 	}
+	public Integer getMaxConcurrentJoinGuilds() {
+		return maxConcurrentJoinGuilds;
+	}
+	public void setMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+	}
+	public GuildModelMaster withMaxConcurrentJoinGuilds(Integer maxConcurrentJoinGuilds) {
+		this.maxConcurrentJoinGuilds = maxConcurrentJoinGuilds;
+		return this;
+	}
+	public Integer getMaxConcurrentGuildMasterCount() {
+		return maxConcurrentGuildMasterCount;
+	}
+	public void setMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+	}
+	public GuildModelMaster withMaxConcurrentGuildMasterCount(Integer maxConcurrentGuildMasterCount) {
+		this.maxConcurrentGuildMasterCount = maxConcurrentGuildMasterCount;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -205,6 +227,8 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
             .withGuildMasterRole(data.get("guildMasterRole") == null || data.get("guildMasterRole").isNull() ? null : data.get("guildMasterRole").asText())
             .withGuildMemberDefaultRole(data.get("guildMemberDefaultRole") == null || data.get("guildMemberDefaultRole").isNull() ? null : data.get("guildMemberDefaultRole").asText())
             .withRejoinCoolTimeMinutes(data.get("rejoinCoolTimeMinutes") == null || data.get("rejoinCoolTimeMinutes").isNull() ? null : data.get("rejoinCoolTimeMinutes").intValue())
+            .withMaxConcurrentJoinGuilds(data.get("maxConcurrentJoinGuilds") == null || data.get("maxConcurrentJoinGuilds").isNull() ? null : data.get("maxConcurrentJoinGuilds").intValue())
+            .withMaxConcurrentGuildMasterCount(data.get("maxConcurrentGuildMasterCount") == null || data.get("maxConcurrentGuildMasterCount").isNull() ? null : data.get("maxConcurrentGuildMasterCount").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -229,6 +253,8 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
                 put("guildMasterRole", getGuildMasterRole());
                 put("guildMemberDefaultRole", getGuildMemberDefaultRole());
                 put("rejoinCoolTimeMinutes", getRejoinCoolTimeMinutes());
+                put("maxConcurrentJoinGuilds", getMaxConcurrentJoinGuilds());
+                put("maxConcurrentGuildMasterCount", getMaxConcurrentGuildMasterCount());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -256,6 +282,8 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
         result = prime * result + ((this.guildMasterRole == null) ? 0 : this.guildMasterRole.hashCode());
         result = prime * result + ((this.guildMemberDefaultRole == null) ? 0 : this.guildMemberDefaultRole.hashCode());
         result = prime * result + ((this.rejoinCoolTimeMinutes == null) ? 0 : this.rejoinCoolTimeMinutes.hashCode());
+        result = prime * result + ((this.maxConcurrentJoinGuilds == null) ? 0 : this.maxConcurrentJoinGuilds.hashCode());
+        result = prime * result + ((this.maxConcurrentGuildMasterCount == null) ? 0 : this.maxConcurrentGuildMasterCount.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -324,6 +352,16 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 		if (rejoinCoolTimeMinutes == null) {
 			return other.rejoinCoolTimeMinutes == null;
 		} else if (!rejoinCoolTimeMinutes.equals(other.rejoinCoolTimeMinutes)) {
+			return false;
+		}
+		if (maxConcurrentJoinGuilds == null) {
+			return other.maxConcurrentJoinGuilds == null;
+		} else if (!maxConcurrentJoinGuilds.equals(other.maxConcurrentJoinGuilds)) {
+			return false;
+		}
+		if (maxConcurrentGuildMasterCount == null) {
+			return other.maxConcurrentGuildMasterCount == null;
+		} else if (!maxConcurrentGuildMasterCount.equals(other.maxConcurrentGuildMasterCount)) {
 			return false;
 		}
 		if (createdAt == null) {
