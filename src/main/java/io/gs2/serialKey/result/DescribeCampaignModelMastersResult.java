@@ -64,7 +64,7 @@ public class DescribeCampaignModelMastersResult implements IResult, Serializable
             return null;
         }
         return new DescribeCampaignModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<CampaignModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CampaignModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeCampaignModelMastersResult implements IResult, Serializable
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<CampaignModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

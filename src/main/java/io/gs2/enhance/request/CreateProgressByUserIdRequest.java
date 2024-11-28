@@ -130,7 +130,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withTargetItemSetId(data.get("targetItemSetId") == null || data.get("targetItemSetId").isNull() ? null : data.get("targetItemSetId").asText())
-            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? new ArrayList<Material>() :
+            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("materials").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Material.fromJson(item);
@@ -147,7 +147,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
                 put("userId", getUserId());
                 put("rateName", getRateName());
                 put("targetItemSetId", getTargetItemSetId());
-                put("materials", getMaterials() == null ? new ArrayList<Material>() :
+                put("materials", getMaterials() == null ? null :
                     getMaterials().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

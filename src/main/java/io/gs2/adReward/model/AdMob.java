@@ -46,7 +46,7 @@ public class AdMob implements IModel, Serializable {
             return null;
         }
         return new AdMob()
-            .withAllowAdUnitIds(data.get("allowAdUnitIds") == null || data.get("allowAdUnitIds").isNull() ? new ArrayList<String>() :
+            .withAllowAdUnitIds(data.get("allowAdUnitIds") == null || data.get("allowAdUnitIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowAdUnitIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -56,7 +56,7 @@ public class AdMob implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("allowAdUnitIds", getAllowAdUnitIds() == null ? new ArrayList<String>() :
+                put("allowAdUnitIds", getAllowAdUnitIds() == null ? null :
                     getAllowAdUnitIds().stream().map(item -> {
                         return item;
                     }

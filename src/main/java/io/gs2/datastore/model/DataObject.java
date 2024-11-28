@@ -160,7 +160,7 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
-            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -180,7 +180,7 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
                 put("name", getName());
                 put("userId", getUserId());
                 put("scope", getScope());
-                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                put("allowUserIds", getAllowUserIds() == null ? null :
                     getAllowUserIds().stream().map(item -> {
                         return item;
                     }

@@ -119,7 +119,7 @@ public class SetPropertyFormWithSignatureRequest extends Gs2BasicRequest<SetProp
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotWithSignature>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SlotWithSignature.fromJson(item);
@@ -135,7 +135,7 @@ public class SetPropertyFormWithSignatureRequest extends Gs2BasicRequest<SetProp
                 put("accessToken", getAccessToken());
                 put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
-                put("slots", getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

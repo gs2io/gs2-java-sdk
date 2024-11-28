@@ -64,7 +64,7 @@ public class DescribeDailyTransactionHistoriesByCurrencyResult implements IResul
             return null;
         }
         return new DescribeDailyTransactionHistoriesByCurrencyResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<DailyTransactionHistory>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DailyTransactionHistory.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeDailyTransactionHistoriesByCurrencyResult implements IResul
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<DailyTransactionHistory>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

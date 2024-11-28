@@ -94,7 +94,7 @@ public class Showcase implements IModel, Serializable, Comparable<Showcase> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withSalesPeriodEventId(data.get("salesPeriodEventId") == null || data.get("salesPeriodEventId").isNull() ? null : data.get("salesPeriodEventId").asText())
-            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? new ArrayList<DisplayItem>() :
+            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("displayItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DisplayItem.fromJson(item);
@@ -109,7 +109,7 @@ public class Showcase implements IModel, Serializable, Comparable<Showcase> {
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("salesPeriodEventId", getSalesPeriodEventId());
-                put("displayItems", getDisplayItems() == null ? new ArrayList<DisplayItem>() :
+                put("displayItems", getDisplayItems() == null ? null :
                     getDisplayItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

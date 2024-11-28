@@ -80,7 +80,7 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
         }
         return new AttachSecurityPolicy()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withSecurityPolicyIds(data.get("securityPolicyIds") == null || data.get("securityPolicyIds").isNull() ? new ArrayList<String>() :
+            .withSecurityPolicyIds(data.get("securityPolicyIds") == null || data.get("securityPolicyIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("securityPolicyIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -93,7 +93,7 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
-                put("securityPolicyIds", getSecurityPolicyIds() == null ? new ArrayList<String>() :
+                put("securityPolicyIds", getSecurityPolicyIds() == null ? null :
                     getSecurityPolicyIds().stream().map(item -> {
                         return item;
                     }

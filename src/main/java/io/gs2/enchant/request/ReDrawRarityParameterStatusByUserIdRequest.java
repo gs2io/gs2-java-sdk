@@ -118,7 +118,7 @@ public class ReDrawRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withParameterName(data.get("parameterName") == null || data.get("parameterName").isNull() ? null : data.get("parameterName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withFixedParameterNames(data.get("fixedParameterNames") == null || data.get("fixedParameterNames").isNull() ? new ArrayList<String>() :
+            .withFixedParameterNames(data.get("fixedParameterNames") == null || data.get("fixedParameterNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("fixedParameterNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -133,7 +133,7 @@ public class ReDrawRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
                 put("userId", getUserId());
                 put("parameterName", getParameterName());
                 put("propertyId", getPropertyId());
-                put("fixedParameterNames", getFixedParameterNames() == null ? new ArrayList<String>() :
+                put("fixedParameterNames", getFixedParameterNames() == null ? null :
                     getFixedParameterNames().stream().map(item -> {
                         return item;
                     }

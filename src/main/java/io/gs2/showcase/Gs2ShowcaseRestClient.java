@@ -1239,19 +1239,19 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1421,19 +1421,19 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1689,7 +1689,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("salesItemNames", request.getSalesItemNames() == null ? new ArrayList<String>() :
+                    put("salesItemNames", request.getSalesItemNames() == null ? null :
                         request.getSalesItemNames().stream().map(item -> {
                             return item;
                         }
@@ -1858,7 +1858,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("salesItemNames", request.getSalesItemNames() == null ? new ArrayList<String>() :
+                    put("salesItemNames", request.getSalesItemNames() == null ? null :
                         request.getSalesItemNames().stream().map(item -> {
                             return item;
                         }
@@ -2113,7 +2113,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("displayItems", request.getDisplayItems() == null ? new ArrayList<DisplayItemMaster>() :
+                    put("displayItems", request.getDisplayItems() == null ? null :
                         request.getDisplayItems().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2284,7 +2284,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("displayItems", request.getDisplayItems() == null ? new ArrayList<DisplayItemMaster>() :
+                    put("displayItems", request.getDisplayItems() == null ? null :
                         request.getDisplayItems().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3113,7 +3113,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("quantity", request.getQuantity());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3209,7 +3209,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("quantity", request.getQuantity());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3391,7 +3391,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("maximumNumberOfChoice", request.getMaximumNumberOfChoice());
-                    put("displayItems", request.getDisplayItems() == null ? new ArrayList<RandomDisplayItemModel>() :
+                    put("displayItems", request.getDisplayItems() == null ? null :
                         request.getDisplayItems().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3565,7 +3565,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("maximumNumberOfChoice", request.getMaximumNumberOfChoice());
-                    put("displayItems", request.getDisplayItems() == null ? new ArrayList<RandomDisplayItemModel>() :
+                    put("displayItems", request.getDisplayItems() == null ? null :
                         request.getDisplayItems().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4675,7 +4675,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("quantity", request.getQuantity());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4771,7 +4771,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("quantity", request.getQuantity());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

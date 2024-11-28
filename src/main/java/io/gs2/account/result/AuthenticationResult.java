@@ -94,7 +94,7 @@ public class AuthenticationResult implements IResult, Serializable {
         }
         return new AuthenticationResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")))
-            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? new ArrayList<BanStatus>() :
+            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("banStatuses").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BanStatus.fromJson(item);
@@ -108,7 +108,7 @@ public class AuthenticationResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("banStatuses", getBanStatuses() == null ? new ArrayList<BanStatus>() :
+                put("banStatuses", getBanStatuses() == null ? null :
                     getBanStatuses().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -64,7 +64,7 @@ public class DescribePrizeLimitsResult implements IResult, Serializable {
             return null;
         }
         return new DescribePrizeLimitsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<PrizeLimit>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return PrizeLimit.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribePrizeLimitsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<PrizeLimit>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

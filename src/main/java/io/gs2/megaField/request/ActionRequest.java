@@ -123,7 +123,7 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
             .withPosition(data.get("position") == null || data.get("position").isNull() ? null : MyPosition.fromJson(data.get("position")))
-            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<Scope>() :
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Scope.fromJson(item);
@@ -139,7 +139,7 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
                 put("areaModelName", getAreaModelName());
                 put("layerModelName", getLayerModelName());
                 put("position", getPosition() != null ? getPosition().toJson() : null);
-                put("scopes", getScopes() == null ? new ArrayList<Scope>() :
+                put("scopes", getScopes() == null ? null :
                     getScopes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

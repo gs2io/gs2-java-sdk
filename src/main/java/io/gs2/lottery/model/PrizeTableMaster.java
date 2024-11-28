@@ -127,7 +127,7 @@ public class PrizeTableMaster implements IModel, Serializable, Comparable<PrizeT
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? new ArrayList<Prize>() :
+            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("prizes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Prize.fromJson(item);
@@ -145,7 +145,7 @@ public class PrizeTableMaster implements IModel, Serializable, Comparable<PrizeT
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("description", getDescription());
-                put("prizes", getPrizes() == null ? new ArrayList<Prize>() :
+                put("prizes", getPrizes() == null ? null :
                     getPrizes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

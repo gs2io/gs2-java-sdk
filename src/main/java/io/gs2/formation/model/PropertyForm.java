@@ -127,7 +127,7 @@ public class PropertyForm implements IModel, Serializable, Comparable<PropertyFo
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Slot.fromJson(item);
@@ -145,7 +145,7 @@ public class PropertyForm implements IModel, Serializable, Comparable<PropertyFo
                 put("userId", getUserId());
                 put("name", getName());
                 put("propertyId", getPropertyId());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

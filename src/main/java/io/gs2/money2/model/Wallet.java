@@ -138,7 +138,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
             .withSummary(data.get("summary") == null || data.get("summary").isNull() ? null : WalletSummary.fromJson(data.get("summary")))
-            .withDepositTransactions(data.get("depositTransactions") == null || data.get("depositTransactions").isNull() ? new ArrayList<DepositTransaction>() :
+            .withDepositTransactions(data.get("depositTransactions") == null || data.get("depositTransactions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("depositTransactions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DepositTransaction.fromJson(item);
@@ -157,7 +157,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
                 put("userId", getUserId());
                 put("slot", getSlot());
                 put("summary", getSummary() != null ? getSummary().toJson() : null);
-                put("depositTransactions", getDepositTransactions() == null ? new ArrayList<DepositTransaction>() :
+                put("depositTransactions", getDepositTransactions() == null ? null :
                     getDepositTransactions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -57,13 +57,13 @@ public class View implements IModel, Serializable {
             return null;
         }
         return new View()
-            .withContents(data.get("contents") == null || data.get("contents").isNull() ? new ArrayList<Content>() :
+            .withContents(data.get("contents") == null || data.get("contents").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("contents").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Content.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withRemoveContents(data.get("removeContents") == null || data.get("removeContents").isNull() ? new ArrayList<Content>() :
+            .withRemoveContents(data.get("removeContents") == null || data.get("removeContents").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("removeContents").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Content.fromJson(item);
@@ -74,13 +74,13 @@ public class View implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("contents", getContents() == null ? new ArrayList<Content>() :
+                put("contents", getContents() == null ? null :
                     getContents().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("removeContents", getRemoveContents() == null ? new ArrayList<Content>() :
+                put("removeContents", getRemoveContents() == null ? null :
                     getRemoveContents().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

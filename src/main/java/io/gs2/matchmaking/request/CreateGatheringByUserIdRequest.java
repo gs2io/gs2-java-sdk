@@ -155,19 +155,19 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPlayer(data.get("player") == null || data.get("player").isNull() ? null : Player.fromJson(data.get("player")))
-            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AttributeRange.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? new ArrayList<CapacityOfRole>() :
+            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("capacityOfRoles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CapacityOfRole.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -183,19 +183,19 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("player", getPlayer() != null ? getPlayer().toJson() : null);
-                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                put("attributeRanges", getAttributeRanges() == null ? null :
                     getAttributeRanges().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("capacityOfRoles", getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                put("capacityOfRoles", getCapacityOfRoles() == null ? null :
                     getCapacityOfRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                put("allowUserIds", getAllowUserIds() == null ? null :
                     getAllowUserIds().stream().map(item -> {
                         return item;
                     }

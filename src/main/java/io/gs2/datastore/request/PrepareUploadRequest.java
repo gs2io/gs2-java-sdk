@@ -130,7 +130,7 @@ public class PrepareUploadRequest extends Gs2BasicRequest<PrepareUploadRequest> 
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withContentType(data.get("contentType") == null || data.get("contentType").isNull() ? null : data.get("contentType").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
-            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -146,7 +146,7 @@ public class PrepareUploadRequest extends Gs2BasicRequest<PrepareUploadRequest> 
                 put("name", getName());
                 put("contentType", getContentType());
                 put("scope", getScope());
-                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                put("allowUserIds", getAllowUserIds() == null ? null :
                     getAllowUserIds().stream().map(item -> {
                         return item;
                     }

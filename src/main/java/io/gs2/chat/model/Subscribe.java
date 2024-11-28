@@ -104,7 +104,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
             .withSubscribeId(data.get("subscribeId") == null || data.get("subscribeId").isNull() ? null : data.get("subscribeId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
-            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? new ArrayList<NotificationType>() :
+            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationTypes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return NotificationType.fromJson(item);
@@ -120,7 +120,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                 put("subscribeId", getSubscribeId());
                 put("userId", getUserId());
                 put("roomName", getRoomName());
-                put("notificationTypes", getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                put("notificationTypes", getNotificationTypes() == null ? null :
                     getNotificationTypes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

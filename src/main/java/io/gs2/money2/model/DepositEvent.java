@@ -69,7 +69,7 @@ public class DepositEvent implements IModel, Serializable {
         }
         return new DepositEvent()
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
-            .withDepositTransactions(data.get("depositTransactions") == null || data.get("depositTransactions").isNull() ? new ArrayList<DepositTransaction>() :
+            .withDepositTransactions(data.get("depositTransactions") == null || data.get("depositTransactions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("depositTransactions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DepositTransaction.fromJson(item);
@@ -82,7 +82,7 @@ public class DepositEvent implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("slot", getSlot());
-                put("depositTransactions", getDepositTransactions() == null ? new ArrayList<DepositTransaction>() :
+                put("depositTransactions", getDepositTransactions() == null ? null :
                     getDepositTransactions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

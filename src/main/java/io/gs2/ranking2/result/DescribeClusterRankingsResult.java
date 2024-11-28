@@ -64,7 +64,7 @@ public class DescribeClusterRankingsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeClusterRankingsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ClusterRankingData>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ClusterRankingData.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeClusterRankingsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<ClusterRankingData>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

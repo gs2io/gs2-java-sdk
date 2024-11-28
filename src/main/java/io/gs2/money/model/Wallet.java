@@ -150,7 +150,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
             .withPaid(data.get("paid") == null || data.get("paid").isNull() ? null : data.get("paid").intValue())
             .withFree(data.get("free") == null || data.get("free").isNull() ? null : data.get("free").intValue())
-            .withDetail(data.get("detail") == null || data.get("detail").isNull() ? new ArrayList<WalletDetail>() :
+            .withDetail(data.get("detail") == null || data.get("detail").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("detail").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return WalletDetail.fromJson(item);
@@ -170,7 +170,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
                 put("slot", getSlot());
                 put("paid", getPaid());
                 put("free", getFree());
-                put("detail", getDetail() == null ? new ArrayList<WalletDetail>() :
+                put("detail", getDetail() == null ? null :
                     getDetail().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

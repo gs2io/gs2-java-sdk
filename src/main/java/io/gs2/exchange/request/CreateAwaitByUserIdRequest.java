@@ -119,7 +119,7 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -135,7 +135,7 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
                 put("userId", getUserId());
                 put("rateName", getRateName());
                 put("count", getCount());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

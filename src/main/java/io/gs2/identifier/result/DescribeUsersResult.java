@@ -64,7 +64,7 @@ public class DescribeUsersResult implements IResult, Serializable {
             return null;
         }
         return new DescribeUsersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<User>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return User.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeUsersResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<User>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

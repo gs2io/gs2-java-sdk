@@ -203,35 +203,35 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
             .withStampSheetResultId(data.get("stampSheetResultId") == null || data.get("stampSheetResultId").isNull() ? null : data.get("stampSheetResultId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
-            .withVerifyTaskRequests(data.get("verifyTaskRequests") == null || data.get("verifyTaskRequests").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyTaskRequests(data.get("verifyTaskRequests") == null || data.get("verifyTaskRequests").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskRequests").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withTaskRequests(data.get("taskRequests") == null || data.get("taskRequests").isNull() ? new ArrayList<ConsumeAction>() :
+            .withTaskRequests(data.get("taskRequests") == null || data.get("taskRequests").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskRequests").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withSheetRequest(data.get("sheetRequest") == null || data.get("sheetRequest").isNull() ? null : AcquireAction.fromJson(data.get("sheetRequest")))
-            .withVerifyTaskResultCodes(data.get("verifyTaskResultCodes") == null || data.get("verifyTaskResultCodes").isNull() ? new ArrayList<Integer>() :
+            .withVerifyTaskResultCodes(data.get("verifyTaskResultCodes") == null || data.get("verifyTaskResultCodes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withVerifyTaskResults(data.get("verifyTaskResults") == null || data.get("verifyTaskResults").isNull() ? new ArrayList<String>() :
+            .withVerifyTaskResults(data.get("verifyTaskResults") == null || data.get("verifyTaskResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? new ArrayList<Integer>() :
+            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? new ArrayList<String>() :
+            .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -249,35 +249,35 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
                 put("stampSheetResultId", getStampSheetResultId());
                 put("userId", getUserId());
                 put("transactionId", getTransactionId());
-                put("verifyTaskRequests", getVerifyTaskRequests() == null ? new ArrayList<VerifyAction>() :
+                put("verifyTaskRequests", getVerifyTaskRequests() == null ? null :
                     getVerifyTaskRequests().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("taskRequests", getTaskRequests() == null ? new ArrayList<ConsumeAction>() :
+                put("taskRequests", getTaskRequests() == null ? null :
                     getTaskRequests().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("sheetRequest", getSheetRequest() != null ? getSheetRequest().toJson() : null);
-                put("verifyTaskResultCodes", getVerifyTaskResultCodes() == null ? new ArrayList<Integer>() :
+                put("verifyTaskResultCodes", getVerifyTaskResultCodes() == null ? null :
                     getVerifyTaskResultCodes().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("verifyTaskResults", getVerifyTaskResults() == null ? new ArrayList<String>() :
+                put("verifyTaskResults", getVerifyTaskResults() == null ? null :
                     getVerifyTaskResults().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("taskResultCodes", getTaskResultCodes() == null ? new ArrayList<Integer>() :
+                put("taskResultCodes", getTaskResultCodes() == null ? null :
                     getTaskResultCodes().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("taskResults", getTaskResults() == null ? new ArrayList<String>() :
+                put("taskResults", getTaskResults() == null ? null :
                     getTaskResults().stream().map(item -> {
                         return item;
                     }

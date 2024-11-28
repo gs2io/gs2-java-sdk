@@ -166,7 +166,7 @@ public class IncrementalRateModel implements IModel, Serializable, Comparable<In
             .withCalculateScriptId(data.get("calculateScriptId") == null || data.get("calculateScriptId").isNull() ? null : data.get("calculateScriptId").asText())
             .withExchangeCountId(data.get("exchangeCountId") == null || data.get("exchangeCountId").isNull() ? null : data.get("exchangeCountId").asText())
             .withMaximumExchangeCount(data.get("maximumExchangeCount") == null || data.get("maximumExchangeCount").isNull() ? null : data.get("maximumExchangeCount").intValue())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -187,7 +187,7 @@ public class IncrementalRateModel implements IModel, Serializable, Comparable<In
                 put("calculateScriptId", getCalculateScriptId());
                 put("exchangeCountId", getExchangeCountId());
                 put("maximumExchangeCount", getMaximumExchangeCount());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

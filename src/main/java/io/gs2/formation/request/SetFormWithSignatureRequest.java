@@ -119,7 +119,7 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotWithSignature>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SlotWithSignature.fromJson(item);
@@ -135,7 +135,7 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
                 put("accessToken", getAccessToken());
                 put("moldModelName", getMoldModelName());
                 put("index", getIndex());
-                put("slots", getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

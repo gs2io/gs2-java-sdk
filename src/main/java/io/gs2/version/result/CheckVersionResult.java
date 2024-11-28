@@ -82,13 +82,13 @@ public class CheckVersionResult implements IResult, Serializable {
         }
         return new CheckVersionResult()
             .withProjectToken(data.get("projectToken") == null || data.get("projectToken").isNull() ? null : data.get("projectToken").asText())
-            .withWarnings(data.get("warnings") == null || data.get("warnings").isNull() ? new ArrayList<Status>() :
+            .withWarnings(data.get("warnings") == null || data.get("warnings").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("warnings").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Status.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withErrors(data.get("errors") == null || data.get("errors").isNull() ? new ArrayList<Status>() :
+            .withErrors(data.get("errors") == null || data.get("errors").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("errors").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Status.fromJson(item);
@@ -100,13 +100,13 @@ public class CheckVersionResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("projectToken", getProjectToken());
-                put("warnings", getWarnings() == null ? new ArrayList<Status>() :
+                put("warnings", getWarnings() == null ? null :
                     getWarnings().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("errors", getErrors() == null ? new ArrayList<Status>() :
+                put("errors", getErrors() == null ? null :
                     getErrors().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

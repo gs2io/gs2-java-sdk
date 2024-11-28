@@ -232,7 +232,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
             .withAttribute4(data.get("attribute4") == null || data.get("attribute4").isNull() ? null : data.get("attribute4").intValue())
             .withAttribute5(data.get("attribute5") == null || data.get("attribute5").isNull() ? null : data.get("attribute5").intValue())
             .withJoinPolicy(data.get("joinPolicy") == null || data.get("joinPolicy").isNull() ? null : data.get("joinPolicy").asText())
-            .withCustomRoles(data.get("customRoles") == null || data.get("customRoles").isNull() ? new ArrayList<RoleModel>() :
+            .withCustomRoles(data.get("customRoles") == null || data.get("customRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("customRoles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RoleModel.fromJson(item);
@@ -240,7 +240,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
             ).collect(Collectors.toList()))
             .withGuildMemberDefaultRole(data.get("guildMemberDefaultRole") == null || data.get("guildMemberDefaultRole").isNull() ? null : data.get("guildMemberDefaultRole").asText())
             .withCurrentMaximumMemberCount(data.get("currentMaximumMemberCount") == null || data.get("currentMaximumMemberCount").isNull() ? null : data.get("currentMaximumMemberCount").intValue())
-            .withMembers(data.get("members") == null || data.get("members").isNull() ? new ArrayList<Member>() :
+            .withMembers(data.get("members") == null || data.get("members").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("members").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Member.fromJson(item);
@@ -264,7 +264,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
                 put("attribute4", getAttribute4());
                 put("attribute5", getAttribute5());
                 put("joinPolicy", getJoinPolicy());
-                put("customRoles", getCustomRoles() == null ? new ArrayList<RoleModel>() :
+                put("customRoles", getCustomRoles() == null ? null :
                     getCustomRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
@@ -272,7 +272,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
                 ).collect(Collectors.toList()));
                 put("guildMemberDefaultRole", getGuildMemberDefaultRole());
                 put("currentMaximumMemberCount", getCurrentMaximumMemberCount());
-                put("members", getMembers() == null ? new ArrayList<Member>() :
+                put("members", getMembers() == null ? null :
                     getMembers().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -82,7 +82,7 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
             .withAreaModelId(data.get("areaModelId") == null || data.get("areaModelId").isNull() ? null : data.get("areaModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withLayerModels(data.get("layerModels") == null || data.get("layerModels").isNull() ? new ArrayList<LayerModel>() :
+            .withLayerModels(data.get("layerModels") == null || data.get("layerModels").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("layerModels").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return LayerModel.fromJson(item);
@@ -96,7 +96,7 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
                 put("areaModelId", getAreaModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("layerModels", getLayerModels() == null ? new ArrayList<LayerModel>() :
+                put("layerModels", getLayerModels() == null ? null :
                     getLayerModels().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

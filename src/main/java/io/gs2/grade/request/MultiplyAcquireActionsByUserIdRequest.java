@@ -131,7 +131,7 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
             .withGradeName(data.get("gradeName") == null || data.get("gradeName").isNull() ? null : data.get("gradeName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -148,7 +148,7 @@ public class MultiplyAcquireActionsByUserIdRequest extends Gs2BasicRequest<Multi
                 put("gradeName", getGradeName());
                 put("propertyId", getPropertyId());
                 put("rateName", getRateName());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

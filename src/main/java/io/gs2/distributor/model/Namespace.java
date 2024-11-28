@@ -34,6 +34,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private String assumeUserId;
 	private NotificationSetting autoRunStampSheetNotification;
+	private NotificationSetting autoRunTransactionNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -88,6 +89,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
 		return this;
 	}
+	public NotificationSetting getAutoRunTransactionNotification() {
+		return autoRunTransactionNotification;
+	}
+	public void setAutoRunTransactionNotification(NotificationSetting autoRunTransactionNotification) {
+		this.autoRunTransactionNotification = autoRunTransactionNotification;
+	}
+	public Namespace withAutoRunTransactionNotification(NotificationSetting autoRunTransactionNotification) {
+		this.autoRunTransactionNotification = autoRunTransactionNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -139,6 +150,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAssumeUserId(data.get("assumeUserId") == null || data.get("assumeUserId").isNull() ? null : data.get("assumeUserId").asText())
             .withAutoRunStampSheetNotification(data.get("autoRunStampSheetNotification") == null || data.get("autoRunStampSheetNotification").isNull() ? null : NotificationSetting.fromJson(data.get("autoRunStampSheetNotification")))
+            .withAutoRunTransactionNotification(data.get("autoRunTransactionNotification") == null || data.get("autoRunTransactionNotification").isNull() ? null : NotificationSetting.fromJson(data.get("autoRunTransactionNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -153,6 +165,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("assumeUserId", getAssumeUserId());
                 put("autoRunStampSheetNotification", getAutoRunStampSheetNotification() != null ? getAutoRunStampSheetNotification().toJson() : null);
+                put("autoRunTransactionNotification", getAutoRunTransactionNotification() != null ? getAutoRunTransactionNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -175,6 +188,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.assumeUserId == null) ? 0 : this.assumeUserId.hashCode());
         result = prime * result + ((this.autoRunStampSheetNotification == null) ? 0 : this.autoRunStampSheetNotification.hashCode());
+        result = prime * result + ((this.autoRunTransactionNotification == null) ? 0 : this.autoRunTransactionNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -214,6 +228,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (autoRunStampSheetNotification == null) {
 			return other.autoRunStampSheetNotification == null;
 		} else if (!autoRunStampSheetNotification.equals(other.autoRunStampSheetNotification)) {
+			return false;
+		}
+		if (autoRunTransactionNotification == null) {
+			return other.autoRunTransactionNotification == null;
+		} else if (!autoRunTransactionNotification.equals(other.autoRunTransactionNotification)) {
 			return false;
 		}
 		if (logSetting == null) {

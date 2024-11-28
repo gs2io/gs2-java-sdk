@@ -81,12 +81,12 @@ public class AcquireActionRate implements IModel, Serializable {
         return new AcquireActionRate()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
-            .withRates(data.get("rates") == null || data.get("rates").isNull() ? new ArrayList<Double>() :
+            .withRates(data.get("rates") == null || data.get("rates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rates").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.doubleValue();
                 }
             ).collect(Collectors.toList()))
-            .withBigRates(data.get("bigRates") == null || data.get("bigRates").isNull() ? new ArrayList<String>() :
+            .withBigRates(data.get("bigRates") == null || data.get("bigRates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bigRates").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -98,12 +98,12 @@ public class AcquireActionRate implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("mode", getMode());
-                put("rates", getRates() == null ? new ArrayList<Double>() :
+                put("rates", getRates() == null ? null :
                     getRates().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("bigRates", getBigRates() == null ? new ArrayList<String>() :
+                put("bigRates", getBigRates() == null ? null :
                     getBigRates().stream().map(item -> {
                         return item;
                     }

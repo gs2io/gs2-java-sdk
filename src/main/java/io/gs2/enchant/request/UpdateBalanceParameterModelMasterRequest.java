@@ -118,7 +118,7 @@ public class UpdateBalanceParameterModelMasterRequest extends Gs2BasicRequest<Up
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTotalValue(data.get("totalValue") == null || data.get("totalValue").isNull() ? null : data.get("totalValue").longValue())
             .withInitialValueStrategy(data.get("initialValueStrategy") == null || data.get("initialValueStrategy").isNull() ? null : data.get("initialValueStrategy").asText())
-            .withParameters(data.get("parameters") == null || data.get("parameters").isNull() ? new ArrayList<BalanceParameterValueModel>() :
+            .withParameters(data.get("parameters") == null || data.get("parameters").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("parameters").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BalanceParameterValueModel.fromJson(item);
@@ -135,7 +135,7 @@ public class UpdateBalanceParameterModelMasterRequest extends Gs2BasicRequest<Up
                 put("metadata", getMetadata());
                 put("totalValue", getTotalValue());
                 put("initialValueStrategy", getInitialValueStrategy());
-                put("parameters", getParameters() == null ? new ArrayList<BalanceParameterValueModel>() :
+                put("parameters", getParameters() == null ? null :
                     getParameters().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

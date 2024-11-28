@@ -69,7 +69,7 @@ public class Contents implements IModel, Serializable {
         }
         return new Contents()
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -82,7 +82,7 @@ public class Contents implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("metadata", getMetadata());
-                put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("completeAcquireActions", getCompleteAcquireActions() == null ? null :
                     getCompleteAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

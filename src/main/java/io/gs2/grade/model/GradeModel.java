@@ -115,20 +115,20 @@ public class GradeModel implements IModel, Serializable, Comparable<GradeModel> 
             .withGradeModelId(data.get("gradeModelId") == null || data.get("gradeModelId").isNull() ? null : data.get("gradeModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withDefaultGrades(data.get("defaultGrades") == null || data.get("defaultGrades").isNull() ? new ArrayList<DefaultGradeModel>() :
+            .withDefaultGrades(data.get("defaultGrades") == null || data.get("defaultGrades").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("defaultGrades").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DefaultGradeModel.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
-            .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? new ArrayList<GradeEntryModel>() :
+            .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gradeEntries").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GradeEntryModel.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireActionRate.fromJson(item);
@@ -142,20 +142,20 @@ public class GradeModel implements IModel, Serializable, Comparable<GradeModel> 
                 put("gradeModelId", getGradeModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("defaultGrades", getDefaultGrades() == null ? new ArrayList<DefaultGradeModel>() :
+                put("defaultGrades", getDefaultGrades() == null ? null :
                     getDefaultGrades().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("experienceModelId", getExperienceModelId());
-                put("gradeEntries", getGradeEntries() == null ? new ArrayList<GradeEntryModel>() :
+                put("gradeEntries", getGradeEntries() == null ? null :
                     getGradeEntries().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                put("acquireActionRates", getAcquireActionRates() == null ? null :
                     getAcquireActionRates().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

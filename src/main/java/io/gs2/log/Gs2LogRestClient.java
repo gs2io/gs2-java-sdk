@@ -1448,7 +1448,7 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                    put("tags", request.getTags() == null ? null :
                         request.getTags().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1545,7 +1545,7 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                    put("tags", request.getTags() == null ? null :
                         request.getTags().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1639,7 +1639,7 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                    put("tags", request.getTags() == null ? null :
                         request.getTags().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

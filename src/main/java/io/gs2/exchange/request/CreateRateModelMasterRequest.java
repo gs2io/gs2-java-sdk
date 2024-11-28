@@ -142,19 +142,19 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTimingType(data.get("timingType") == null || data.get("timingType").isNull() ? null : data.get("timingType").asText())
             .withLockTime(data.get("lockTime") == null || data.get("lockTime").isNull() ? null : data.get("lockTime").intValue())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
@@ -171,19 +171,19 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
                 put("metadata", getMetadata());
                 put("timingType", getTimingType());
                 put("lockTime", getLockTime());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("verifyActions", getVerifyActions() == null ? null :
                     getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("consumeActions", getConsumeActions() == null ? null :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

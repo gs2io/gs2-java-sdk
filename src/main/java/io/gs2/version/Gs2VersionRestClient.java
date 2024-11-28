@@ -1242,7 +1242,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                     put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
                     put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
                     put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
-                    put("scheduleVersions", request.getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                    put("scheduleVersions", request.getScheduleVersions() == null ? null :
                         request.getScheduleVersions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1419,7 +1419,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                     put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
                     put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
                     put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
-                    put("scheduleVersions", request.getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                    put("scheduleVersions", request.getScheduleVersions() == null ? null :
                         request.getScheduleVersions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2451,7 +2451,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("targetVersions", request.getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                    put("targetVersions", request.getTargetVersions() == null ? null :
                         request.getTargetVersions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2544,7 +2544,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("targetVersions", request.getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                    put("targetVersions", request.getTargetVersions() == null ? null :
                         request.getTargetVersions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

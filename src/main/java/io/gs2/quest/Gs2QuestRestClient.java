@@ -1661,38 +1661,38 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("contents", request.getContents() == null ? new ArrayList<Contents>() :
+                    put("contents", request.getContents() == null ? null :
                         request.getContents().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("challengePeriodEventId", request.getChallengePeriodEventId());
-                    put("firstCompleteAcquireActions", request.getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("firstCompleteAcquireActions", request.getFirstCompleteAcquireActions() == null ? null :
                         request.getFirstCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? null :
                         request.getFailedAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? new ArrayList<String>() :
+                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? null :
                         request.getPremiseQuestNames().stream().map(item -> {
                             return item;
                         }
@@ -1863,38 +1863,38 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("contents", request.getContents() == null ? new ArrayList<Contents>() :
+                    put("contents", request.getContents() == null ? null :
                         request.getContents().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("challengePeriodEventId", request.getChallengePeriodEventId());
-                    put("firstCompleteAcquireActions", request.getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("firstCompleteAcquireActions", request.getFirstCompleteAcquireActions() == null ? null :
                         request.getFirstCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? null :
                         request.getFailedAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? new ArrayList<String>() :
+                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? null :
                         request.getPremiseQuestNames().stream().map(item -> {
                             return item;
                         }
@@ -2478,7 +2478,7 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("questModelId", request.getQuestModelId());
                     put("force", request.getForce());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2740,7 +2740,7 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("force", request.getForce());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2836,7 +2836,7 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("force", request.getForce());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2928,14 +2928,14 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                    put("rewards", request.getRewards() == null ? null :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("isComplete", request.getIsComplete());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3028,14 +3028,14 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                    put("rewards", request.getRewards() == null ? null :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("isComplete", request.getIsComplete());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

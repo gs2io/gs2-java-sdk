@@ -107,7 +107,7 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withConsumeCounts(data.get("consumeCounts") == null || data.get("consumeCounts").isNull() ? new ArrayList<ConsumeCount>() :
+            .withConsumeCounts(data.get("consumeCounts") == null || data.get("consumeCounts").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeCounts").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeCount.fromJson(item);
@@ -122,7 +122,7 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
                 put("namespaceName", getNamespaceName());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("consumeCounts", getConsumeCounts() == null ? new ArrayList<ConsumeCount>() :
+                put("consumeCounts", getConsumeCounts() == null ? null :
                     getConsumeCounts().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

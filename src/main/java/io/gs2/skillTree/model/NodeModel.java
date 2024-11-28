@@ -126,26 +126,26 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
             .withNodeModelId(data.get("nodeModelId") == null || data.get("nodeModelId").isNull() ? null : data.get("nodeModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withReleaseVerifyActions(data.get("releaseVerifyActions") == null || data.get("releaseVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withReleaseVerifyActions(data.get("releaseVerifyActions") == null || data.get("releaseVerifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withReleaseConsumeActions(data.get("releaseConsumeActions") == null || data.get("releaseConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withReleaseConsumeActions(data.get("releaseConsumeActions") == null || data.get("releaseConsumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withReturnAcquireActions(data.get("returnAcquireActions") == null || data.get("returnAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withReturnAcquireActions(data.get("returnAcquireActions") == null || data.get("returnAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("returnAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withRestrainReturnRate(data.get("restrainReturnRate") == null || data.get("restrainReturnRate").isNull() ? null : data.get("restrainReturnRate").floatValue())
-            .withPremiseNodeNames(data.get("premiseNodeNames") == null || data.get("premiseNodeNames").isNull() ? new ArrayList<String>() :
+            .withPremiseNodeNames(data.get("premiseNodeNames") == null || data.get("premiseNodeNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("premiseNodeNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -158,26 +158,26 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
                 put("nodeModelId", getNodeModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("releaseVerifyActions", getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("releaseVerifyActions", getReleaseVerifyActions() == null ? null :
                     getReleaseVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("releaseConsumeActions", getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("releaseConsumeActions", getReleaseConsumeActions() == null ? null :
                     getReleaseConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("returnAcquireActions", getReturnAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("returnAcquireActions", getReturnAcquireActions() == null ? null :
                     getReturnAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("restrainReturnRate", getRestrainReturnRate());
-                put("premiseNodeNames", getPremiseNodeNames() == null ? new ArrayList<String>() :
+                put("premiseNodeNames", getPremiseNodeNames() == null ? null :
                     getPremiseNodeNames().stream().map(item -> {
                         return item;
                     }

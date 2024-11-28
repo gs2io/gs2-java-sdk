@@ -2223,7 +2223,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("userIds", request.getUserIds() == null ? new ArrayList<String>() :
+                    put("userIds", request.getUserIds() == null ? null :
                         request.getUserIds().stream().map(item -> {
                             return item;
                         }
@@ -2316,7 +2316,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("userIds", request.getUserIds() == null ? new ArrayList<String>() :
+                    put("userIds", request.getUserIds() == null ? null :
                         request.getUserIds().stream().map(item -> {
                             return item;
                         }
@@ -2586,7 +2586,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("position", request.getPosition() != null ? request.getPosition().toJson() : null);
-                    put("scopes", request.getScopes() == null ? new ArrayList<Scope>() :
+                    put("scopes", request.getScopes() == null ? null :
                         request.getScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2682,7 +2682,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("position", request.getPosition() != null ? request.getPosition().toJson() : null);
-                    put("scopes", request.getScopes() == null ? new ArrayList<Scope>() :
+                    put("scopes", request.getScopes() == null ? null :
                         request.getScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

@@ -1663,7 +1663,7 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("prizes", request.getPrizes() == null ? new ArrayList<Prize>() :
+                    put("prizes", request.getPrizes() == null ? null :
                         request.getPrizes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1833,7 +1833,7 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("prizes", request.getPrizes() == null ? new ArrayList<Prize>() :
+                    put("prizes", request.getPrizes() == null ? null :
                         request.getPrizes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2325,7 +2325,7 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2600,7 +2600,7 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("randomSeed", request.getRandomSeed());
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

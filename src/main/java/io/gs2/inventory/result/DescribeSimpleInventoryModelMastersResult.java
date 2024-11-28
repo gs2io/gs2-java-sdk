@@ -64,7 +64,7 @@ public class DescribeSimpleInventoryModelMastersResult implements IResult, Seria
             return null;
         }
         return new DescribeSimpleInventoryModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SimpleInventoryModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SimpleInventoryModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeSimpleInventoryModelMastersResult implements IResult, Seria
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<SimpleInventoryModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

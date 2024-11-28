@@ -38,6 +38,9 @@ public class ReceiveClusterRankingReceivedRewardByUserIdResult implements IResul
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
     private Boolean autoRunStampSheet;
+    private Boolean atomicCommit;
+    private String transaction;
+    private io.gs2.core.model.TransactionResult transactionResult;
 
 	public ClusterRankingModel getItem() {
 		return item;
@@ -117,13 +120,52 @@ public class ReceiveClusterRankingReceivedRewardByUserIdResult implements IResul
 		return this;
 	}
 
+	public Boolean getAtomicCommit() {
+		return atomicCommit;
+	}
+
+	public void setAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+	}
+
+	public ReceiveClusterRankingReceivedRewardByUserIdResult withAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+		return this;
+	}
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	public ReceiveClusterRankingReceivedRewardByUserIdResult withTransaction(String transaction) {
+		this.transaction = transaction;
+		return this;
+	}
+
+	public io.gs2.core.model.TransactionResult getTransactionResult() {
+		return transactionResult;
+	}
+
+	public void setTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+	}
+
+	public ReceiveClusterRankingReceivedRewardByUserIdResult withTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+		return this;
+	}
+
     public static ReceiveClusterRankingReceivedRewardByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new ReceiveClusterRankingReceivedRewardByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : ClusterRankingModel.fromJson(data.get("item")))
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -132,14 +174,17 @@ public class ReceiveClusterRankingReceivedRewardByUserIdResult implements IResul
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
-            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue());
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue())
+            .withAtomicCommit(data.get("atomicCommit") == null || data.get("atomicCommit").isNull() ? null : data.get("atomicCommit").booleanValue())
+            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
+            .withTransactionResult(data.get("transactionResult") == null || data.get("transactionResult").isNull() ? null : io.gs2.core.model.TransactionResult.fromJson(data.get("transactionResult")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
@@ -149,6 +194,9 @@ public class ReceiveClusterRankingReceivedRewardByUserIdResult implements IResul
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
                 put("autoRunStampSheet", getAutoRunStampSheet());
+                put("atomicCommit", getAtomicCommit());
+                put("transaction", getTransaction());
+                put("transactionResult", getTransactionResult() != null ? getTransactionResult().toJson() : null);
             }}
         );
     }

@@ -93,7 +93,7 @@ public class CounterModel implements IModel, Serializable, Comparable<CounterMod
             .withCounterId(data.get("counterId") == null || data.get("counterId").isNull() ? null : data.get("counterId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<CounterScopeModel>() :
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CounterScopeModel.fromJson(item);
@@ -108,7 +108,7 @@ public class CounterModel implements IModel, Serializable, Comparable<CounterMod
                 put("counterId", getCounterId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("scopes", getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                put("scopes", getScopes() == null ? null :
                     getScopes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

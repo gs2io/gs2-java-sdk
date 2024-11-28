@@ -1404,13 +1404,13 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
-                    put("additionalScopes", request.getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                    put("additionalScopes", request.getAdditionalScopes() == null ? null :
                         request.getAdditionalScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
+                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? null :
                         request.getIgnoreUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1592,13 +1592,13 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
-                    put("additionalScopes", request.getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                    put("additionalScopes", request.getAdditionalScopes() == null ? null :
                         request.getAdditionalScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
+                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? null :
                         request.getIgnoreUserIds().stream().map(item -> {
                             return item;
                         }

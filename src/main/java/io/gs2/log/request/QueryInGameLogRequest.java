@@ -150,7 +150,7 @@ public class QueryInGameLogRequest extends Gs2BasicRequest<QueryInGameLogRequest
         return new QueryInGameLogRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTags(data.get("tags") == null || data.get("tags").isNull() ? new ArrayList<InGameLogTag>() :
+            .withTags(data.get("tags") == null || data.get("tags").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tags").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return InGameLogTag.fromJson(item);
@@ -169,7 +169,7 @@ public class QueryInGameLogRequest extends Gs2BasicRequest<QueryInGameLogRequest
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("tags", getTags() == null ? new ArrayList<InGameLogTag>() :
+                put("tags", getTags() == null ? null :
                     getTags().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

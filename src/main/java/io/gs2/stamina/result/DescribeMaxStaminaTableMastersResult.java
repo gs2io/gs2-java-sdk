@@ -64,7 +64,7 @@ public class DescribeMaxStaminaTableMastersResult implements IResult, Serializab
             return null;
         }
         return new DescribeMaxStaminaTableMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<MaxStaminaTableMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return MaxStaminaTableMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeMaxStaminaTableMastersResult implements IResult, Serializab
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<MaxStaminaTableMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

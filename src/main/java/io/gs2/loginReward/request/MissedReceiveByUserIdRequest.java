@@ -119,7 +119,7 @@ public class MissedReceiveByUserIdRequest extends Gs2BasicRequest<MissedReceiveB
             .withBonusModelName(data.get("bonusModelName") == null || data.get("bonusModelName").isNull() ? null : data.get("bonusModelName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withStepNumber(data.get("stepNumber") == null || data.get("stepNumber").isNull() ? null : data.get("stepNumber").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -135,7 +135,7 @@ public class MissedReceiveByUserIdRequest extends Gs2BasicRequest<MissedReceiveB
                 put("bonusModelName", getBonusModelName());
                 put("userId", getUserId());
                 put("stepNumber", getStepNumber());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

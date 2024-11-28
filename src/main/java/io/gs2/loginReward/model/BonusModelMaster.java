@@ -208,20 +208,20 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
             .withPeriodEventId(data.get("periodEventId") == null || data.get("periodEventId").isNull() ? null : data.get("periodEventId").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
             .withRepeat(data.get("repeat") == null || data.get("repeat").isNull() ? null : data.get("repeat").asText())
-            .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? new ArrayList<Reward>() :
+            .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Reward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withMissedReceiveRelief(data.get("missedReceiveRelief") == null || data.get("missedReceiveRelief").isNull() ? null : data.get("missedReceiveRelief").asText())
-            .withMissedReceiveReliefVerifyActions(data.get("missedReceiveReliefVerifyActions") == null || data.get("missedReceiveReliefVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withMissedReceiveReliefVerifyActions(data.get("missedReceiveReliefVerifyActions") == null || data.get("missedReceiveReliefVerifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withMissedReceiveReliefConsumeActions(data.get("missedReceiveReliefConsumeActions") == null || data.get("missedReceiveReliefConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withMissedReceiveReliefConsumeActions(data.get("missedReceiveReliefConsumeActions") == null || data.get("missedReceiveReliefConsumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
@@ -243,20 +243,20 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
                 put("periodEventId", getPeriodEventId());
                 put("resetHour", getResetHour());
                 put("repeat", getRepeat());
-                put("rewards", getRewards() == null ? new ArrayList<Reward>() :
+                put("rewards", getRewards() == null ? null :
                     getRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("missedReceiveRelief", getMissedReceiveRelief());
-                put("missedReceiveReliefVerifyActions", getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("missedReceiveReliefVerifyActions", getMissedReceiveReliefVerifyActions() == null ? null :
                     getMissedReceiveReliefVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("missedReceiveReliefConsumeActions", getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("missedReceiveReliefConsumeActions", getMissedReceiveReliefConsumeActions() == null ? null :
                     getMissedReceiveReliefConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

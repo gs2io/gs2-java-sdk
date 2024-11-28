@@ -105,7 +105,7 @@ public class CreateShowcaseMasterRequest extends Gs2BasicRequest<CreateShowcaseM
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? new ArrayList<DisplayItemMaster>() :
+            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("displayItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DisplayItemMaster.fromJson(item);
@@ -121,7 +121,7 @@ public class CreateShowcaseMasterRequest extends Gs2BasicRequest<CreateShowcaseM
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("displayItems", getDisplayItems() == null ? new ArrayList<DisplayItemMaster>() :
+                put("displayItems", getDisplayItems() == null ? null :
                     getDisplayItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

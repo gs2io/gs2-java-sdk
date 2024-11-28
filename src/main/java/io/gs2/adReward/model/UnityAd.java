@@ -46,7 +46,7 @@ public class UnityAd implements IModel, Serializable {
             return null;
         }
         return new UnityAd()
-            .withKeys(data.get("keys") == null || data.get("keys").isNull() ? new ArrayList<String>() :
+            .withKeys(data.get("keys") == null || data.get("keys").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("keys").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -56,7 +56,7 @@ public class UnityAd implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("keys", getKeys() == null ? new ArrayList<String>() :
+                put("keys", getKeys() == null ? null :
                     getKeys().stream().map(item -> {
                         return item;
                     }

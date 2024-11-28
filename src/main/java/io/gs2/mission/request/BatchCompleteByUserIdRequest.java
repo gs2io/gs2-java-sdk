@@ -118,12 +118,12 @@ public class BatchCompleteByUserIdRequest extends Gs2BasicRequest<BatchCompleteB
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMissionTaskNames(data.get("missionTaskNames") == null || data.get("missionTaskNames").isNull() ? new ArrayList<String>() :
+            .withMissionTaskNames(data.get("missionTaskNames") == null || data.get("missionTaskNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missionTaskNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -138,12 +138,12 @@ public class BatchCompleteByUserIdRequest extends Gs2BasicRequest<BatchCompleteB
                 put("namespaceName", getNamespaceName());
                 put("missionGroupName", getMissionGroupName());
                 put("userId", getUserId());
-                put("missionTaskNames", getMissionTaskNames() == null ? new ArrayList<String>() :
+                put("missionTaskNames", getMissionTaskNames() == null ? null :
                     getMissionTaskNames().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

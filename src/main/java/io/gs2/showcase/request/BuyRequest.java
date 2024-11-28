@@ -120,7 +120,7 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
             .withDisplayItemId(data.get("displayItemId") == null || data.get("displayItemId").isNull() ? null : data.get("displayItemId").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withQuantity(data.get("quantity") == null || data.get("quantity").isNull() ? null : data.get("quantity").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -136,7 +136,7 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
                 put("displayItemId", getDisplayItemId());
                 put("accessToken", getAccessToken());
                 put("quantity", getQuantity());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

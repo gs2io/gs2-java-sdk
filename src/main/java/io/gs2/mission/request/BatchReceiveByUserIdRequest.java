@@ -106,7 +106,7 @@ public class BatchReceiveByUserIdRequest extends Gs2BasicRequest<BatchReceiveByU
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMissionTaskNames(data.get("missionTaskNames") == null || data.get("missionTaskNames").isNull() ? new ArrayList<String>() :
+            .withMissionTaskNames(data.get("missionTaskNames") == null || data.get("missionTaskNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missionTaskNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -120,7 +120,7 @@ public class BatchReceiveByUserIdRequest extends Gs2BasicRequest<BatchReceiveByU
                 put("namespaceName", getNamespaceName());
                 put("missionGroupName", getMissionGroupName());
                 put("userId", getUserId());
-                put("missionTaskNames", getMissionTaskNames() == null ? new ArrayList<String>() :
+                put("missionTaskNames", getMissionTaskNames() == null ? null :
                     getMissionTaskNames().stream().map(item -> {
                         return item;
                     }

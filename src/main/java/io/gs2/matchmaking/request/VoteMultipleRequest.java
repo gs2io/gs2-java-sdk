@@ -81,13 +81,13 @@ public class VoteMultipleRequest extends Gs2BasicRequest<VoteMultipleRequest> {
         }
         return new VoteMultipleRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withSignedBallots(data.get("signedBallots") == null || data.get("signedBallots").isNull() ? new ArrayList<SignedBallot>() :
+            .withSignedBallots(data.get("signedBallots") == null || data.get("signedBallots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("signedBallots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SignedBallot.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GameResult.fromJson(item);
@@ -100,13 +100,13 @@ public class VoteMultipleRequest extends Gs2BasicRequest<VoteMultipleRequest> {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("signedBallots", getSignedBallots() == null ? new ArrayList<SignedBallot>() :
+                put("signedBallots", getSignedBallots() == null ? null :
                     getSignedBallots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                put("gameResults", getGameResults() == null ? null :
                     getGameResults().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

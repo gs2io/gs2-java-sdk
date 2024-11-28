@@ -35,6 +35,9 @@ public class EndResult implements IResult, Serializable {
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
     private Boolean autoRunStampSheet;
+    private Boolean atomicCommit;
+    private String transaction;
+    private io.gs2.core.model.TransactionResult transactionResult;
     private Long acquireExperience;
     private Float bonusRate;
 
@@ -103,6 +106,45 @@ public class EndResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAtomicCommit() {
+		return atomicCommit;
+	}
+
+	public void setAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+	}
+
+	public EndResult withAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+		return this;
+	}
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	public EndResult withTransaction(String transaction) {
+		this.transaction = transaction;
+		return this;
+	}
+
+	public io.gs2.core.model.TransactionResult getTransactionResult() {
+		return transactionResult;
+	}
+
+	public void setTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+	}
+
+	public EndResult withTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+		return this;
+	}
+
 	public Long getAcquireExperience() {
 		return acquireExperience;
 	}
@@ -139,6 +181,9 @@ public class EndResult implements IResult, Serializable {
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
             .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue())
+            .withAtomicCommit(data.get("atomicCommit") == null || data.get("atomicCommit").isNull() ? null : data.get("atomicCommit").booleanValue())
+            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
+            .withTransactionResult(data.get("transactionResult") == null || data.get("transactionResult").isNull() ? null : io.gs2.core.model.TransactionResult.fromJson(data.get("transactionResult")))
             .withAcquireExperience(data.get("acquireExperience") == null || data.get("acquireExperience").isNull() ? null : data.get("acquireExperience").longValue())
             .withBonusRate(data.get("bonusRate") == null || data.get("bonusRate").isNull() ? null : data.get("bonusRate").floatValue());
     }
@@ -151,6 +196,9 @@ public class EndResult implements IResult, Serializable {
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
                 put("autoRunStampSheet", getAutoRunStampSheet());
+                put("atomicCommit", getAtomicCommit());
+                put("transaction", getTransaction());
+                put("transactionResult", getTransactionResult() != null ? getTransactionResult().toJson() : null);
                 put("acquireExperience", getAcquireExperience());
                 put("bonusRate", getBonusRate());
             }}

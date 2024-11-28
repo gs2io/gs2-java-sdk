@@ -126,7 +126,7 @@ public class ReceiveStatus implements IModel, Serializable, Comparable<ReceiveSt
             .withReceiveStatusId(data.get("receiveStatusId") == null || data.get("receiveStatusId").isNull() ? null : data.get("receiveStatusId").asText())
             .withBonusModelName(data.get("bonusModelName") == null || data.get("bonusModelName").isNull() ? null : data.get("bonusModelName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withReceivedSteps(data.get("receivedSteps") == null || data.get("receivedSteps").isNull() ? new ArrayList<Boolean>() :
+            .withReceivedSteps(data.get("receivedSteps") == null || data.get("receivedSteps").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("receivedSteps").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.booleanValue();
                 }
@@ -143,7 +143,7 @@ public class ReceiveStatus implements IModel, Serializable, Comparable<ReceiveSt
                 put("receiveStatusId", getReceiveStatusId());
                 put("bonusModelName", getBonusModelName());
                 put("userId", getUserId());
-                put("receivedSteps", getReceivedSteps() == null ? new ArrayList<Boolean>() :
+                put("receivedSteps", getReceivedSteps() == null ? null :
                     getReceivedSteps().stream().map(item -> {
                         return item;
                     }

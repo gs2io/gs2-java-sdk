@@ -93,7 +93,7 @@ public class VoteRequest extends Gs2BasicRequest<VoteRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withBallotBody(data.get("ballotBody") == null || data.get("ballotBody").isNull() ? null : data.get("ballotBody").asText())
             .withBallotSignature(data.get("ballotSignature") == null || data.get("ballotSignature").isNull() ? null : data.get("ballotSignature").asText())
-            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GameResult.fromJson(item);
@@ -108,7 +108,7 @@ public class VoteRequest extends Gs2BasicRequest<VoteRequest> {
                 put("namespaceName", getNamespaceName());
                 put("ballotBody", getBallotBody());
                 put("ballotSignature", getBallotSignature());
-                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                put("gameResults", getGameResults() == null ? null :
                     getGameResults().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

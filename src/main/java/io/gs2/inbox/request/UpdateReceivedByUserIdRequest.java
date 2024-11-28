@@ -94,7 +94,7 @@ public class UpdateReceivedByUserIdRequest extends Gs2BasicRequest<UpdateReceive
         return new UpdateReceivedByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withReceivedGlobalMessageNames(data.get("receivedGlobalMessageNames") == null || data.get("receivedGlobalMessageNames").isNull() ? new ArrayList<String>() :
+            .withReceivedGlobalMessageNames(data.get("receivedGlobalMessageNames") == null || data.get("receivedGlobalMessageNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("receivedGlobalMessageNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -107,7 +107,7 @@ public class UpdateReceivedByUserIdRequest extends Gs2BasicRequest<UpdateReceive
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("receivedGlobalMessageNames", getReceivedGlobalMessageNames() == null ? new ArrayList<String>() :
+                put("receivedGlobalMessageNames", getReceivedGlobalMessageNames() == null ? null :
                     getReceivedGlobalMessageNames().stream().map(item -> {
                         return item;
                     }

@@ -104,7 +104,7 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
             .withInventoryId(data.get("inventoryId") == null || data.get("inventoryId").isNull() ? null : data.get("inventoryId").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withBigItems(data.get("bigItems") == null || data.get("bigItems").isNull() ? new ArrayList<BigItem>() :
+            .withBigItems(data.get("bigItems") == null || data.get("bigItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bigItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BigItem.fromJson(item);
@@ -120,7 +120,7 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
                 put("inventoryId", getInventoryId());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("bigItems", getBigItems() == null ? new ArrayList<BigItem>() :
+                put("bigItems", getBigItems() == null ? null :
                     getBigItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

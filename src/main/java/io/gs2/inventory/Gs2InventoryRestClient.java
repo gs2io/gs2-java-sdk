@@ -9163,7 +9163,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("acquireCounts", request.getAcquireCounts() == null ? new ArrayList<AcquireCount>() :
+                    put("acquireCounts", request.getAcquireCounts() == null ? null :
                         request.getAcquireCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -9256,7 +9256,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("consumeCounts", request.getConsumeCounts() == null ? new ArrayList<ConsumeCount>() :
+                    put("consumeCounts", request.getConsumeCounts() == null ? null :
                         request.getConsumeCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -9350,7 +9350,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("consumeCounts", request.getConsumeCounts() == null ? new ArrayList<ConsumeCount>() :
+                    put("consumeCounts", request.getConsumeCounts() == null ? null :
                         request.getConsumeCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -9444,7 +9444,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("counts", request.getCounts() == null ? new ArrayList<HeldCount>() :
+                    put("counts", request.getCounts() == null ? null :
                         request.getCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

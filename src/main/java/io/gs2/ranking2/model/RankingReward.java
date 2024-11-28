@@ -70,7 +70,7 @@ public class RankingReward implements IModel, Serializable {
         return new RankingReward()
             .withThresholdRank(data.get("thresholdRank") == null || data.get("thresholdRank").isNull() ? null : data.get("thresholdRank").intValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -83,7 +83,7 @@ public class RankingReward implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("thresholdRank", getThresholdRank());
                 put("metadata", getMetadata());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

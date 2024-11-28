@@ -106,7 +106,7 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? new ArrayList<String>() :
+            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("nodeModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -120,7 +120,7 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("propertyId", getPropertyId());
-                put("nodeModelNames", getNodeModelNames() == null ? new ArrayList<String>() :
+                put("nodeModelNames", getNodeModelNames() == null ? null :
                     getNodeModelNames().stream().map(item -> {
                         return item;
                     }

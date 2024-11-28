@@ -107,7 +107,7 @@ public class SetCounterByUserIdRequest extends Gs2BasicRequest<SetCounterByUserI
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<ScopedValue>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ScopedValue.fromJson(item);
@@ -122,7 +122,7 @@ public class SetCounterByUserIdRequest extends Gs2BasicRequest<SetCounterByUserI
                 put("namespaceName", getNamespaceName());
                 put("counterName", getCounterName());
                 put("userId", getUserId());
-                put("values", getValues() == null ? new ArrayList<ScopedValue>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -198,7 +198,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
-            .withRankingRewards(data.get("rankingRewards") == null || data.get("rankingRewards").isNull() ? new ArrayList<RankingReward>() :
+            .withRankingRewards(data.get("rankingRewards") == null || data.get("rankingRewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rankingRewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RankingReward.fromJson(item);
@@ -222,7 +222,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
                 put("sum", getSum());
                 put("orderDirection", getOrderDirection());
                 put("entryPeriodEventId", getEntryPeriodEventId());
-                put("rankingRewards", getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                put("rankingRewards", getRankingRewards() == null ? null :
                     getRankingRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

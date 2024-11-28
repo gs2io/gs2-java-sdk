@@ -116,7 +116,7 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
             .withSeasonName(data.get("seasonName") == null || data.get("seasonName").isNull() ? null : data.get("seasonName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withTiers(data.get("tiers") == null || data.get("tiers").isNull() ? new ArrayList<TierModel>() :
+            .withTiers(data.get("tiers") == null || data.get("tiers").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tiers").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return TierModel.fromJson(item);
@@ -133,7 +133,7 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
                 put("seasonName", getSeasonName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("tiers", getTiers() == null ? new ArrayList<TierModel>() :
+                put("tiers", getTiers() == null ? null :
                     getTiers().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

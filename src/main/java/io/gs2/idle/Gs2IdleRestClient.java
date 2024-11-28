@@ -1239,7 +1239,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("metadata", request.getMetadata());
                     put("rewardIntervalMinutes", request.getRewardIntervalMinutes());
                     put("defaultMaximumIdleMinutes", request.getDefaultMaximumIdleMinutes());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireActionList>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1413,7 +1413,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("metadata", request.getMetadata());
                     put("rewardIntervalMinutes", request.getRewardIntervalMinutes());
                     put("defaultMaximumIdleMinutes", request.getDefaultMaximumIdleMinutes());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireActionList>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2267,7 +2267,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2361,7 +2361,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

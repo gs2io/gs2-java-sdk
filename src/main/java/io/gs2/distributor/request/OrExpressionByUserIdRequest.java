@@ -95,7 +95,7 @@ public class OrExpressionByUserIdRequest extends Gs2BasicRequest<OrExpressionByU
         return new OrExpressionByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withActions(data.get("actions") == null || data.get("actions").isNull() ? new ArrayList<VerifyAction>() :
+            .withActions(data.get("actions") == null || data.get("actions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("actions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
@@ -109,7 +109,7 @@ public class OrExpressionByUserIdRequest extends Gs2BasicRequest<OrExpressionByU
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("actions", getActions() == null ? new ArrayList<VerifyAction>() :
+                put("actions", getActions() == null ? null :
                     getActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -85,7 +85,7 @@ public class CheckVersionRequest extends Gs2BasicRequest<CheckVersionRequest> {
         return new CheckVersionRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withTargetVersions(data.get("targetVersions") == null || data.get("targetVersions").isNull() ? new ArrayList<TargetVersion>() :
+            .withTargetVersions(data.get("targetVersions") == null || data.get("targetVersions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetVersions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return TargetVersion.fromJson(item);
@@ -98,7 +98,7 @@ public class CheckVersionRequest extends Gs2BasicRequest<CheckVersionRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("targetVersions", getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                put("targetVersions", getTargetVersions() == null ? null :
                     getTargetVersions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

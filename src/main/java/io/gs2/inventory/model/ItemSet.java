@@ -162,7 +162,7 @@ public class ItemSet implements IModel, Serializable, Comparable<ItemSet> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").longValue())
-            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? new ArrayList<String>() :
+            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("referenceOf").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -182,7 +182,7 @@ public class ItemSet implements IModel, Serializable, Comparable<ItemSet> {
                 put("userId", getUserId());
                 put("itemName", getItemName());
                 put("count", getCount());
-                put("referenceOf", getReferenceOf() == null ? new ArrayList<String>() :
+                put("referenceOf", getReferenceOf() == null ? null :
                     getReferenceOf().stream().map(item -> {
                         return item;
                     }

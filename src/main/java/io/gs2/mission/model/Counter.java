@@ -115,7 +115,7 @@ public class Counter implements IModel, Serializable, Comparable<Counter> {
             .withCounterId(data.get("counterId") == null || data.get("counterId").isNull() ? null : data.get("counterId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<ScopedValue>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ScopedValue.fromJson(item);
@@ -132,7 +132,7 @@ public class Counter implements IModel, Serializable, Comparable<Counter> {
                 put("counterId", getCounterId());
                 put("userId", getUserId());
                 put("name", getName());
-                put("values", getValues() == null ? new ArrayList<ScopedValue>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

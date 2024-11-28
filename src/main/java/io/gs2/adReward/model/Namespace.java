@@ -183,7 +183,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAdmob(data.get("admob") == null || data.get("admob").isNull() ? null : AdMob.fromJson(data.get("admob")))
             .withUnityAd(data.get("unityAd") == null || data.get("unityAd").isNull() ? null : UnityAd.fromJson(data.get("unityAd")))
-            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? new ArrayList<AppLovinMax>() :
+            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("appLovinMaxes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AppLovinMax.fromJson(item);
@@ -206,7 +206,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("admob", getAdmob() != null ? getAdmob().toJson() : null);
                 put("unityAd", getUnityAd() != null ? getUnityAd().toJson() : null);
-                put("appLovinMaxes", getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                put("appLovinMaxes", getAppLovinMaxes() == null ? null :
                     getAppLovinMaxes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

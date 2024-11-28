@@ -130,7 +130,7 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
             .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
             .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
             .withRankThreshold(data.get("rankThreshold") == null || data.get("rankThreshold").isNull() ? null : Threshold.fromJson(data.get("rankThreshold")))
-            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireActionRate.fromJson(item);
@@ -148,7 +148,7 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
                 put("defaultRankCap", getDefaultRankCap());
                 put("maxRankCap", getMaxRankCap());
                 put("rankThreshold", getRankThreshold() != null ? getRankThreshold().toJson() : null);
-                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                put("acquireActionRates", getAcquireActionRates() == null ? null :
                     getAcquireActionRates().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -151,7 +151,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
             .withSkipSeconds(data.get("skipSeconds") == null || data.get("skipSeconds").isNull() ? null : data.get("skipSeconds").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -171,7 +171,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
                 put("name", getName());
                 put("count", getCount());
                 put("skipSeconds", getSkipSeconds());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

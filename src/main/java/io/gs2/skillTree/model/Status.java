@@ -115,7 +115,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             .withStatusId(data.get("statusId") == null || data.get("statusId").isNull() ? null : data.get("statusId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withReleasedNodeNames(data.get("releasedNodeNames") == null || data.get("releasedNodeNames").isNull() ? new ArrayList<String>() :
+            .withReleasedNodeNames(data.get("releasedNodeNames") == null || data.get("releasedNodeNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releasedNodeNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -131,7 +131,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
                 put("statusId", getStatusId());
                 put("userId", getUserId());
                 put("propertyId", getPropertyId());
-                put("releasedNodeNames", getReleasedNodeNames() == null ? new ArrayList<String>() :
+                put("releasedNodeNames", getReleasedNodeNames() == null ? null :
                     getReleasedNodeNames().stream().map(item -> {
                         return item;
                     }

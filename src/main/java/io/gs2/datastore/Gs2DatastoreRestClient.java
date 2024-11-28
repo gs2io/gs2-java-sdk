@@ -1332,7 +1332,7 @@ import io.gs2.datastore.model.*;public class Gs2DatastoreRestClient extends Abst
                     put("name", request.getName());
                     put("contentType", request.getContentType());
                     put("scope", request.getScope());
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1428,7 +1428,7 @@ import io.gs2.datastore.model.*;public class Gs2DatastoreRestClient extends Abst
                     put("name", request.getName());
                     put("contentType", request.getContentType());
                     put("scope", request.getScope());
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1522,7 +1522,7 @@ import io.gs2.datastore.model.*;public class Gs2DatastoreRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("scope", request.getScope());
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1616,7 +1616,7 @@ import io.gs2.datastore.model.*;public class Gs2DatastoreRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("scope", request.getScope());
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }

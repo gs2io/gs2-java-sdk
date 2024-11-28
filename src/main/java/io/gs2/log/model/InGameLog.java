@@ -93,7 +93,7 @@ public class InGameLog implements IModel, Serializable, Comparable<InGameLog> {
             .withTimestamp(data.get("timestamp") == null || data.get("timestamp").isNull() ? null : data.get("timestamp").longValue())
             .withRequestId(data.get("requestId") == null || data.get("requestId").isNull() ? null : data.get("requestId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTags(data.get("tags") == null || data.get("tags").isNull() ? new ArrayList<InGameLogTag>() :
+            .withTags(data.get("tags") == null || data.get("tags").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tags").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return InGameLogTag.fromJson(item);
@@ -108,7 +108,7 @@ public class InGameLog implements IModel, Serializable, Comparable<InGameLog> {
                 put("timestamp", getTimestamp());
                 put("requestId", getRequestId());
                 put("userId", getUserId());
-                put("tags", getTags() == null ? new ArrayList<InGameLogTag>() :
+                put("tags", getTags() == null ? null :
                     getTags().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

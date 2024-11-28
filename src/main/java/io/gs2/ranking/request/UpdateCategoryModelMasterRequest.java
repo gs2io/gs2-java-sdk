@@ -283,13 +283,13 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
-            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? new ArrayList<Scope>() :
+            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalScopes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Scope.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
+            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -316,13 +316,13 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
-                put("additionalScopes", getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                put("additionalScopes", getAdditionalScopes() == null ? null :
                     getAdditionalScopes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
+                put("ignoreUserIds", getIgnoreUserIds() == null ? null :
                     getIgnoreUserIds().stream().map(item -> {
                         return item;
                     }

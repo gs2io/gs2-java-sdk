@@ -65,7 +65,7 @@ public class DescribePropertyFormModelMastersResult implements IResult, Serializ
             return null;
         }
         return new DescribePropertyFormModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<PropertyFormModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return PropertyFormModelMaster.fromJson(item);
@@ -77,7 +77,7 @@ public class DescribePropertyFormModelMastersResult implements IResult, Serializ
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<PropertyFormModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -119,7 +119,7 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withParameterName(data.get("parameterName") == null || data.get("parameterName").isNull() ? null : data.get("parameterName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withParameterValues(data.get("parameterValues") == null || data.get("parameterValues").isNull() ? new ArrayList<BalanceParameterValue>() :
+            .withParameterValues(data.get("parameterValues") == null || data.get("parameterValues").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("parameterValues").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BalanceParameterValue.fromJson(item);
@@ -135,7 +135,7 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
                 put("userId", getUserId());
                 put("parameterName", getParameterName());
                 put("propertyId", getPropertyId());
-                put("parameterValues", getParameterValues() == null ? new ArrayList<BalanceParameterValue>() :
+                put("parameterValues", getParameterValues() == null ? null :
                     getParameterValues().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

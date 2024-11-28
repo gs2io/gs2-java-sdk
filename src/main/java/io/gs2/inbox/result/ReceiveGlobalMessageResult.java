@@ -51,7 +51,7 @@ public class ReceiveGlobalMessageResult implements IResult, Serializable {
             return null;
         }
         return new ReceiveGlobalMessageResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? new ArrayList<Message>() :
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("item").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Message.fromJson(item);
@@ -62,7 +62,7 @@ public class ReceiveGlobalMessageResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() == null ? new ArrayList<Message>() :
+                put("item", getItem() == null ? null :
                     getItem().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

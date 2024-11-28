@@ -1396,7 +1396,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("totalValue", request.getTotalValue());
                     put("initialValueStrategy", request.getInitialValueStrategy());
-                    put("parameters", request.getParameters() == null ? new ArrayList<BalanceParameterValueModel>() :
+                    put("parameters", request.getParameters() == null ? null :
                         request.getParameters().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1568,7 +1568,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("totalValue", request.getTotalValue());
                     put("initialValueStrategy", request.getInitialValueStrategy());
-                    put("parameters", request.getParameters() == null ? new ArrayList<BalanceParameterValueModel>() :
+                    put("parameters", request.getParameters() == null ? null :
                         request.getParameters().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1986,13 +1986,13 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("maximumParameterCount", request.getMaximumParameterCount());
-                    put("parameterCounts", request.getParameterCounts() == null ? new ArrayList<RarityParameterCountModel>() :
+                    put("parameterCounts", request.getParameterCounts() == null ? null :
                         request.getParameterCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("parameters", request.getParameters() == null ? new ArrayList<RarityParameterValueModel>() :
+                    put("parameters", request.getParameters() == null ? null :
                         request.getParameters().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2163,13 +2163,13 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("maximumParameterCount", request.getMaximumParameterCount());
-                    put("parameterCounts", request.getParameterCounts() == null ? new ArrayList<RarityParameterCountModel>() :
+                    put("parameterCounts", request.getParameterCounts() == null ? null :
                         request.getParameterCounts().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("parameters", request.getParameters() == null ? new ArrayList<RarityParameterValueModel>() :
+                    put("parameters", request.getParameters() == null ? null :
                         request.getParameters().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3106,7 +3106,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("fixedParameterNames", request.getFixedParameterNames() == null ? new ArrayList<String>() :
+                    put("fixedParameterNames", request.getFixedParameterNames() == null ? null :
                         request.getFixedParameterNames().stream().map(item -> {
                             return item;
                         }
@@ -3280,7 +3280,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("parameterValues", request.getParameterValues() == null ? new ArrayList<BalanceParameterValue>() :
+                    put("parameterValues", request.getParameterValues() == null ? null :
                         request.getParameterValues().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3900,7 +3900,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("fixedParameterNames", request.getFixedParameterNames() == null ? new ArrayList<String>() :
+                    put("fixedParameterNames", request.getFixedParameterNames() == null ? null :
                         request.getFixedParameterNames().stream().map(item -> {
                             return item;
                         }
@@ -4509,7 +4509,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("parameterValues", request.getParameterValues() == null ? new ArrayList<RarityParameterValue>() :
+                    put("parameterValues", request.getParameterValues() == null ? null :
                         request.getParameterValues().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

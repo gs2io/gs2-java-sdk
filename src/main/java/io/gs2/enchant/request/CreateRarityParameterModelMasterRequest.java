@@ -118,13 +118,13 @@ public class CreateRarityParameterModelMasterRequest extends Gs2BasicRequest<Cre
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withMaximumParameterCount(data.get("maximumParameterCount") == null || data.get("maximumParameterCount").isNull() ? null : data.get("maximumParameterCount").intValue())
-            .withParameterCounts(data.get("parameterCounts") == null || data.get("parameterCounts").isNull() ? new ArrayList<RarityParameterCountModel>() :
+            .withParameterCounts(data.get("parameterCounts") == null || data.get("parameterCounts").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("parameterCounts").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RarityParameterCountModel.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withParameters(data.get("parameters") == null || data.get("parameters").isNull() ? new ArrayList<RarityParameterValueModel>() :
+            .withParameters(data.get("parameters") == null || data.get("parameters").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("parameters").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RarityParameterValueModel.fromJson(item);
@@ -140,13 +140,13 @@ public class CreateRarityParameterModelMasterRequest extends Gs2BasicRequest<Cre
                 put("description", getDescription());
                 put("metadata", getMetadata());
                 put("maximumParameterCount", getMaximumParameterCount());
-                put("parameterCounts", getParameterCounts() == null ? new ArrayList<RarityParameterCountModel>() :
+                put("parameterCounts", getParameterCounts() == null ? null :
                     getParameterCounts().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("parameters", getParameters() == null ? new ArrayList<RarityParameterValueModel>() :
+                put("parameters", getParameters() == null ? null :
                     getParameters().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -1563,7 +1563,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("tiers", request.getTiers() == null ? new ArrayList<TierModel>() :
+                    put("tiers", request.getTiers() == null ? null :
                         request.getTiers().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1735,7 +1735,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("tiers", request.getTiers() == null ? new ArrayList<TierModel>() :
+                    put("tiers", request.getTiers() == null ? null :
                         request.getTiers().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2564,7 +2564,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                 new HashMap<String, Object>() {{
                     put("ballotBody", request.getBallotBody());
                     put("ballotSignature", request.getBallotSignature());
-                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                    put("gameResults", request.getGameResults() == null ? null :
                         request.getGameResults().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2651,13 +2651,13 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("signedBallots", request.getSignedBallots() == null ? new ArrayList<SignedBallot>() :
+                    put("signedBallots", request.getSignedBallots() == null ? null :
                         request.getSignedBallots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                    put("gameResults", request.getGameResults() == null ? null :
                         request.getGameResults().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

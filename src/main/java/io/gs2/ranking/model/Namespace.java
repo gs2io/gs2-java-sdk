@@ -126,7 +126,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withLastCalculatedAts(data.get("lastCalculatedAts") == null || data.get("lastCalculatedAts").isNull() ? new ArrayList<CalculatedAt>() :
+            .withLastCalculatedAts(data.get("lastCalculatedAts") == null || data.get("lastCalculatedAts").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("lastCalculatedAts").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CalculatedAt.fromJson(item);
@@ -144,7 +144,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
-                put("lastCalculatedAts", getLastCalculatedAts() == null ? new ArrayList<CalculatedAt>() :
+                put("lastCalculatedAts", getLastCalculatedAts() == null ? null :
                     getLastCalculatedAts().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

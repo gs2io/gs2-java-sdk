@@ -189,7 +189,7 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withScoreTtlDays(data.get("scoreTtlDays") == null || data.get("scoreTtlDays").isNull() ? null : data.get("scoreTtlDays").intValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
-            .withRankingRewards(data.get("rankingRewards") == null || data.get("rankingRewards").isNull() ? new ArrayList<RankingReward>() :
+            .withRankingRewards(data.get("rankingRewards") == null || data.get("rankingRewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rankingRewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RankingReward.fromJson(item);
@@ -212,7 +212,7 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
                 put("sum", getSum());
                 put("scoreTtlDays", getScoreTtlDays());
                 put("orderDirection", getOrderDirection());
-                put("rankingRewards", getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                put("rankingRewards", getRankingRewards() == null ? null :
                     getRankingRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

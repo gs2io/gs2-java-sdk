@@ -151,7 +151,7 @@ public class UnleashRateModelMaster implements IModel, Serializable, Comparable<
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
             .withGradeModelId(data.get("gradeModelId") == null || data.get("gradeModelId").isNull() ? null : data.get("gradeModelId").asText())
-            .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? new ArrayList<UnleashRateEntryModel>() :
+            .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gradeEntries").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return UnleashRateEntryModel.fromJson(item);
@@ -171,7 +171,7 @@ public class UnleashRateModelMaster implements IModel, Serializable, Comparable<
                 put("metadata", getMetadata());
                 put("targetInventoryModelId", getTargetInventoryModelId());
                 put("gradeModelId", getGradeModelId());
-                put("gradeEntries", getGradeEntries() == null ? new ArrayList<UnleashRateEntryModel>() :
+                put("gradeEntries", getGradeEntries() == null ? null :
                     getGradeEntries().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

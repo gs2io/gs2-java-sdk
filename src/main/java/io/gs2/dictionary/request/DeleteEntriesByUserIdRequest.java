@@ -94,7 +94,7 @@ public class DeleteEntriesByUserIdRequest extends Gs2BasicRequest<DeleteEntriesB
         return new DeleteEntriesByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withEntryModelNames(data.get("entryModelNames") == null || data.get("entryModelNames").isNull() ? new ArrayList<String>() :
+            .withEntryModelNames(data.get("entryModelNames") == null || data.get("entryModelNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("entryModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -107,7 +107,7 @@ public class DeleteEntriesByUserIdRequest extends Gs2BasicRequest<DeleteEntriesB
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("entryModelNames", getEntryModelNames() == null ? new ArrayList<String>() :
+                put("entryModelNames", getEntryModelNames() == null ? null :
                     getEntryModelNames().stream().map(item -> {
                         return item;
                     }

@@ -1664,7 +1664,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -1834,7 +1834,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -2090,7 +2090,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -2260,7 +2260,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -2516,7 +2516,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -2686,7 +2686,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("experienceModelId", request.getExperienceModelId());
-                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }

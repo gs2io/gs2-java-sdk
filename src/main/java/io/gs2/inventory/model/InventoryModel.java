@@ -118,7 +118,7 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
             .withInitialCapacity(data.get("initialCapacity") == null || data.get("initialCapacity").isNull() ? null : data.get("initialCapacity").intValue())
             .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
             .withProtectReferencedItem(data.get("protectReferencedItem") == null || data.get("protectReferencedItem").isNull() ? null : data.get("protectReferencedItem").booleanValue())
-            .withItemModels(data.get("itemModels") == null || data.get("itemModels").isNull() ? new ArrayList<ItemModel>() :
+            .withItemModels(data.get("itemModels") == null || data.get("itemModels").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("itemModels").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ItemModel.fromJson(item);
@@ -135,7 +135,7 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
                 put("initialCapacity", getInitialCapacity());
                 put("maxCapacity", getMaxCapacity());
                 put("protectReferencedItem", getProtectReferencedItem());
-                put("itemModels", getItemModels() == null ? new ArrayList<ItemModel>() :
+                put("itemModels", getItemModels() == null ? null :
                     getItemModels().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

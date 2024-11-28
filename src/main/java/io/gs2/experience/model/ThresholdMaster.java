@@ -127,7 +127,7 @@ public class ThresholdMaster implements IModel, Serializable, Comparable<Thresho
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Long>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.longValue();
                 }
@@ -144,7 +144,7 @@ public class ThresholdMaster implements IModel, Serializable, Comparable<Thresho
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("values", getValues() == null ? new ArrayList<Long>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         return item;
                     }

@@ -95,7 +95,7 @@ public class PushByUserIdRequest extends Gs2BasicRequest<PushByUserIdRequest> {
         return new PushByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withJobs(data.get("jobs") == null || data.get("jobs").isNull() ? new ArrayList<JobEntry>() :
+            .withJobs(data.get("jobs") == null || data.get("jobs").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("jobs").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return JobEntry.fromJson(item);
@@ -109,7 +109,7 @@ public class PushByUserIdRequest extends Gs2BasicRequest<PushByUserIdRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("jobs", getJobs() == null ? new ArrayList<JobEntry>() :
+                put("jobs", getJobs() == null ? null :
                     getJobs().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

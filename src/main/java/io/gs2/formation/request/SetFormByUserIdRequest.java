@@ -119,7 +119,7 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Slot.fromJson(item);
@@ -135,7 +135,7 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
                 put("userId", getUserId());
                 put("moldModelName", getMoldModelName());
                 put("index", getIndex());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

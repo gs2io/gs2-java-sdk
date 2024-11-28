@@ -66,7 +66,7 @@ public class DescribeGlobalRankingModelMastersResult implements IResult, Seriali
             return null;
         }
         return new DescribeGlobalRankingModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<GlobalRankingModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GlobalRankingModelMaster.fromJson(item);
@@ -78,7 +78,7 @@ public class DescribeGlobalRankingModelMastersResult implements IResult, Seriali
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<GlobalRankingModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

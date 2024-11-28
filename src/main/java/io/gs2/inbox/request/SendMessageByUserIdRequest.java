@@ -130,7 +130,7 @@ public class SendMessageByUserIdRequest extends Gs2BasicRequest<SendMessageByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -147,7 +147,7 @@ public class SendMessageByUserIdRequest extends Gs2BasicRequest<SendMessageByUse
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("metadata", getMetadata());
-                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("readAcquireActions", getReadAcquireActions() == null ? null :
                     getReadAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

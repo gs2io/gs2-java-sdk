@@ -70,7 +70,7 @@ public class PutResultRequest extends Gs2BasicRequest<PutResultRequest> {
         return new PutResultRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
-            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GameResult.fromJson(item);
@@ -83,7 +83,7 @@ public class PutResultRequest extends Gs2BasicRequest<PutResultRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("ratingName", getRatingName());
-                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                put("gameResults", getGameResults() == null ? null :
                     getGameResults().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

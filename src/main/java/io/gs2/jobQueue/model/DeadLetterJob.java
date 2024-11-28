@@ -128,7 +128,7 @@ public class DeadLetterJob implements IModel, Serializable, Comparable<DeadLette
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withResult(data.get("result") == null || data.get("result").isNull() ? new ArrayList<JobResultBody>() :
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("result").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return JobResultBody.fromJson(item);
@@ -146,7 +146,7 @@ public class DeadLetterJob implements IModel, Serializable, Comparable<DeadLette
                 put("userId", getUserId());
                 put("scriptId", getScriptId());
                 put("args", getArgs());
-                put("result", getResult() == null ? new ArrayList<JobResultBody>() :
+                put("result", getResult() == null ? null :
                     getResult().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

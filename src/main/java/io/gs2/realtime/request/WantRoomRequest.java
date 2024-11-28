@@ -69,7 +69,7 @@ public class WantRoomRequest extends Gs2BasicRequest<WantRoomRequest> {
         return new WantRoomRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? new ArrayList<String>() :
+            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -81,7 +81,7 @@ public class WantRoomRequest extends Gs2BasicRequest<WantRoomRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("name", getName());
-                put("notificationUserIds", getNotificationUserIds() == null ? new ArrayList<String>() :
+                put("notificationUserIds", getNotificationUserIds() == null ? null :
                     getNotificationUserIds().stream().map(item -> {
                         return item;
                     }

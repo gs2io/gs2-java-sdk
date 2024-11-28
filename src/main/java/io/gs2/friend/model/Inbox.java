@@ -103,7 +103,7 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
         return new Inbox()
             .withInboxId(data.get("inboxId") == null || data.get("inboxId").isNull() ? null : data.get("inboxId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withFromUserIds(data.get("fromUserIds") == null || data.get("fromUserIds").isNull() ? new ArrayList<String>() :
+            .withFromUserIds(data.get("fromUserIds") == null || data.get("fromUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("fromUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -118,7 +118,7 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
             new HashMap<String, Object>() {{
                 put("inboxId", getInboxId());
                 put("userId", getUserId());
-                put("fromUserIds", getFromUserIds() == null ? new ArrayList<String>() :
+                put("fromUserIds", getFromUserIds() == null ? null :
                     getFromUserIds().stream().map(item -> {
                         return item;
                     }

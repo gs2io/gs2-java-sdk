@@ -81,7 +81,7 @@ public class BuffTargetModel implements IModel, Serializable {
         return new BuffTargetModel()
             .withTargetModelName(data.get("targetModelName") == null || data.get("targetModelName").isNull() ? null : data.get("targetModelName").asText())
             .withTargetFieldName(data.get("targetFieldName") == null || data.get("targetFieldName").isNull() ? null : data.get("targetFieldName").asText())
-            .withConditionGrns(data.get("conditionGrns") == null || data.get("conditionGrns").isNull() ? new ArrayList<BuffTargetGrn>() :
+            .withConditionGrns(data.get("conditionGrns") == null || data.get("conditionGrns").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("conditionGrns").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BuffTargetGrn.fromJson(item);
@@ -95,7 +95,7 @@ public class BuffTargetModel implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("targetModelName", getTargetModelName());
                 put("targetFieldName", getTargetFieldName());
-                put("conditionGrns", getConditionGrns() == null ? new ArrayList<BuffTargetGrn>() :
+                put("conditionGrns", getConditionGrns() == null ? null :
                     getConditionGrns().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

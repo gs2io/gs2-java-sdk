@@ -139,7 +139,7 @@ public class Room implements IModel, Serializable, Comparable<Room> {
             .withIpAddress(data.get("ipAddress") == null || data.get("ipAddress").isNull() ? null : data.get("ipAddress").asText())
             .withPort(data.get("port") == null || data.get("port").isNull() ? null : data.get("port").intValue())
             .withEncryptionKey(data.get("encryptionKey") == null || data.get("encryptionKey").isNull() ? null : data.get("encryptionKey").asText())
-            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? new ArrayList<String>() :
+            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -157,7 +157,7 @@ public class Room implements IModel, Serializable, Comparable<Room> {
                 put("ipAddress", getIpAddress());
                 put("port", getPort());
                 put("encryptionKey", getEncryptionKey());
-                put("notificationUserIds", getNotificationUserIds() == null ? new ArrayList<String>() :
+                put("notificationUserIds", getNotificationUserIds() == null ? null :
                     getNotificationUserIds().stream().map(item -> {
                         return item;
                     }

@@ -147,19 +147,19 @@ public class Gathering implements IModel, Serializable, Comparable<Gathering> {
         return new Gathering()
             .withGatheringId(data.get("gatheringId") == null || data.get("gatheringId").isNull() ? null : data.get("gatheringId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AttributeRange.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? new ArrayList<CapacityOfRole>() :
+            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("capacityOfRoles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CapacityOfRole.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -176,19 +176,19 @@ public class Gathering implements IModel, Serializable, Comparable<Gathering> {
             new HashMap<String, Object>() {{
                 put("gatheringId", getGatheringId());
                 put("name", getName());
-                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                put("attributeRanges", getAttributeRanges() == null ? null :
                     getAttributeRanges().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("capacityOfRoles", getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                put("capacityOfRoles", getCapacityOfRoles() == null ? null :
                     getCapacityOfRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                put("allowUserIds", getAllowUserIds() == null ? null :
                     getAllowUserIds().stream().map(item -> {
                         return item;
                     }

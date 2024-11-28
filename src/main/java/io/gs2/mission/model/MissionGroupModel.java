@@ -137,7 +137,7 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
             .withMissionGroupId(data.get("missionGroupId") == null || data.get("missionGroupId").isNull() ? null : data.get("missionGroupId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? new ArrayList<MissionTaskModel>() :
+            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tasks").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return MissionTaskModel.fromJson(item);
@@ -156,7 +156,7 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
                 put("missionGroupId", getMissionGroupId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("tasks", getTasks() == null ? new ArrayList<MissionTaskModel>() :
+                put("tasks", getTasks() == null ? null :
                     getTasks().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

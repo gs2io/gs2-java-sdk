@@ -70,7 +70,7 @@ public class SalesItemGroup implements IModel, Serializable {
         return new SalesItemGroup()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withSalesItems(data.get("salesItems") == null || data.get("salesItems").isNull() ? new ArrayList<SalesItem>() :
+            .withSalesItems(data.get("salesItems") == null || data.get("salesItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("salesItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SalesItem.fromJson(item);
@@ -83,7 +83,7 @@ public class SalesItemGroup implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("salesItems", getSalesItems() == null ? new ArrayList<SalesItem>() :
+                put("salesItems", getSalesItems() == null ? null :
                     getSalesItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

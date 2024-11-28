@@ -64,7 +64,7 @@ public class DescribeRecoverIntervalTableMastersResult implements IResult, Seria
             return null;
         }
         return new DescribeRecoverIntervalTableMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RecoverIntervalTableMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RecoverIntervalTableMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeRecoverIntervalTableMastersResult implements IResult, Seria
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<RecoverIntervalTableMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

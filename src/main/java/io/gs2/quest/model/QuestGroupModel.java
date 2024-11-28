@@ -93,7 +93,7 @@ public class QuestGroupModel implements IModel, Serializable, Comparable<QuestGr
             .withQuestGroupModelId(data.get("questGroupModelId") == null || data.get("questGroupModelId").isNull() ? null : data.get("questGroupModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withQuests(data.get("quests") == null || data.get("quests").isNull() ? new ArrayList<QuestModel>() :
+            .withQuests(data.get("quests") == null || data.get("quests").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("quests").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return QuestModel.fromJson(item);
@@ -108,7 +108,7 @@ public class QuestGroupModel implements IModel, Serializable, Comparable<QuestGr
                 put("questGroupModelId", getQuestGroupModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("quests", getQuests() == null ? new ArrayList<QuestModel>() :
+                put("quests", getQuests() == null ? null :
                     getQuests().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

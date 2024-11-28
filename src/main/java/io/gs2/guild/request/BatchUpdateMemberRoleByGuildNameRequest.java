@@ -96,7 +96,7 @@ public class BatchUpdateMemberRoleByGuildNameRequest extends Gs2BasicRequest<Bat
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
             .withGuildName(data.get("guildName") == null || data.get("guildName").isNull() ? null : data.get("guildName").asText())
-            .withMembers(data.get("members") == null || data.get("members").isNull() ? new ArrayList<Member>() :
+            .withMembers(data.get("members") == null || data.get("members").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("members").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Member.fromJson(item);
@@ -110,7 +110,7 @@ public class BatchUpdateMemberRoleByGuildNameRequest extends Gs2BasicRequest<Bat
                 put("namespaceName", getNamespaceName());
                 put("guildModelName", getGuildModelName());
                 put("guildName", getGuildName());
-                put("members", getMembers() == null ? new ArrayList<Member>() :
+                put("members", getMembers() == null ? null :
                     getMembers().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

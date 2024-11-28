@@ -65,7 +65,7 @@ public class DescribeCountersByUserIdResult implements IResult, Serializable {
             return null;
         }
         return new DescribeCountersByUserIdResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Counter>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Counter.fromJson(item);
@@ -77,7 +77,7 @@ public class DescribeCountersByUserIdResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<Counter>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

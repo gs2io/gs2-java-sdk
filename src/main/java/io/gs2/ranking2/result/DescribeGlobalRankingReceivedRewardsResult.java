@@ -64,7 +64,7 @@ public class DescribeGlobalRankingReceivedRewardsResult implements IResult, Seri
             return null;
         }
         return new DescribeGlobalRankingReceivedRewardsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<GlobalRankingReceivedReward>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GlobalRankingReceivedReward.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeGlobalRankingReceivedRewardsResult implements IResult, Seri
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<GlobalRankingReceivedReward>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

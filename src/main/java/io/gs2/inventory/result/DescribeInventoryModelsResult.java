@@ -51,7 +51,7 @@ public class DescribeInventoryModelsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeInventoryModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<InventoryModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return InventoryModel.fromJson(item);
@@ -62,7 +62,7 @@ public class DescribeInventoryModelsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<InventoryModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

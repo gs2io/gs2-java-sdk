@@ -64,7 +64,7 @@ public class DescribeJoinedSeasonGatheringsByUserIdResult implements IResult, Se
             return null;
         }
         return new DescribeJoinedSeasonGatheringsByUserIdResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<JoinedSeasonGathering>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return JoinedSeasonGathering.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeJoinedSeasonGatheringsByUserIdResult implements IResult, Se
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<JoinedSeasonGathering>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

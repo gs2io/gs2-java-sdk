@@ -50,7 +50,7 @@ public class DescribeCampaignModelsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeCampaignModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<CampaignModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CampaignModel.fromJson(item);
@@ -61,7 +61,7 @@ public class DescribeCampaignModelsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<CampaignModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

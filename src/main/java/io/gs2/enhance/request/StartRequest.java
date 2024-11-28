@@ -130,7 +130,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withTargetItemSetId(data.get("targetItemSetId") == null || data.get("targetItemSetId").isNull() ? null : data.get("targetItemSetId").asText())
-            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? new ArrayList<Material>() :
+            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("materials").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Material.fromJson(item);
@@ -138,7 +138,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
             ).collect(Collectors.toList()))
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -152,7 +152,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
                 put("namespaceName", getNamespaceName());
                 put("rateName", getRateName());
                 put("targetItemSetId", getTargetItemSetId());
-                put("materials", getMaterials() == null ? new ArrayList<Material>() :
+                put("materials", getMaterials() == null ? null :
                     getMaterials().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
@@ -160,7 +160,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
                 ).collect(Collectors.toList()));
                 put("accessToken", getAccessToken());
                 put("force", getForce());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

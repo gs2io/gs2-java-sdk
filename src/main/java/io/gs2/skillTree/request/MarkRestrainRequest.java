@@ -95,7 +95,7 @@ public class MarkRestrainRequest extends Gs2BasicRequest<MarkRestrainRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? new ArrayList<String>() :
+            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("nodeModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -108,7 +108,7 @@ public class MarkRestrainRequest extends Gs2BasicRequest<MarkRestrainRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("propertyId", getPropertyId());
-                put("nodeModelNames", getNodeModelNames() == null ? new ArrayList<String>() :
+                put("nodeModelNames", getNodeModelNames() == null ? null :
                     getNodeModelNames().stream().map(item -> {
                         return item;
                     }

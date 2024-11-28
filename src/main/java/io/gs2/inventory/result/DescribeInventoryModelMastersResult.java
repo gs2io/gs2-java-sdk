@@ -64,7 +64,7 @@ public class DescribeInventoryModelMastersResult implements IResult, Serializabl
             return null;
         }
         return new DescribeInventoryModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<InventoryModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return InventoryModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeInventoryModelMastersResult implements IResult, Serializabl
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<InventoryModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

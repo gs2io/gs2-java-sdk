@@ -64,7 +64,7 @@ public class DescribeSeasonModelMastersResult implements IResult, Serializable {
             return null;
         }
         return new DescribeSeasonModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SeasonModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SeasonModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeSeasonModelMastersResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<SeasonModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -1247,7 +1247,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("defaultRankCap", request.getDefaultRankCap());
                     put("maxRankCap", request.getMaxRankCap());
                     put("rankThresholdName", request.getRankThresholdName());
-                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? null :
                         request.getAcquireActionRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1421,7 +1421,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("defaultRankCap", request.getDefaultRankCap());
                     put("maxRankCap", request.getMaxRankCap());
                     put("rankThresholdName", request.getRankThresholdName());
-                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? null :
                         request.getAcquireActionRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1838,7 +1838,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("values", request.getValues() == null ? new ArrayList<Long>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -2007,7 +2007,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("values", request.getValues() == null ? new ArrayList<Long>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             return item;
                         }
@@ -4686,7 +4686,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

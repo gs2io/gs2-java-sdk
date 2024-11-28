@@ -206,32 +206,32 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withDisplayName(data.get("displayName") == null || data.get("displayName").isNull() ? null : data.get("displayName").asText())
-            .withAttributes1(data.get("attributes1") == null || data.get("attributes1").isNull() ? new ArrayList<Integer>() :
+            .withAttributes1(data.get("attributes1") == null || data.get("attributes1").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes1").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withAttributes2(data.get("attributes2") == null || data.get("attributes2").isNull() ? new ArrayList<Integer>() :
+            .withAttributes2(data.get("attributes2") == null || data.get("attributes2").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes2").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withAttributes3(data.get("attributes3") == null || data.get("attributes3").isNull() ? new ArrayList<Integer>() :
+            .withAttributes3(data.get("attributes3") == null || data.get("attributes3").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes3").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withAttributes4(data.get("attributes4") == null || data.get("attributes4").isNull() ? new ArrayList<Integer>() :
+            .withAttributes4(data.get("attributes4") == null || data.get("attributes4").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes4").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withAttributes5(data.get("attributes5") == null || data.get("attributes5").isNull() ? new ArrayList<Integer>() :
+            .withAttributes5(data.get("attributes5") == null || data.get("attributes5").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes5").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withJoinPolicies(data.get("joinPolicies") == null || data.get("joinPolicies").isNull() ? new ArrayList<String>() :
+            .withJoinPolicies(data.get("joinPolicies") == null || data.get("joinPolicies").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("joinPolicies").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -249,32 +249,32 @@ public class SearchGuildsRequest extends Gs2BasicRequest<SearchGuildsRequest> {
                 put("guildModelName", getGuildModelName());
                 put("accessToken", getAccessToken());
                 put("displayName", getDisplayName());
-                put("attributes1", getAttributes1() == null ? new ArrayList<Integer>() :
+                put("attributes1", getAttributes1() == null ? null :
                     getAttributes1().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("attributes2", getAttributes2() == null ? new ArrayList<Integer>() :
+                put("attributes2", getAttributes2() == null ? null :
                     getAttributes2().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("attributes3", getAttributes3() == null ? new ArrayList<Integer>() :
+                put("attributes3", getAttributes3() == null ? null :
                     getAttributes3().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("attributes4", getAttributes4() == null ? new ArrayList<Integer>() :
+                put("attributes4", getAttributes4() == null ? null :
                     getAttributes4().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("attributes5", getAttributes5() == null ? new ArrayList<Integer>() :
+                put("attributes5", getAttributes5() == null ? null :
                     getAttributes5().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("joinPolicies", getJoinPolicies() == null ? new ArrayList<String>() :
+                put("joinPolicies", getJoinPolicies() == null ? null :
                     getJoinPolicies().stream().map(item -> {
                         return item;
                     }

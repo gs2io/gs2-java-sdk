@@ -64,7 +64,7 @@ public class SendNotificationResult implements IResult, Serializable {
         }
         return new SendNotificationResult()
             .withProtocol(data.get("protocol") == null || data.get("protocol").isNull() ? null : data.get("protocol").asText())
-            .withSendConnectionIds(data.get("sendConnectionIds") == null || data.get("sendConnectionIds").isNull() ? new ArrayList<String>() :
+            .withSendConnectionIds(data.get("sendConnectionIds") == null || data.get("sendConnectionIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("sendConnectionIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -75,7 +75,7 @@ public class SendNotificationResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("protocol", getProtocol());
-                put("sendConnectionIds", getSendConnectionIds() == null ? new ArrayList<String>() :
+                put("sendConnectionIds", getSendConnectionIds() == null ? null :
                     getSendConnectionIds().stream().map(item -> {
                         return item;
                     }

@@ -81,7 +81,7 @@ public class DecreaseByStampTaskResult implements IResult, Serializable {
         }
         return new DecreaseByStampTaskResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
-            .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? new ArrayList<Complete>() :
+            .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("changedCompletes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Complete.fromJson(item);
@@ -94,7 +94,7 @@ public class DecreaseByStampTaskResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("changedCompletes", getChangedCompletes() == null ? new ArrayList<Complete>() :
+                put("changedCompletes", getChangedCompletes() == null ? null :
                     getChangedCompletes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

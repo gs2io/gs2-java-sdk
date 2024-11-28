@@ -253,7 +253,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -348,7 +348,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -441,12 +441,12 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? null :
                         request.getMissionTaskNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -540,12 +540,12 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? null :
                         request.getMissionTaskNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -728,7 +728,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("missionTaskNames", request.getMissionTaskNames() == null ? new ArrayList<String>() :
+                    put("missionTaskNames", request.getMissionTaskNames() == null ? null :
                         request.getMissionTaskNames().stream().map(item -> {
                             return item;
                         }
@@ -1755,7 +1755,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("name", request.getName());
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
-                    put("scopes", request.getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                    put("scopes", request.getScopes() == null ? null :
                         request.getScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1926,7 +1926,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
-                    put("scopes", request.getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                    put("scopes", request.getScopes() == null ? null :
                         request.getScopes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3872,7 +3872,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("values", request.getValues() == null ? new ArrayList<ScopedValue>() :
+                    put("values", request.getValues() == null ? null :
                         request.getValues().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5805,13 +5805,13 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("description", request.getDescription());
                     put("verifyCompleteType", request.getVerifyCompleteType());
                     put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
-                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? null :
                         request.getVerifyCompleteConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("completeAcquireActions", request.getCompleteAcquireActions() == null ? null :
                         request.getCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5990,13 +5990,13 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("description", request.getDescription());
                     put("verifyCompleteType", request.getVerifyCompleteType());
                     put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
-                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? null :
                         request.getVerifyCompleteConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("completeAcquireActions", request.getCompleteAcquireActions() == null ? null :
                         request.getCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

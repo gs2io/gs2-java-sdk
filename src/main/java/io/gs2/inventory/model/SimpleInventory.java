@@ -115,7 +115,7 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
             .withInventoryId(data.get("inventoryId") == null || data.get("inventoryId").isNull() ? null : data.get("inventoryId").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withSimpleItems(data.get("simpleItems") == null || data.get("simpleItems").isNull() ? new ArrayList<SimpleItem>() :
+            .withSimpleItems(data.get("simpleItems") == null || data.get("simpleItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("simpleItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SimpleItem.fromJson(item);
@@ -132,7 +132,7 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
                 put("inventoryId", getInventoryId());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("simpleItems", getSimpleItems() == null ? new ArrayList<SimpleItem>() :
+                put("simpleItems", getSimpleItems() == null ? null :
                     getSimpleItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -149,19 +149,19 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -179,19 +179,19 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("verifyActions", getVerifyActions() == null ? null :
                     getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("consumeActions", getConsumeActions() == null ? null :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

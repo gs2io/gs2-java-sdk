@@ -131,7 +131,7 @@ public class StartByUserIdRequest extends Gs2BasicRequest<StartByUserIdRequest> 
             .withQuestName(data.get("questName") == null || data.get("questName").isNull() ? null : data.get("questName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -148,7 +148,7 @@ public class StartByUserIdRequest extends Gs2BasicRequest<StartByUserIdRequest> 
                 put("questName", getQuestName());
                 put("userId", getUserId());
                 put("force", getForce());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

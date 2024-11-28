@@ -29,8 +29,41 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TransactionSetting implements IModel, Serializable {
+	private Boolean enableAtomicCommit;
+	private Boolean transactionUseDistributor;
+	private Boolean acquireActionUseJobQueue;
 	private String distributorNamespaceId;
 	private String queueNamespaceId;
+	public Boolean getEnableAtomicCommit() {
+		return enableAtomicCommit;
+	}
+	public void setEnableAtomicCommit(Boolean enableAtomicCommit) {
+		this.enableAtomicCommit = enableAtomicCommit;
+	}
+	public TransactionSetting withEnableAtomicCommit(Boolean enableAtomicCommit) {
+		this.enableAtomicCommit = enableAtomicCommit;
+		return this;
+	}
+	public Boolean getTransactionUseDistributor() {
+		return transactionUseDistributor;
+	}
+	public void setTransactionUseDistributor(Boolean transactionUseDistributor) {
+		this.transactionUseDistributor = transactionUseDistributor;
+	}
+	public TransactionSetting withTransactionUseDistributor(Boolean transactionUseDistributor) {
+		this.transactionUseDistributor = transactionUseDistributor;
+		return this;
+	}
+	public Boolean getAcquireActionUseJobQueue() {
+		return acquireActionUseJobQueue;
+	}
+	public void setAcquireActionUseJobQueue(Boolean acquireActionUseJobQueue) {
+		this.acquireActionUseJobQueue = acquireActionUseJobQueue;
+	}
+	public TransactionSetting withAcquireActionUseJobQueue(Boolean acquireActionUseJobQueue) {
+		this.acquireActionUseJobQueue = acquireActionUseJobQueue;
+		return this;
+	}
 	public String getDistributorNamespaceId() {
 		return distributorNamespaceId;
 	}
@@ -57,6 +90,9 @@ public class TransactionSetting implements IModel, Serializable {
             return null;
         }
         return new TransactionSetting()
+            .withEnableAtomicCommit(data.get("enableAtomicCommit") == null || data.get("enableAtomicCommit").isNull() ? null : data.get("enableAtomicCommit").booleanValue())
+            .withTransactionUseDistributor(data.get("transactionUseDistributor") == null || data.get("transactionUseDistributor").isNull() ? null : data.get("transactionUseDistributor").booleanValue())
+            .withAcquireActionUseJobQueue(data.get("acquireActionUseJobQueue") == null || data.get("acquireActionUseJobQueue").isNull() ? null : data.get("acquireActionUseJobQueue").booleanValue())
             .withDistributorNamespaceId(data.get("distributorNamespaceId") == null || data.get("distributorNamespaceId").isNull() ? null : data.get("distributorNamespaceId").asText())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText());
     }
@@ -64,6 +100,9 @@ public class TransactionSetting implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("enableAtomicCommit", getEnableAtomicCommit());
+                put("transactionUseDistributor", getTransactionUseDistributor());
+                put("acquireActionUseJobQueue", getAcquireActionUseJobQueue());
                 put("distributorNamespaceId", getDistributorNamespaceId());
                 put("queueNamespaceId", getQueueNamespaceId());
             }}
@@ -74,6 +113,9 @@ public class TransactionSetting implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.enableAtomicCommit == null) ? 0 : this.enableAtomicCommit.hashCode());
+        result = prime * result + ((this.transactionUseDistributor == null) ? 0 : this.transactionUseDistributor.hashCode());
+        result = prime * result + ((this.acquireActionUseJobQueue == null) ? 0 : this.acquireActionUseJobQueue.hashCode());
         result = prime * result + ((this.distributorNamespaceId == null) ? 0 : this.distributorNamespaceId.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
 		return result;
@@ -88,6 +130,21 @@ public class TransactionSetting implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		TransactionSetting other = (TransactionSetting) o;
+		if (enableAtomicCommit == null) {
+			return other.enableAtomicCommit == null;
+		} else if (!enableAtomicCommit.equals(other.enableAtomicCommit)) {
+			return false;
+		}
+		if (transactionUseDistributor == null) {
+			return other.transactionUseDistributor == null;
+		} else if (!transactionUseDistributor.equals(other.transactionUseDistributor)) {
+			return false;
+		}
+		if (acquireActionUseJobQueue == null) {
+			return other.acquireActionUseJobQueue == null;
+		} else if (!acquireActionUseJobQueue.equals(other.acquireActionUseJobQueue)) {
+			return false;
+		}
 		if (distributorNamespaceId == null) {
 			return other.distributorNamespaceId == null;
 		} else if (!distributorNamespaceId.equals(other.distributorNamespaceId)) {

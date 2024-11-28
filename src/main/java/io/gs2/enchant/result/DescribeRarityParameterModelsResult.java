@@ -52,7 +52,7 @@ public class DescribeRarityParameterModelsResult implements IResult, Serializabl
             return null;
         }
         return new DescribeRarityParameterModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RarityParameterModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RarityParameterModel.fromJson(item);
@@ -63,7 +63,7 @@ public class DescribeRarityParameterModelsResult implements IResult, Serializabl
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<RarityParameterModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

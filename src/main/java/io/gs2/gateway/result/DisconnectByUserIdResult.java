@@ -50,7 +50,7 @@ public class DisconnectByUserIdResult implements IResult, Serializable {
             return null;
         }
         return new DisconnectByUserIdResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<WebSocketSession>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return WebSocketSession.fromJson(item);
@@ -61,7 +61,7 @@ public class DisconnectByUserIdResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<WebSocketSession>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

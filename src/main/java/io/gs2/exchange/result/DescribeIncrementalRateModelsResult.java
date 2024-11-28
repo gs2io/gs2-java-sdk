@@ -52,7 +52,7 @@ public class DescribeIncrementalRateModelsResult implements IResult, Serializabl
             return null;
         }
         return new DescribeIncrementalRateModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<IncrementalRateModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return IncrementalRateModel.fromJson(item);
@@ -63,7 +63,7 @@ public class DescribeIncrementalRateModelsResult implements IResult, Serializabl
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<IncrementalRateModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

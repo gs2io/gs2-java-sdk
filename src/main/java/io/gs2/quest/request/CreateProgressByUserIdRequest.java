@@ -119,7 +119,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withQuestModelId(data.get("questModelId") == null || data.get("questModelId").isNull() ? null : data.get("questModelId").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -135,7 +135,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
                 put("userId", getUserId());
                 put("questModelId", getQuestModelId());
                 put("force", getForce());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

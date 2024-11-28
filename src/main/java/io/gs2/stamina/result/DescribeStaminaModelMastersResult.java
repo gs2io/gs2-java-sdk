@@ -64,7 +64,7 @@ public class DescribeStaminaModelMastersResult implements IResult, Serializable 
             return null;
         }
         return new DescribeStaminaModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<StaminaModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return StaminaModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeStaminaModelMastersResult implements IResult, Serializable 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<StaminaModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -126,13 +126,13 @@ public class RateModel implements IModel, Serializable, Comparable<RateModel> {
             .withRateModelId(data.get("rateModelId") == null || data.get("rateModelId").isNull() ? null : data.get("rateModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
@@ -140,7 +140,7 @@ public class RateModel implements IModel, Serializable, Comparable<RateModel> {
             ).collect(Collectors.toList()))
             .withTimingType(data.get("timingType") == null || data.get("timingType").isNull() ? null : data.get("timingType").asText())
             .withLockTime(data.get("lockTime") == null || data.get("lockTime").isNull() ? null : data.get("lockTime").intValue())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -154,13 +154,13 @@ public class RateModel implements IModel, Serializable, Comparable<RateModel> {
                 put("rateModelId", getRateModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("verifyActions", getVerifyActions() == null ? null :
                     getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("consumeActions", getConsumeActions() == null ? null :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
@@ -168,7 +168,7 @@ public class RateModel implements IModel, Serializable, Comparable<RateModel> {
                 ).collect(Collectors.toList()));
                 put("timingType", getTimingType());
                 put("lockTime", getLockTime());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

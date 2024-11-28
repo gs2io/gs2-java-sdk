@@ -142,7 +142,7 @@ public class UpdateExperienceModelMasterRequest extends Gs2BasicRequest<UpdateEx
             .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
             .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
             .withRankThresholdName(data.get("rankThresholdName") == null || data.get("rankThresholdName").isNull() ? null : data.get("rankThresholdName").asText())
-            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireActionRate.fromJson(item);
@@ -161,7 +161,7 @@ public class UpdateExperienceModelMasterRequest extends Gs2BasicRequest<UpdateEx
                 put("defaultRankCap", getDefaultRankCap());
                 put("maxRankCap", getMaxRankCap());
                 put("rankThresholdName", getRankThresholdName());
-                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                put("acquireActionRates", getAcquireActionRates() == null ? null :
                     getAcquireActionRates().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

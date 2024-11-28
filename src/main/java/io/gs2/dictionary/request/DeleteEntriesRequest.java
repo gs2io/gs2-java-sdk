@@ -83,7 +83,7 @@ public class DeleteEntriesRequest extends Gs2BasicRequest<DeleteEntriesRequest> 
         return new DeleteEntriesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withEntryModelNames(data.get("entryModelNames") == null || data.get("entryModelNames").isNull() ? new ArrayList<String>() :
+            .withEntryModelNames(data.get("entryModelNames") == null || data.get("entryModelNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("entryModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -95,7 +95,7 @@ public class DeleteEntriesRequest extends Gs2BasicRequest<DeleteEntriesRequest> 
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("entryModelNames", getEntryModelNames() == null ? new ArrayList<String>() :
+                put("entryModelNames", getEntryModelNames() == null ? null :
                     getEntryModelNames().stream().map(item -> {
                         return item;
                     }

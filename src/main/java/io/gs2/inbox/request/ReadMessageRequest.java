@@ -96,7 +96,7 @@ public class ReadMessageRequest extends Gs2BasicRequest<ReadMessageRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -110,7 +110,7 @@ public class ReadMessageRequest extends Gs2BasicRequest<ReadMessageRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("messageName", getMessageName());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

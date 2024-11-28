@@ -96,7 +96,7 @@ public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AttributeRange.fromJson(item);
@@ -110,7 +110,7 @@ public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringReque
                 put("namespaceName", getNamespaceName());
                 put("gatheringName", getGatheringName());
                 put("accessToken", getAccessToken());
-                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                put("attributeRanges", getAttributeRanges() == null ? null :
                     getAttributeRanges().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

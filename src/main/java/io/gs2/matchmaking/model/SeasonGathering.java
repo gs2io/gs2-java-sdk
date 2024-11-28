@@ -128,7 +128,7 @@ public class SeasonGathering implements IModel, Serializable, Comparable<SeasonG
             .withSeason(data.get("season") == null || data.get("season").isNull() ? null : data.get("season").longValue())
             .withTier(data.get("tier") == null || data.get("tier").isNull() ? null : data.get("tier").longValue())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withParticipants(data.get("participants") == null || data.get("participants").isNull() ? new ArrayList<String>() :
+            .withParticipants(data.get("participants") == null || data.get("participants").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("participants").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -145,7 +145,7 @@ public class SeasonGathering implements IModel, Serializable, Comparable<SeasonG
                 put("season", getSeason());
                 put("tier", getTier());
                 put("name", getName());
-                put("participants", getParticipants() == null ? new ArrayList<String>() :
+                put("participants", getParticipants() == null ? null :
                     getParticipants().stream().map(item -> {
                         return item;
                     }

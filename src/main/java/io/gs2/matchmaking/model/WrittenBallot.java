@@ -58,7 +58,7 @@ public class WrittenBallot implements IModel, Serializable {
         }
         return new WrittenBallot()
             .withBallot(data.get("ballot") == null || data.get("ballot").isNull() ? null : Ballot.fromJson(data.get("ballot")))
-            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GameResult.fromJson(item);
@@ -70,7 +70,7 @@ public class WrittenBallot implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("ballot", getBallot() != null ? getBallot().toJson() : null);
-                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                put("gameResults", getGameResults() == null ? null :
                     getGameResults().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

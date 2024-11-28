@@ -1347,7 +1347,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
-                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? null :
                         request.getReadAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1959,7 +1959,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2053,7 +2053,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2970,7 +2970,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("metadata", request.getMetadata());
-                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? null :
                         request.getReadAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3142,7 +3142,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
-                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? null :
                         request.getReadAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3558,7 +3558,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("receivedGlobalMessageNames", request.getReceivedGlobalMessageNames() == null ? new ArrayList<String>() :
+                    put("receivedGlobalMessageNames", request.getReceivedGlobalMessageNames() == null ? null :
                         request.getReceivedGlobalMessageNames().stream().map(item -> {
                             return item;
                         }

@@ -103,7 +103,7 @@ public class Received implements IModel, Serializable, Comparable<Received> {
         return new Received()
             .withReceivedId(data.get("receivedId") == null || data.get("receivedId").isNull() ? null : data.get("receivedId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withReceivedGlobalMessageNames(data.get("receivedGlobalMessageNames") == null || data.get("receivedGlobalMessageNames").isNull() ? new ArrayList<String>() :
+            .withReceivedGlobalMessageNames(data.get("receivedGlobalMessageNames") == null || data.get("receivedGlobalMessageNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("receivedGlobalMessageNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -118,7 +118,7 @@ public class Received implements IModel, Serializable, Comparable<Received> {
             new HashMap<String, Object>() {{
                 put("receivedId", getReceivedId());
                 put("userId", getUserId());
-                put("receivedGlobalMessageNames", getReceivedGlobalMessageNames() == null ? new ArrayList<String>() :
+                put("receivedGlobalMessageNames", getReceivedGlobalMessageNames() == null ? null :
                     getReceivedGlobalMessageNames().stream().map(item -> {
                         return item;
                     }

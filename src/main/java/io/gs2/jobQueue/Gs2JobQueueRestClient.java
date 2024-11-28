@@ -1324,7 +1324,7 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("jobs", request.getJobs() == null ? new ArrayList<JobEntry>() :
+                    put("jobs", request.getJobs() == null ? null :
                         request.getJobs().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

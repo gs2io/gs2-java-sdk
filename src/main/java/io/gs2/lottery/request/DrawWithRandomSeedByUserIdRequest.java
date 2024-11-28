@@ -131,7 +131,7 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRandomSeed(data.get("randomSeed") == null || data.get("randomSeed").isNull() ? null : data.get("randomSeed").longValue())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -148,7 +148,7 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
                 put("userId", getUserId());
                 put("randomSeed", getRandomSeed());
                 put("count", getCount());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

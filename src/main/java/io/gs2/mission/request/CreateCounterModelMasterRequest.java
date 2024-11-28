@@ -106,7 +106,7 @@ public class CreateCounterModelMasterRequest extends Gs2BasicRequest<CreateCount
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<CounterScopeModel>() :
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CounterScopeModel.fromJson(item);
@@ -122,7 +122,7 @@ public class CreateCounterModelMasterRequest extends Gs2BasicRequest<CreateCount
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("description", getDescription());
-                put("scopes", getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                put("scopes", getScopes() == null ? null :
                     getScopes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

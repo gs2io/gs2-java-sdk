@@ -95,7 +95,7 @@ public class SendInGameLogRequest extends Gs2BasicRequest<SendInGameLogRequest> 
         return new SendInGameLogRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withTags(data.get("tags") == null || data.get("tags").isNull() ? new ArrayList<InGameLogTag>() :
+            .withTags(data.get("tags") == null || data.get("tags").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tags").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return InGameLogTag.fromJson(item);
@@ -109,7 +109,7 @@ public class SendInGameLogRequest extends Gs2BasicRequest<SendInGameLogRequest> 
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("tags", getTags() == null ? new ArrayList<InGameLogTag>() :
+                put("tags", getTags() == null ? null :
                     getTags().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

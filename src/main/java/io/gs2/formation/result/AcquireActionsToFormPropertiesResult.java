@@ -38,6 +38,9 @@ public class AcquireActionsToFormPropertiesResult implements IResult, Serializab
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
     private Boolean autoRunStampSheet;
+    private Boolean atomicCommit;
+    private String transaction;
+    private io.gs2.core.model.TransactionResult transactionResult;
 
 	public Form getItem() {
 		return item;
@@ -117,6 +120,45 @@ public class AcquireActionsToFormPropertiesResult implements IResult, Serializab
 		return this;
 	}
 
+	public Boolean getAtomicCommit() {
+		return atomicCommit;
+	}
+
+	public void setAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+	}
+
+	public AcquireActionsToFormPropertiesResult withAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+		return this;
+	}
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	public AcquireActionsToFormPropertiesResult withTransaction(String transaction) {
+		this.transaction = transaction;
+		return this;
+	}
+
+	public io.gs2.core.model.TransactionResult getTransactionResult() {
+		return transactionResult;
+	}
+
+	public void setTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+	}
+
+	public AcquireActionsToFormPropertiesResult withTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+		return this;
+	}
+
     public static AcquireActionsToFormPropertiesResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -127,7 +169,10 @@ public class AcquireActionsToFormPropertiesResult implements IResult, Serializab
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
-            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue());
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue())
+            .withAtomicCommit(data.get("atomicCommit") == null || data.get("atomicCommit").isNull() ? null : data.get("atomicCommit").booleanValue())
+            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
+            .withTransactionResult(data.get("transactionResult") == null || data.get("transactionResult").isNull() ? null : io.gs2.core.model.TransactionResult.fromJson(data.get("transactionResult")));
     }
 
     public JsonNode toJson() {
@@ -139,6 +184,9 @@ public class AcquireActionsToFormPropertiesResult implements IResult, Serializab
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
                 put("autoRunStampSheet", getAutoRunStampSheet());
+                put("atomicCommit", getAtomicCommit());
+                put("transaction", getTransaction());
+                put("transactionResult", getTransactionResult() != null ? getTransactionResult().toJson() : null);
             }}
         );
     }

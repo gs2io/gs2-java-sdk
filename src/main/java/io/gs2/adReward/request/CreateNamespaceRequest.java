@@ -142,7 +142,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withAdmob(data.get("admob") == null || data.get("admob").isNull() ? null : AdMob.fromJson(data.get("admob")))
             .withUnityAd(data.get("unityAd") == null || data.get("unityAd").isNull() ? null : UnityAd.fromJson(data.get("unityAd")))
-            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? new ArrayList<AppLovinMax>() :
+            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("appLovinMaxes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AppLovinMax.fromJson(item);
@@ -161,7 +161,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("admob", getAdmob() != null ? getAdmob().toJson() : null);
                 put("unityAd", getUnityAd() != null ? getUnityAd().toJson() : null);
-                put("appLovinMaxes", getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                put("appLovinMaxes", getAppLovinMaxes() == null ? null :
                     getAppLovinMaxes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

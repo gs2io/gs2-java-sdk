@@ -1501,7 +1501,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("depositTransactions", request.getDepositTransactions() == null ? new ArrayList<DepositTransaction>() :
+                    put("depositTransactions", request.getDepositTransactions() == null ? null :
                         request.getDepositTransactions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

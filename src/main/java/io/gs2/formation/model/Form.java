@@ -115,7 +115,7 @@ public class Form implements IModel, Serializable, Comparable<Form> {
             .withFormId(data.get("formId") == null || data.get("formId").isNull() ? null : data.get("formId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Slot.fromJson(item);
@@ -132,7 +132,7 @@ public class Form implements IModel, Serializable, Comparable<Form> {
                 put("formId", getFormId());
                 put("name", getName());
                 put("index", getIndex());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

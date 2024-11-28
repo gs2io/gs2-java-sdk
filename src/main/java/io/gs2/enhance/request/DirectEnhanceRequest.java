@@ -120,13 +120,13 @@ public class DirectEnhanceRequest extends Gs2BasicRequest<DirectEnhanceRequest> 
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withTargetItemSetId(data.get("targetItemSetId") == null || data.get("targetItemSetId").isNull() ? null : data.get("targetItemSetId").asText())
-            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? new ArrayList<Material>() :
+            .withMaterials(data.get("materials") == null || data.get("materials").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("materials").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Material.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -141,13 +141,13 @@ public class DirectEnhanceRequest extends Gs2BasicRequest<DirectEnhanceRequest> 
                 put("rateName", getRateName());
                 put("accessToken", getAccessToken());
                 put("targetItemSetId", getTargetItemSetId());
-                put("materials", getMaterials() == null ? new ArrayList<Material>() :
+                put("materials", getMaterials() == null ? null :
                     getMaterials().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

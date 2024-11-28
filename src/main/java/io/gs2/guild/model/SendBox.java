@@ -115,7 +115,7 @@ public class SendBox implements IModel, Serializable, Comparable<SendBox> {
             .withSendBoxId(data.get("sendBoxId") == null || data.get("sendBoxId").isNull() ? null : data.get("sendBoxId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
-            .withTargetGuildNames(data.get("targetGuildNames") == null || data.get("targetGuildNames").isNull() ? new ArrayList<String>() :
+            .withTargetGuildNames(data.get("targetGuildNames") == null || data.get("targetGuildNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetGuildNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -131,7 +131,7 @@ public class SendBox implements IModel, Serializable, Comparable<SendBox> {
                 put("sendBoxId", getSendBoxId());
                 put("userId", getUserId());
                 put("guildModelName", getGuildModelName());
-                put("targetGuildNames", getTargetGuildNames() == null ? new ArrayList<String>() :
+                put("targetGuildNames", getTargetGuildNames() == null ? null :
                     getTargetGuildNames().stream().map(item -> {
                         return item;
                     }

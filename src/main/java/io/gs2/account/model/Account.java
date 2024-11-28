@@ -138,7 +138,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
-            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? new ArrayList<BanStatus>() :
+            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("banStatuses").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BanStatus.fromJson(item);
@@ -157,7 +157,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 put("userId", getUserId());
                 put("password", getPassword());
                 put("timeOffset", getTimeOffset());
-                put("banStatuses", getBanStatuses() == null ? new ArrayList<BanStatus>() :
+                put("banStatuses", getBanStatuses() == null ? null :
                     getBanStatuses().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

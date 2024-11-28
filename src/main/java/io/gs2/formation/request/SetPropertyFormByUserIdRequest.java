@@ -119,7 +119,7 @@ public class SetPropertyFormByUserIdRequest extends Gs2BasicRequest<SetPropertyF
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Slot.fromJson(item);
@@ -135,7 +135,7 @@ public class SetPropertyFormByUserIdRequest extends Gs2BasicRequest<SetPropertyF
                 put("userId", getUserId());
                 put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

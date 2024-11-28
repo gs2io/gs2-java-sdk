@@ -119,7 +119,7 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
             .withLotteryName(data.get("lotteryName") == null || data.get("lotteryName").isNull() ? null : data.get("lotteryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -135,7 +135,7 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
                 put("lotteryName", getLotteryName());
                 put("userId", getUserId());
                 put("count", getCount());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

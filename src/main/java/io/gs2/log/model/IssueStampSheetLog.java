@@ -130,7 +130,7 @@ public class IssueStampSheetLog implements IModel, Serializable {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? new ArrayList<String>() :
+            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tasks").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -147,7 +147,7 @@ public class IssueStampSheetLog implements IModel, Serializable {
                 put("userId", getUserId());
                 put("action", getAction());
                 put("args", getArgs());
-                put("tasks", getTasks() == null ? new ArrayList<String>() :
+                put("tasks", getTasks() == null ? null :
                     getTasks().stream().map(item -> {
                         return item;
                     }

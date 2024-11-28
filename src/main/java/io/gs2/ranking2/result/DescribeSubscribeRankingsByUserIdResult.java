@@ -64,7 +64,7 @@ public class DescribeSubscribeRankingsByUserIdResult implements IResult, Seriali
             return null;
         }
         return new DescribeSubscribeRankingsByUserIdResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SubscribeRankingData>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SubscribeRankingData.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeSubscribeRankingsByUserIdResult implements IResult, Seriali
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<SubscribeRankingData>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

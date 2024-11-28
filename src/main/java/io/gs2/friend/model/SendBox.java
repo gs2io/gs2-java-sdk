@@ -103,7 +103,7 @@ public class SendBox implements IModel, Serializable, Comparable<SendBox> {
         return new SendBox()
             .withSendBoxId(data.get("sendBoxId") == null || data.get("sendBoxId").isNull() ? null : data.get("sendBoxId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? new ArrayList<String>() :
+            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -118,7 +118,7 @@ public class SendBox implements IModel, Serializable, Comparable<SendBox> {
             new HashMap<String, Object>() {{
                 put("sendBoxId", getSendBoxId());
                 put("userId", getUserId());
-                put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
+                put("targetUserIds", getTargetUserIds() == null ? null :
                     getTargetUserIds().stream().map(item -> {
                         return item;
                     }

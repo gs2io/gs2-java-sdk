@@ -58,7 +58,7 @@ public class Threshold implements IModel, Serializable {
         }
         return new Threshold()
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Long>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.longValue();
                 }
@@ -69,7 +69,7 @@ public class Threshold implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("metadata", getMetadata());
-                put("values", getValues() == null ? new ArrayList<Long>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         return item;
                     }

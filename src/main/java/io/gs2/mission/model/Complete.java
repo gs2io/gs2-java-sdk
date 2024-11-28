@@ -137,12 +137,12 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
             .withCompleteId(data.get("completeId") == null || data.get("completeId").isNull() ? null : data.get("completeId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
-            .withCompletedMissionTaskNames(data.get("completedMissionTaskNames") == null || data.get("completedMissionTaskNames").isNull() ? new ArrayList<String>() :
+            .withCompletedMissionTaskNames(data.get("completedMissionTaskNames") == null || data.get("completedMissionTaskNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completedMissionTaskNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withReceivedMissionTaskNames(data.get("receivedMissionTaskNames") == null || data.get("receivedMissionTaskNames").isNull() ? new ArrayList<String>() :
+            .withReceivedMissionTaskNames(data.get("receivedMissionTaskNames") == null || data.get("receivedMissionTaskNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("receivedMissionTaskNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -159,12 +159,12 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
                 put("completeId", getCompleteId());
                 put("userId", getUserId());
                 put("missionGroupName", getMissionGroupName());
-                put("completedMissionTaskNames", getCompletedMissionTaskNames() == null ? new ArrayList<String>() :
+                put("completedMissionTaskNames", getCompletedMissionTaskNames() == null ? null :
                     getCompletedMissionTaskNames().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("receivedMissionTaskNames", getReceivedMissionTaskNames() == null ? new ArrayList<String>() :
+                put("receivedMissionTaskNames", getReceivedMissionTaskNames() == null ? null :
                     getReceivedMissionTaskNames().stream().map(item -> {
                         return item;
                     }

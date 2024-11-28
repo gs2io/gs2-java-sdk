@@ -129,7 +129,7 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
-            .withWhiteListUserIds(data.get("whiteListUserIds") == null || data.get("whiteListUserIds").isNull() ? new ArrayList<String>() :
+            .withWhiteListUserIds(data.get("whiteListUserIds") == null || data.get("whiteListUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -145,7 +145,7 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
                 put("roomName", getRoomName());
                 put("metadata", getMetadata());
                 put("password", getPassword());
-                put("whiteListUserIds", getWhiteListUserIds() == null ? new ArrayList<String>() :
+                put("whiteListUserIds", getWhiteListUserIds() == null ? null :
                     getWhiteListUserIds().stream().map(item -> {
                         return item;
                     }

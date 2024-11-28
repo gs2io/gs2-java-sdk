@@ -131,7 +131,7 @@ public class ReceiveClusterRankingReceivedRewardByUserIdRequest extends Gs2Basic
             .withRankingName(data.get("rankingName") == null || data.get("rankingName").isNull() ? null : data.get("rankingName").asText())
             .withClusterName(data.get("clusterName") == null || data.get("clusterName").isNull() ? null : data.get("clusterName").asText())
             .withSeason(data.get("season") == null || data.get("season").isNull() ? null : data.get("season").longValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -148,7 +148,7 @@ public class ReceiveClusterRankingReceivedRewardByUserIdRequest extends Gs2Basic
                 put("rankingName", getRankingName());
                 put("clusterName", getClusterName());
                 put("season", getSeason());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

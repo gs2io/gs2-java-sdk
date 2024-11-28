@@ -1256,7 +1256,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("defaultMaximumMemberCount", request.getDefaultMaximumMemberCount());
                     put("maximumMemberCount", request.getMaximumMemberCount());
                     put("inactivityPeriodDays", request.getInactivityPeriodDays());
-                    put("roles", request.getRoles() == null ? new ArrayList<RoleModel>() :
+                    put("roles", request.getRoles() == null ? null :
                         request.getRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1434,7 +1434,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("defaultMaximumMemberCount", request.getDefaultMaximumMemberCount());
                     put("maximumMemberCount", request.getMaximumMemberCount());
                     put("inactivityPeriodDays", request.getInactivityPeriodDays());
-                    put("roles", request.getRoles() == null ? new ArrayList<RoleModel>() :
+                    put("roles", request.getRoles() == null ? null :
                         request.getRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1769,32 +1769,32 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("displayName", request.getDisplayName());
-                    put("attributes1", request.getAttributes1() == null ? new ArrayList<Integer>() :
+                    put("attributes1", request.getAttributes1() == null ? null :
                         request.getAttributes1().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes2", request.getAttributes2() == null ? new ArrayList<Integer>() :
+                    put("attributes2", request.getAttributes2() == null ? null :
                         request.getAttributes2().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes3", request.getAttributes3() == null ? new ArrayList<Integer>() :
+                    put("attributes3", request.getAttributes3() == null ? null :
                         request.getAttributes3().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes4", request.getAttributes4() == null ? new ArrayList<Integer>() :
+                    put("attributes4", request.getAttributes4() == null ? null :
                         request.getAttributes4().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes5", request.getAttributes5() == null ? new ArrayList<Integer>() :
+                    put("attributes5", request.getAttributes5() == null ? null :
                         request.getAttributes5().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("joinPolicies", request.getJoinPolicies() == null ? new ArrayList<String>() :
+                    put("joinPolicies", request.getJoinPolicies() == null ? null :
                         request.getJoinPolicies().stream().map(item -> {
                             return item;
                         }
@@ -1892,32 +1892,32 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("displayName", request.getDisplayName());
-                    put("attributes1", request.getAttributes1() == null ? new ArrayList<Integer>() :
+                    put("attributes1", request.getAttributes1() == null ? null :
                         request.getAttributes1().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes2", request.getAttributes2() == null ? new ArrayList<Integer>() :
+                    put("attributes2", request.getAttributes2() == null ? null :
                         request.getAttributes2().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes3", request.getAttributes3() == null ? new ArrayList<Integer>() :
+                    put("attributes3", request.getAttributes3() == null ? null :
                         request.getAttributes3().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes4", request.getAttributes4() == null ? new ArrayList<Integer>() :
+                    put("attributes4", request.getAttributes4() == null ? null :
                         request.getAttributes4().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("attributes5", request.getAttributes5() == null ? new ArrayList<Integer>() :
+                    put("attributes5", request.getAttributes5() == null ? null :
                         request.getAttributes5().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("joinPolicies", request.getJoinPolicies() == null ? new ArrayList<String>() :
+                    put("joinPolicies", request.getJoinPolicies() == null ? null :
                         request.getJoinPolicies().stream().map(item -> {
                             return item;
                         }
@@ -2020,7 +2020,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
                     put("joinPolicy", request.getJoinPolicy());
-                    put("customRoles", request.getCustomRoles() == null ? new ArrayList<RoleModel>() :
+                    put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2122,7 +2122,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
                     put("joinPolicy", request.getJoinPolicy());
-                    put("customRoles", request.getCustomRoles() == null ? new ArrayList<RoleModel>() :
+                    put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2394,7 +2394,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
                     put("joinPolicy", request.getJoinPolicy());
-                    put("customRoles", request.getCustomRoles() == null ? new ArrayList<RoleModel>() :
+                    put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2496,7 +2496,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
                     put("joinPolicy", request.getJoinPolicy());
-                    put("customRoles", request.getCustomRoles() == null ? new ArrayList<RoleModel>() :
+                    put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2937,7 +2937,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("members", request.getMembers() == null ? new ArrayList<Member>() :
+                    put("members", request.getMembers() == null ? null :
                         request.getMembers().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3031,7 +3031,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("members", request.getMembers() == null ? new ArrayList<Member>() :
+                    put("members", request.getMembers() == null ? null :
                         request.getMembers().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

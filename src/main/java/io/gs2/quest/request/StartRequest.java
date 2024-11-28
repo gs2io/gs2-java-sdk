@@ -120,7 +120,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
             .withQuestName(data.get("questName") == null || data.get("questName").isNull() ? null : data.get("questName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -136,7 +136,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
                 put("questName", getQuestName());
                 put("accessToken", getAccessToken());
                 put("force", getForce());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

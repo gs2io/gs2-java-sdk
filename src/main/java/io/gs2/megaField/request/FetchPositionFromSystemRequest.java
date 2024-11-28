@@ -95,7 +95,7 @@ public class FetchPositionFromSystemRequest extends Gs2BasicRequest<FetchPositio
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
-            .withUserIds(data.get("userIds") == null || data.get("userIds").isNull() ? new ArrayList<String>() :
+            .withUserIds(data.get("userIds") == null || data.get("userIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("userIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -108,7 +108,7 @@ public class FetchPositionFromSystemRequest extends Gs2BasicRequest<FetchPositio
                 put("namespaceName", getNamespaceName());
                 put("areaModelName", getAreaModelName());
                 put("layerModelName", getLayerModelName());
-                put("userIds", getUserIds() == null ? new ArrayList<String>() :
+                put("userIds", getUserIds() == null ? null :
                     getUserIds().stream().map(item -> {
                         return item;
                     }

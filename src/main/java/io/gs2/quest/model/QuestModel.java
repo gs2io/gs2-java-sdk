@@ -148,38 +148,38 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
             .withQuestModelId(data.get("questModelId") == null || data.get("questModelId").isNull() ? null : data.get("questModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withContents(data.get("contents") == null || data.get("contents").isNull() ? new ArrayList<Contents>() :
+            .withContents(data.get("contents") == null || data.get("contents").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("contents").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Contents.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
-            .withFirstCompleteAcquireActions(data.get("firstCompleteAcquireActions") == null || data.get("firstCompleteAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withFirstCompleteAcquireActions(data.get("firstCompleteAcquireActions") == null || data.get("firstCompleteAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("firstCompleteAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withFailedAcquireActions(data.get("failedAcquireActions") == null || data.get("failedAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withFailedAcquireActions(data.get("failedAcquireActions") == null || data.get("failedAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("failedAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withPremiseQuestNames(data.get("premiseQuestNames") == null || data.get("premiseQuestNames").isNull() ? new ArrayList<String>() :
+            .withPremiseQuestNames(data.get("premiseQuestNames") == null || data.get("premiseQuestNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("premiseQuestNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -192,38 +192,38 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
                 put("questModelId", getQuestModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("contents", getContents() == null ? new ArrayList<Contents>() :
+                put("contents", getContents() == null ? null :
                     getContents().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("challengePeriodEventId", getChallengePeriodEventId());
-                put("firstCompleteAcquireActions", getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("firstCompleteAcquireActions", getFirstCompleteAcquireActions() == null ? null :
                     getFirstCompleteAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                put("verifyActions", getVerifyActions() == null ? null :
                     getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("consumeActions", getConsumeActions() == null ? null :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("failedAcquireActions", getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("failedAcquireActions", getFailedAcquireActions() == null ? null :
                     getFailedAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("premiseQuestNames", getPremiseQuestNames() == null ? new ArrayList<String>() :
+                put("premiseQuestNames", getPremiseQuestNames() == null ? null :
                     getPremiseQuestNames().stream().map(item -> {
                         return item;
                     }

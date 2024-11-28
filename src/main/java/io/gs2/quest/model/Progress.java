@@ -161,13 +161,13 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withQuestModelId(data.get("questModelId") == null || data.get("questModelId").isNull() ? null : data.get("questModelId").asText())
             .withRandomSeed(data.get("randomSeed") == null || data.get("randomSeed").isNull() ? null : data.get("randomSeed").longValue())
-            .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? new ArrayList<Reward>() :
+            .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Reward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withFailedRewards(data.get("failedRewards") == null || data.get("failedRewards").isNull() ? new ArrayList<Reward>() :
+            .withFailedRewards(data.get("failedRewards") == null || data.get("failedRewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("failedRewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Reward.fromJson(item);
@@ -187,13 +187,13 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
                 put("transactionId", getTransactionId());
                 put("questModelId", getQuestModelId());
                 put("randomSeed", getRandomSeed());
-                put("rewards", getRewards() == null ? new ArrayList<Reward>() :
+                put("rewards", getRewards() == null ? null :
                     getRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("failedRewards", getFailedRewards() == null ? new ArrayList<Reward>() :
+                put("failedRewards", getFailedRewards() == null ? null :
                     getFailedRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

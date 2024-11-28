@@ -132,7 +132,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
             .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -149,7 +149,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
                 put("moldModelName", getMoldModelName());
                 put("index", getIndex());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

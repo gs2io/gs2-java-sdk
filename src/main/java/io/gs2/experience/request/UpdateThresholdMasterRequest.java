@@ -93,7 +93,7 @@ public class UpdateThresholdMasterRequest extends Gs2BasicRequest<UpdateThreshol
             .withThresholdName(data.get("thresholdName") == null || data.get("thresholdName").isNull() ? null : data.get("thresholdName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Long>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.longValue();
                 }
@@ -107,7 +107,7 @@ public class UpdateThresholdMasterRequest extends Gs2BasicRequest<UpdateThreshol
                 put("thresholdName", getThresholdName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("values", getValues() == null ? new ArrayList<Long>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         return item;
                     }

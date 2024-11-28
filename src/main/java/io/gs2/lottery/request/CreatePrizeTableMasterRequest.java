@@ -95,7 +95,7 @@ public class CreatePrizeTableMasterRequest extends Gs2BasicRequest<CreatePrizeTa
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? new ArrayList<Prize>() :
+            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("prizes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Prize.fromJson(item);
@@ -110,7 +110,7 @@ public class CreatePrizeTableMasterRequest extends Gs2BasicRequest<CreatePrizeTa
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("prizes", getPrizes() == null ? new ArrayList<Prize>() :
+                put("prizes", getPrizes() == null ? null :
                     getPrizes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

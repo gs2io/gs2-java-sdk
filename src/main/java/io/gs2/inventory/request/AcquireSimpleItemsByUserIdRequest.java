@@ -107,7 +107,7 @@ public class AcquireSimpleItemsByUserIdRequest extends Gs2BasicRequest<AcquireSi
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withAcquireCounts(data.get("acquireCounts") == null || data.get("acquireCounts").isNull() ? new ArrayList<AcquireCount>() :
+            .withAcquireCounts(data.get("acquireCounts") == null || data.get("acquireCounts").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireCounts").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireCount.fromJson(item);
@@ -122,7 +122,7 @@ public class AcquireSimpleItemsByUserIdRequest extends Gs2BasicRequest<AcquireSi
                 put("namespaceName", getNamespaceName());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("acquireCounts", getAcquireCounts() == null ? new ArrayList<AcquireCount>() :
+                put("acquireCounts", getAcquireCounts() == null ? null :
                     getAcquireCounts().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

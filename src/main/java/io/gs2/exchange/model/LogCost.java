@@ -69,12 +69,12 @@ public class LogCost implements IModel, Serializable {
         }
         return new LogCost()
             .withBase(data.get("base") == null || data.get("base").isNull() ? null : data.get("base").doubleValue())
-            .withAdds(data.get("adds") == null || data.get("adds").isNull() ? new ArrayList<Double>() :
+            .withAdds(data.get("adds") == null || data.get("adds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("adds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.doubleValue();
                 }
             ).collect(Collectors.toList()))
-            .withSubs(data.get("subs") == null || data.get("subs").isNull() ? new ArrayList<Double>() :
+            .withSubs(data.get("subs") == null || data.get("subs").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("subs").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.doubleValue();
                 }
@@ -85,12 +85,12 @@ public class LogCost implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("base", getBase());
-                put("adds", getAdds() == null ? new ArrayList<Double>() :
+                put("adds", getAdds() == null ? null :
                     getAdds().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("subs", getSubs() == null ? new ArrayList<Double>() :
+                put("subs", getSubs() == null ? null :
                     getSubs().stream().map(item -> {
                         return item;
                     }

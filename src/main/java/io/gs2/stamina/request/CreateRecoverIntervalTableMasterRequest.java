@@ -105,7 +105,7 @@ public class CreateRecoverIntervalTableMasterRequest extends Gs2BasicRequest<Cre
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
-            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Integer>() :
+            .withValues(data.get("values") == null || data.get("values").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
@@ -120,7 +120,7 @@ public class CreateRecoverIntervalTableMasterRequest extends Gs2BasicRequest<Cre
                 put("description", getDescription());
                 put("metadata", getMetadata());
                 put("experienceModelId", getExperienceModelId());
-                put("values", getValues() == null ? new ArrayList<Integer>() :
+                put("values", getValues() == null ? null :
                     getValues().stream().map(item -> {
                         return item;
                     }

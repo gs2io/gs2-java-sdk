@@ -64,7 +64,7 @@ public class DescribeRecoverValueTableMastersResult implements IResult, Serializ
             return null;
         }
         return new DescribeRecoverValueTableMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RecoverValueTableMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RecoverValueTableMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeRecoverValueTableMastersResult implements IResult, Serializ
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<RecoverValueTableMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

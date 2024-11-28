@@ -82,7 +82,7 @@ public class BoxItems implements IModel, Serializable, Comparable<BoxItems> {
             .withBoxId(data.get("boxId") == null || data.get("boxId").isNull() ? null : data.get("boxId").asText())
             .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<BoxItem>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BoxItem.fromJson(item);
@@ -96,7 +96,7 @@ public class BoxItems implements IModel, Serializable, Comparable<BoxItems> {
                 put("boxId", getBoxId());
                 put("prizeTableName", getPrizeTableName());
                 put("userId", getUserId());
-                put("items", getItems() == null ? new ArrayList<BoxItem>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

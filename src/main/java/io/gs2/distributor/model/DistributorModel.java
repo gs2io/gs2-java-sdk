@@ -94,7 +94,7 @@ public class DistributorModel implements IModel, Serializable, Comparable<Distri
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withInboxNamespaceId(data.get("inboxNamespaceId") == null || data.get("inboxNamespaceId").isNull() ? null : data.get("inboxNamespaceId").asText())
-            .withWhiteListTargetIds(data.get("whiteListTargetIds") == null || data.get("whiteListTargetIds").isNull() ? new ArrayList<String>() :
+            .withWhiteListTargetIds(data.get("whiteListTargetIds") == null || data.get("whiteListTargetIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListTargetIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -108,7 +108,7 @@ public class DistributorModel implements IModel, Serializable, Comparable<Distri
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("inboxNamespaceId", getInboxNamespaceId());
-                put("whiteListTargetIds", getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                put("whiteListTargetIds", getWhiteListTargetIds() == null ? null :
                     getWhiteListTargetIds().stream().map(item -> {
                         return item;
                     }

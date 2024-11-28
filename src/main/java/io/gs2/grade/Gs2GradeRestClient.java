@@ -1235,20 +1235,20 @@ import io.gs2.grade.model.*;public class Gs2GradeRestClient extends AbstractGs2C
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("defaultGrades", request.getDefaultGrades() == null ? new ArrayList<DefaultGradeModel>() :
+                    put("defaultGrades", request.getDefaultGrades() == null ? null :
                         request.getDefaultGrades().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
-                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<GradeEntryModel>() :
+                    put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? null :
                         request.getAcquireActionRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1418,20 +1418,20 @@ import io.gs2.grade.model.*;public class Gs2GradeRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("defaultGrades", request.getDefaultGrades() == null ? new ArrayList<DefaultGradeModel>() :
+                    put("defaultGrades", request.getDefaultGrades() == null ? null :
                         request.getDefaultGrades().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
-                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<GradeEntryModel>() :
+                    put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? null :
                         request.getAcquireActionRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3348,7 +3348,7 @@ import io.gs2.grade.model.*;public class Gs2GradeRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

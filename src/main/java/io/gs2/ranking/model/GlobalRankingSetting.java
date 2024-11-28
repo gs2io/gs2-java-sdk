@@ -104,13 +104,13 @@ public class GlobalRankingSetting implements IModel, Serializable {
             .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
             .withCalculateFixedTiming(data.get("calculateFixedTiming") == null || data.get("calculateFixedTiming").isNull() ? null : FixedTiming.fromJson(data.get("calculateFixedTiming")))
-            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? new ArrayList<Scope>() :
+            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalScopes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Scope.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
+            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -124,13 +124,13 @@ public class GlobalRankingSetting implements IModel, Serializable {
                 put("uniqueByUserId", getUniqueByUserId());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
                 put("calculateFixedTiming", getCalculateFixedTiming() != null ? getCalculateFixedTiming().toJson() : null);
-                put("additionalScopes", getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                put("additionalScopes", getAdditionalScopes() == null ? null :
                     getAdditionalScopes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
+                put("ignoreUserIds", getIgnoreUserIds() == null ? null :
                     getIgnoreUserIds().stream().map(item -> {
                         return item;
                     }

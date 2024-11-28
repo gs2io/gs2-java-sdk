@@ -119,7 +119,7 @@ public class SetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Set
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withParameterName(data.get("parameterName") == null || data.get("parameterName").isNull() ? null : data.get("parameterName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withParameterValues(data.get("parameterValues") == null || data.get("parameterValues").isNull() ? new ArrayList<RarityParameterValue>() :
+            .withParameterValues(data.get("parameterValues") == null || data.get("parameterValues").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("parameterValues").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RarityParameterValue.fromJson(item);
@@ -135,7 +135,7 @@ public class SetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Set
                 put("userId", getUserId());
                 put("parameterName", getParameterName());
                 put("propertyId", getPropertyId());
-                put("parameterValues", getParameterValues() == null ? new ArrayList<RarityParameterValue>() :
+                put("parameterValues", getParameterValues() == null ? null :
                     getParameterValues().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

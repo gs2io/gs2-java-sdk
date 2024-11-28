@@ -149,7 +149,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withTiers(data.get("tiers") == null || data.get("tiers").isNull() ? new ArrayList<TierModel>() :
+            .withTiers(data.get("tiers") == null || data.get("tiers").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tiers").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return TierModel.fromJson(item);
@@ -169,7 +169,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("description", getDescription());
-                put("tiers", getTiers() == null ? new ArrayList<TierModel>() :
+                put("tiers", getTiers() == null ? null :
                     getTiers().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

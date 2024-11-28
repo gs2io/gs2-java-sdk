@@ -53,7 +53,7 @@ public class DescribeMissionTaskModelsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeMissionTaskModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<MissionTaskModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return MissionTaskModel.fromJson(item);
@@ -64,7 +64,7 @@ public class DescribeMissionTaskModelsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<MissionTaskModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

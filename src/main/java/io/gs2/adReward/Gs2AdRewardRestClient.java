@@ -157,7 +157,7 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                     put("name", request.getName());
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
-                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? null :
                         request.getAppLovinMaxes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -411,7 +411,7 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                     put("description", request.getDescription());
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
-                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? null :
                         request.getAppLovinMaxes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

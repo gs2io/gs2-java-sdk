@@ -1247,7 +1247,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                     put("name", request.getName());
                     put("metadata", request.getMetadata());
                     put("password", request.getPassword());
-                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? null :
                         request.getWhiteListUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1342,7 +1342,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                     put("userId", request.getUserId());
                     put("metadata", request.getMetadata());
                     put("password", request.getPassword());
-                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? null :
                         request.getWhiteListUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1517,7 +1517,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
                     put("password", request.getPassword());
-                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? null :
                         request.getWhiteListUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1611,7 +1611,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
                     put("password", request.getPassword());
-                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    put("whiteListUserIds", request.getWhiteListUserIds() == null ? null :
                         request.getWhiteListUserIds().stream().map(item -> {
                             return item;
                         }
@@ -2970,7 +2970,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("notificationTypes", request.getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    put("notificationTypes", request.getNotificationTypes() == null ? null :
                         request.getNotificationTypes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3064,7 +3064,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("notificationTypes", request.getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    put("notificationTypes", request.getNotificationTypes() == null ? null :
                         request.getNotificationTypes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3326,7 +3326,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("notificationTypes", request.getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    put("notificationTypes", request.getNotificationTypes() == null ? null :
                         request.getNotificationTypes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3420,7 +3420,7 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("notificationTypes", request.getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    put("notificationTypes", request.getNotificationTypes() == null ? null :
                         request.getNotificationTypes().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

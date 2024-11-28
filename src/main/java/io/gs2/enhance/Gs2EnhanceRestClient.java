@@ -1405,13 +1405,13 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("acquireExperienceSuffix", request.getAcquireExperienceSuffix());
                     put("materialInventoryModelId", request.getMaterialInventoryModelId());
-                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? null :
                         request.getAcquireExperienceHierarchy().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
-                    put("bonusRates", request.getBonusRates() == null ? new ArrayList<BonusRate>() :
+                    put("bonusRates", request.getBonusRates() == null ? null :
                         request.getBonusRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1584,13 +1584,13 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("acquireExperienceSuffix", request.getAcquireExperienceSuffix());
                     put("materialInventoryModelId", request.getMaterialInventoryModelId());
-                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? null :
                         request.getAcquireExperienceHierarchy().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
-                    put("bonusRates", request.getBonusRates() == null ? new ArrayList<BonusRate>() :
+                    put("bonusRates", request.getBonusRates() == null ? null :
                         request.getBonusRates().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2009,7 +2009,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("gradeModelId", request.getGradeModelId());
-                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<UnleashRateEntryModel>() :
+                    put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2181,7 +2181,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("gradeModelId", request.getGradeModelId());
-                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<UnleashRateEntryModel>() :
+                    put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2350,13 +2350,13 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2451,13 +2451,13 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2631,12 +2631,12 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<String>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2731,12 +2731,12 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<String>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2911,7 +2911,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("rateName", request.getRateName());
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3173,14 +3173,14 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("force", request.getForce());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3275,14 +3275,14 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("targetItemSetId", request.getTargetItemSetId());
-                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                    put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("force", request.getForce());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3374,7 +3374,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3467,7 +3467,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

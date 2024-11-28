@@ -1320,7 +1320,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1490,7 +1490,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2488,7 +2488,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2658,7 +2658,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4797,7 +4797,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("slots", request.getSlots() == null ? new ArrayList<Slot>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4891,7 +4891,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4988,7 +4988,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5949,7 +5949,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("slots", request.getSlots() == null ? new ArrayList<Slot>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -6043,7 +6043,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("slots", request.getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                    put("slots", request.getSlots() == null ? null :
                         request.getSlots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -6140,7 +6140,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

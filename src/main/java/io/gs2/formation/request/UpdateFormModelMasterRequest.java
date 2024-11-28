@@ -94,7 +94,7 @@ public class UpdateFormModelMasterRequest extends Gs2BasicRequest<UpdateFormMode
             .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SlotModel.fromJson(item);
@@ -109,7 +109,7 @@ public class UpdateFormModelMasterRequest extends Gs2BasicRequest<UpdateFormMode
                 put("formModelName", getFormModelName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
+                put("slots", getSlots() == null ? null :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

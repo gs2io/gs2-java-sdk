@@ -172,7 +172,7 @@ public class RandomShowcaseMaster implements IModel, Serializable, Comparable<Ra
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withMaximumNumberOfChoice(data.get("maximumNumberOfChoice") == null || data.get("maximumNumberOfChoice").isNull() ? null : data.get("maximumNumberOfChoice").intValue())
-            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? new ArrayList<RandomDisplayItemModel>() :
+            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("displayItems").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RandomDisplayItemModel.fromJson(item);
@@ -194,7 +194,7 @@ public class RandomShowcaseMaster implements IModel, Serializable, Comparable<Ra
                 put("description", getDescription());
                 put("metadata", getMetadata());
                 put("maximumNumberOfChoice", getMaximumNumberOfChoice());
-                put("displayItems", getDisplayItems() == null ? new ArrayList<RandomDisplayItemModel>() :
+                put("displayItems", getDisplayItems() == null ? null :
                     getDisplayItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -115,7 +115,7 @@ public class CompletedQuestList implements IModel, Serializable, Comparable<Comp
             .withCompletedQuestListId(data.get("completedQuestListId") == null || data.get("completedQuestListId").isNull() ? null : data.get("completedQuestListId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText())
-            .withCompleteQuestNames(data.get("completeQuestNames") == null || data.get("completeQuestNames").isNull() ? new ArrayList<String>() :
+            .withCompleteQuestNames(data.get("completeQuestNames") == null || data.get("completeQuestNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeQuestNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -131,7 +131,7 @@ public class CompletedQuestList implements IModel, Serializable, Comparable<Comp
                 put("completedQuestListId", getCompletedQuestListId());
                 put("userId", getUserId());
                 put("questGroupName", getQuestGroupName());
-                put("completeQuestNames", getCompleteQuestNames() == null ? new ArrayList<String>() :
+                put("completeQuestNames", getCompleteQuestNames() == null ? null :
                     getCompleteQuestNames().stream().map(item -> {
                         return item;
                     }

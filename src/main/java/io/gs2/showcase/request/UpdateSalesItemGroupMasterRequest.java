@@ -93,7 +93,7 @@ public class UpdateSalesItemGroupMasterRequest extends Gs2BasicRequest<UpdateSal
             .withSalesItemGroupName(data.get("salesItemGroupName") == null || data.get("salesItemGroupName").isNull() ? null : data.get("salesItemGroupName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withSalesItemNames(data.get("salesItemNames") == null || data.get("salesItemNames").isNull() ? new ArrayList<String>() :
+            .withSalesItemNames(data.get("salesItemNames") == null || data.get("salesItemNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("salesItemNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -107,7 +107,7 @@ public class UpdateSalesItemGroupMasterRequest extends Gs2BasicRequest<UpdateSal
                 put("salesItemGroupName", getSalesItemGroupName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
-                put("salesItemNames", getSalesItemNames() == null ? new ArrayList<String>() :
+                put("salesItemNames", getSalesItemNames() == null ? null :
                     getSalesItemNames().stream().map(item -> {
                         return item;
                     }

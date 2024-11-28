@@ -64,7 +64,7 @@ public class DescribeGlobalRankingScoresResult implements IResult, Serializable 
             return null;
         }
         return new DescribeGlobalRankingScoresResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<GlobalRankingScore>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return GlobalRankingScore.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeGlobalRankingScoresResult implements IResult, Serializable 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<GlobalRankingScore>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -82,7 +82,7 @@ public class SetCounterByUserIdResult implements IResult, Serializable {
         return new SetCounterByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
             .withOld(data.get("old") == null || data.get("old").isNull() ? null : Counter.fromJson(data.get("old")))
-            .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? new ArrayList<Complete>() :
+            .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("changedCompletes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Complete.fromJson(item);
@@ -95,7 +95,7 @@ public class SetCounterByUserIdResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
                 put("old", getOld() != null ? getOld().toJson() : null);
-                put("changedCompletes", getChangedCompletes() == null ? new ArrayList<Complete>() :
+                put("changedCompletes", getChangedCompletes() == null ? null :
                     getChangedCompletes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

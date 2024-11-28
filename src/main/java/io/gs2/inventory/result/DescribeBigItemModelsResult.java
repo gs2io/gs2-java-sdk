@@ -50,7 +50,7 @@ public class DescribeBigItemModelsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeBigItemModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<BigItemModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BigItemModel.fromJson(item);
@@ -61,7 +61,7 @@ public class DescribeBigItemModelsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<BigItemModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

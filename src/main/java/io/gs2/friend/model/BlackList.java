@@ -103,7 +103,7 @@ public class BlackList implements IModel, Serializable, Comparable<BlackList> {
         return new BlackList()
             .withBlackListId(data.get("blackListId") == null || data.get("blackListId").isNull() ? null : data.get("blackListId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? new ArrayList<String>() :
+            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -118,7 +118,7 @@ public class BlackList implements IModel, Serializable, Comparable<BlackList> {
             new HashMap<String, Object>() {{
                 put("blackListId", getBlackListId());
                 put("userId", getUserId());
-                put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
+                put("targetUserIds", getTargetUserIds() == null ? null :
                     getTargetUserIds().stream().map(item -> {
                         return item;
                     }

@@ -91,14 +91,14 @@ public class Player implements IModel, Serializable {
         }
         return new Player()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withAttributes(data.get("attributes") == null || data.get("attributes").isNull() ? new ArrayList<Attribute>() :
+            .withAttributes(data.get("attributes") == null || data.get("attributes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Attribute.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withRoleName(data.get("roleName") == null || data.get("roleName").isNull() ? null : data.get("roleName").asText())
-            .withDenyUserIds(data.get("denyUserIds") == null || data.get("denyUserIds").isNull() ? new ArrayList<String>() :
+            .withDenyUserIds(data.get("denyUserIds") == null || data.get("denyUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("denyUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -110,14 +110,14 @@ public class Player implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
-                put("attributes", getAttributes() == null ? new ArrayList<Attribute>() :
+                put("attributes", getAttributes() == null ? null :
                     getAttributes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("roleName", getRoleName());
-                put("denyUserIds", getDenyUserIds() == null ? new ArrayList<String>() :
+                put("denyUserIds", getDenyUserIds() == null ? null :
                     getDenyUserIds().stream().map(item -> {
                         return item;
                     }

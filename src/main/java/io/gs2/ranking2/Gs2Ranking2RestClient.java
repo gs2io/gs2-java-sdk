@@ -1398,7 +1398,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
                     put("orderDirection", request.getOrderDirection());
-                    put("rankingRewards", request.getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                    put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1574,7 +1574,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
                     put("orderDirection", request.getOrderDirection());
-                    put("rankingRewards", request.getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                    put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3006,7 +3006,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3101,7 +3101,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4157,7 +4157,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                     put("sum", request.getSum());
                     put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
-                    put("rankingRewards", request.getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                    put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -4335,7 +4335,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                     put("sum", request.getSum());
                     put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
-                    put("rankingRewards", request.getRankingRewards() == null ? new ArrayList<RankingReward>() :
+                    put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5795,7 +5795,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5891,7 +5891,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

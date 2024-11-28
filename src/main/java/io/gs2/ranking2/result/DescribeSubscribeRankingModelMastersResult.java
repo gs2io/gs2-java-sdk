@@ -64,7 +64,7 @@ public class DescribeSubscribeRankingModelMastersResult implements IResult, Seri
             return null;
         }
         return new DescribeSubscribeRankingModelMastersResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SubscribeRankingModelMaster>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return SubscribeRankingModelMaster.fromJson(item);
@@ -76,7 +76,7 @@ public class DescribeSubscribeRankingModelMastersResult implements IResult, Seri
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<SubscribeRankingModelMaster>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

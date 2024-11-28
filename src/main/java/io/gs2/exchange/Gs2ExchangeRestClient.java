@@ -1408,19 +1408,19 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("metadata", request.getMetadata());
                     put("timingType", request.getTimingType());
                     put("lockTime", request.getLockTime());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1592,19 +1592,19 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("metadata", request.getMetadata());
                     put("timingType", request.getTimingType());
                     put("lockTime", request.getLockTime());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("verifyActions", request.getVerifyActions() == null ? null :
                         request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("consumeActions", request.getConsumeActions() == null ? null :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2028,7 +2028,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("calculateScriptId", request.getCalculateScriptId());
                     put("exchangeCountId", request.getExchangeCountId());
                     put("maximumExchangeCount", request.getMaximumExchangeCount());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2205,7 +2205,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("calculateScriptId", request.getCalculateScriptId());
                     put("exchangeCountId", request.getExchangeCountId());
                     put("maximumExchangeCount", request.getMaximumExchangeCount());
-                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2374,7 +2374,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2469,7 +2469,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2643,7 +2643,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2738,7 +2738,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3235,7 +3235,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3682,7 +3682,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3776,7 +3776,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3870,7 +3870,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

@@ -50,7 +50,7 @@ public class ChangeSetResult implements IResult, Serializable {
             return null;
         }
         return new ChangeSetResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ChangeSet>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ChangeSet.fromJson(item);
@@ -61,7 +61,7 @@ public class ChangeSetResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<ChangeSet>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

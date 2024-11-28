@@ -50,7 +50,7 @@ public class DeleteEntriesResult implements IResult, Serializable {
             return null;
         }
         return new DeleteEntriesResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Entry>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Entry.fromJson(item);
@@ -61,7 +61,7 @@ public class DeleteEntriesResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<Entry>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

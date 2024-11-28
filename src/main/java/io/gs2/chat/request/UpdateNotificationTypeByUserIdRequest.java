@@ -107,7 +107,7 @@ public class UpdateNotificationTypeByUserIdRequest extends Gs2BasicRequest<Updat
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? new ArrayList<NotificationType>() :
+            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationTypes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return NotificationType.fromJson(item);
@@ -122,7 +122,7 @@ public class UpdateNotificationTypeByUserIdRequest extends Gs2BasicRequest<Updat
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
                 put("userId", getUserId());
-                put("notificationTypes", getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                put("notificationTypes", getNotificationTypes() == null ? null :
                     getNotificationTypes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

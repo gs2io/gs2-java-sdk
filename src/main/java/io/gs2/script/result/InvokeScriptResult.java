@@ -145,7 +145,7 @@ public class InvokeScriptResult implements IResult, Serializable {
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
             .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
             .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
-            .withOutput(data.get("output") == null || data.get("output").isNull() ? new ArrayList<String>() :
+            .withOutput(data.get("output") == null || data.get("output").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("output").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -161,7 +161,7 @@ public class InvokeScriptResult implements IResult, Serializable {
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
                 put("executeTime", getExecuteTime());
                 put("charged", getCharged());
-                put("output", getOutput() == null ? new ArrayList<String>() :
+                put("output", getOutput() == null ? null :
                     getOutput().stream().map(item -> {
                         return item;
                     }

@@ -185,13 +185,13 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
             .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
             .withAcquireExperienceSuffix(data.get("acquireExperienceSuffix") == null || data.get("acquireExperienceSuffix").isNull() ? null : data.get("acquireExperienceSuffix").asText())
             .withMaterialInventoryModelId(data.get("materialInventoryModelId") == null || data.get("materialInventoryModelId").isNull() ? null : data.get("materialInventoryModelId").asText())
-            .withAcquireExperienceHierarchy(data.get("acquireExperienceHierarchy") == null || data.get("acquireExperienceHierarchy").isNull() ? new ArrayList<String>() :
+            .withAcquireExperienceHierarchy(data.get("acquireExperienceHierarchy") == null || data.get("acquireExperienceHierarchy").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireExperienceHierarchy").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
-            .withBonusRates(data.get("bonusRates") == null || data.get("bonusRates").isNull() ? new ArrayList<BonusRate>() :
+            .withBonusRates(data.get("bonusRates") == null || data.get("bonusRates").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonusRates").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return BonusRate.fromJson(item);
@@ -212,13 +212,13 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
                 put("targetInventoryModelId", getTargetInventoryModelId());
                 put("acquireExperienceSuffix", getAcquireExperienceSuffix());
                 put("materialInventoryModelId", getMaterialInventoryModelId());
-                put("acquireExperienceHierarchy", getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                put("acquireExperienceHierarchy", getAcquireExperienceHierarchy() == null ? null :
                     getAcquireExperienceHierarchy().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
                 put("experienceModelId", getExperienceModelId());
-                put("bonusRates", getBonusRates() == null ? new ArrayList<BonusRate>() :
+                put("bonusRates", getBonusRates() == null ? null :
                     getBonusRates().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

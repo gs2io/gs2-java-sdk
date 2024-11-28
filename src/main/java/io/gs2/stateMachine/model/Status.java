@@ -196,13 +196,13 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             .withEnableSpeculativeExecution(data.get("enableSpeculativeExecution") == null || data.get("enableSpeculativeExecution").isNull() ? null : data.get("enableSpeculativeExecution").asText())
             .withStateMachineDefinition(data.get("stateMachineDefinition") == null || data.get("stateMachineDefinition").isNull() ? null : data.get("stateMachineDefinition").asText())
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
-            .withStacks(data.get("stacks") == null || data.get("stacks").isNull() ? new ArrayList<StackEntry>() :
+            .withStacks(data.get("stacks") == null || data.get("stacks").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("stacks").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return StackEntry.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withVariables(data.get("variables") == null || data.get("variables").isNull() ? new ArrayList<Variable>() :
+            .withVariables(data.get("variables") == null || data.get("variables").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("variables").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Variable.fromJson(item);
@@ -225,13 +225,13 @@ public class Status implements IModel, Serializable, Comparable<Status> {
                 put("enableSpeculativeExecution", getEnableSpeculativeExecution());
                 put("stateMachineDefinition", getStateMachineDefinition());
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
-                put("stacks", getStacks() == null ? new ArrayList<StackEntry>() :
+                put("stacks", getStacks() == null ? null :
                     getStacks().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("variables", getVariables() == null ? new ArrayList<Variable>() :
+                put("variables", getVariables() == null ? null :
                     getVariables().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

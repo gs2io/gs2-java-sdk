@@ -150,7 +150,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withIsRead(data.get("isRead") == null || data.get("isRead").isNull() ? null : data.get("isRead").booleanValue())
-            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -170,7 +170,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
                 put("userId", getUserId());
                 put("metadata", getMetadata());
                 put("isRead", getIsRead());
-                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("readAcquireActions", getReadAcquireActions() == null ? null :
                     getReadAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

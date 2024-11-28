@@ -58,7 +58,7 @@ public class RandomStatus implements IModel, Serializable {
         }
         return new RandomStatus()
             .withSeed(data.get("seed") == null || data.get("seed").isNull() ? null : data.get("seed").longValue())
-            .withUsed(data.get("used") == null || data.get("used").isNull() ? new ArrayList<RandomUsed>() :
+            .withUsed(data.get("used") == null || data.get("used").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("used").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RandomUsed.fromJson(item);
@@ -70,7 +70,7 @@ public class RandomStatus implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("seed", getSeed());
-                put("used", getUsed() == null ? new ArrayList<RandomUsed>() :
+                put("used", getUsed() == null ? null :
                     getUsed().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

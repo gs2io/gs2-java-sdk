@@ -733,7 +733,7 @@ import io.gs2.realtime.model.*;public class Gs2RealtimeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
-                    put("notificationUserIds", request.getNotificationUserIds() == null ? new ArrayList<String>() :
+                    put("notificationUserIds", request.getNotificationUserIds() == null ? null :
                         request.getNotificationUserIds().stream().map(item -> {
                             return item;
                         }

@@ -126,12 +126,12 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
             .withSubscribeId(data.get("subscribeId") == null || data.get("subscribeId").isNull() ? null : data.get("subscribeId").asText())
             .withRankingName(data.get("rankingName") == null || data.get("rankingName").isNull() ? null : data.get("rankingName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? new ArrayList<String>() :
+            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withFromUserIds(data.get("fromUserIds") == null || data.get("fromUserIds").isNull() ? new ArrayList<String>() :
+            .withFromUserIds(data.get("fromUserIds") == null || data.get("fromUserIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("fromUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -147,12 +147,12 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                 put("subscribeId", getSubscribeId());
                 put("rankingName", getRankingName());
                 put("userId", getUserId());
-                put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
+                put("targetUserIds", getTargetUserIds() == null ? null :
                     getTargetUserIds().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("fromUserIds", getFromUserIds() == null ? new ArrayList<String>() :
+                put("fromUserIds", getFromUserIds() == null ? null :
                     getFromUserIds().stream().map(item -> {
                         return item;
                     }

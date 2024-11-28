@@ -163,12 +163,12 @@ public class Resource implements IModel, Serializable, Comparable<Resource> {
             .withResponse(data.get("response") == null || data.get("response").isNull() ? null : data.get("response").asText())
             .withRollbackContext(data.get("rollbackContext") == null || data.get("rollbackContext").isNull() ? null : data.get("rollbackContext").asText())
             .withRollbackRequest(data.get("rollbackRequest") == null || data.get("rollbackRequest").isNull() ? null : data.get("rollbackRequest").asText())
-            .withRollbackAfter(data.get("rollbackAfter") == null || data.get("rollbackAfter").isNull() ? new ArrayList<String>() :
+            .withRollbackAfter(data.get("rollbackAfter") == null || data.get("rollbackAfter").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rollbackAfter").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withOutputFields(data.get("outputFields") == null || data.get("outputFields").isNull() ? new ArrayList<OutputField>() :
+            .withOutputFields(data.get("outputFields") == null || data.get("outputFields").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("outputFields").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return OutputField.fromJson(item);
@@ -188,12 +188,12 @@ public class Resource implements IModel, Serializable, Comparable<Resource> {
                 put("response", getResponse());
                 put("rollbackContext", getRollbackContext());
                 put("rollbackRequest", getRollbackRequest());
-                put("rollbackAfter", getRollbackAfter() == null ? new ArrayList<String>() :
+                put("rollbackAfter", getRollbackAfter() == null ? null :
                     getRollbackAfter().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("outputFields", getOutputFields() == null ? new ArrayList<OutputField>() :
+                put("outputFields", getOutputFields() == null ? null :
                     getOutputFields().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

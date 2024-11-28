@@ -119,7 +119,7 @@ public class CreateGlobalMessageMasterRequest extends Gs2BasicRequest<CreateGlob
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -136,7 +136,7 @@ public class CreateGlobalMessageMasterRequest extends Gs2BasicRequest<CreateGlob
                 put("namespaceName", getNamespaceName());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("readAcquireActions", getReadAcquireActions() == null ? null :
                     getReadAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

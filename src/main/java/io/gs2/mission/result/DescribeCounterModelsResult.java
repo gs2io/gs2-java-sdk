@@ -52,7 +52,7 @@ public class DescribeCounterModelsResult implements IResult, Serializable {
             return null;
         }
         return new DescribeCounterModelsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<CounterModel>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return CounterModel.fromJson(item);
@@ -63,7 +63,7 @@ public class DescribeCounterModelsResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<CounterModel>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

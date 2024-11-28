@@ -1398,20 +1398,20 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? null :
                         request.getReleaseVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? null :
                         request.getReleaseConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("restrainReturnRate", request.getRestrainReturnRate());
-                    put("premiseNodeNames", request.getPremiseNodeNames() == null ? new ArrayList<String>() :
+                    put("premiseNodeNames", request.getPremiseNodeNames() == null ? null :
                         request.getPremiseNodeNames().stream().map(item -> {
                             return item;
                         }
@@ -1580,20 +1580,20 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
-                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? null :
                         request.getReleaseVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? null :
                         request.getReleaseConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("restrainReturnRate", request.getRestrainReturnRate());
-                    put("premiseNodeNames", request.getPremiseNodeNames() == null ? new ArrayList<String>() :
+                    put("premiseNodeNames", request.getPremiseNodeNames() == null ? null :
                         request.getPremiseNodeNames().stream().map(item -> {
                             return item;
                         }
@@ -1761,7 +1761,7 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
@@ -1853,12 +1853,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1952,12 +1952,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2050,7 +2050,7 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
@@ -2143,7 +2143,7 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
@@ -2235,12 +2235,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2334,12 +2334,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("nodeModelNames", request.getNodeModelNames() == null ? new ArrayList<String>() :
+                    put("nodeModelNames", request.getNodeModelNames() == null ? null :
                         request.getNodeModelNames().stream().map(item -> {
                             return item;
                         }
                     ).collect(Collectors.toList()));
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2780,7 +2780,7 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

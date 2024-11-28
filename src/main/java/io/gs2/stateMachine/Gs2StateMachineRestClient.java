@@ -2187,7 +2187,7 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("events", request.getEvents() == null ? new ArrayList<Event>() :
+                    put("events", request.getEvents() == null ? null :
                         request.getEvents().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2281,7 +2281,7 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("events", request.getEvents() == null ? new ArrayList<Event>() :
+                    put("events", request.getEvents() == null ? null :
                         request.getEvents().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

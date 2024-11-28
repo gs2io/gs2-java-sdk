@@ -80,13 +80,13 @@ public class CapacityOfRole implements IModel, Serializable {
         }
         return new CapacityOfRole()
             .withRoleName(data.get("roleName") == null || data.get("roleName").isNull() ? null : data.get("roleName").asText())
-            .withRoleAliases(data.get("roleAliases") == null || data.get("roleAliases").isNull() ? new ArrayList<String>() :
+            .withRoleAliases(data.get("roleAliases") == null || data.get("roleAliases").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("roleAliases").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
             .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue())
-            .withParticipants(data.get("participants") == null || data.get("participants").isNull() ? new ArrayList<Player>() :
+            .withParticipants(data.get("participants") == null || data.get("participants").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("participants").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Player.fromJson(item);
@@ -98,13 +98,13 @@ public class CapacityOfRole implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("roleName", getRoleName());
-                put("roleAliases", getRoleAliases() == null ? new ArrayList<String>() :
+                put("roleAliases", getRoleAliases() == null ? null :
                     getRoleAliases().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
                 put("capacity", getCapacity());
-                put("participants", getParticipants() == null ? new ArrayList<Player>() :
+                put("participants", getParticipants() == null ? null :
                     getParticipants().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

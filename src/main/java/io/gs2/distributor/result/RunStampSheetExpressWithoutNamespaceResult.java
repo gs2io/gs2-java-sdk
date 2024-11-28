@@ -119,22 +119,22 @@ public class RunStampSheetExpressWithoutNamespaceResult implements IResult, Seri
             return null;
         }
         return new RunStampSheetExpressWithoutNamespaceResult()
-            .withVerifyTaskResultCodes(data.get("verifyTaskResultCodes") == null || data.get("verifyTaskResultCodes").isNull() ? new ArrayList<Integer>() :
+            .withVerifyTaskResultCodes(data.get("verifyTaskResultCodes") == null || data.get("verifyTaskResultCodes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withVerifyTaskResults(data.get("verifyTaskResults") == null || data.get("verifyTaskResults").isNull() ? new ArrayList<String>() :
+            .withVerifyTaskResults(data.get("verifyTaskResults") == null || data.get("verifyTaskResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? new ArrayList<Integer>() :
+            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
                 }
             ).collect(Collectors.toList()))
-            .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? new ArrayList<String>() :
+            .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -146,22 +146,22 @@ public class RunStampSheetExpressWithoutNamespaceResult implements IResult, Seri
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("verifyTaskResultCodes", getVerifyTaskResultCodes() == null ? new ArrayList<Integer>() :
+                put("verifyTaskResultCodes", getVerifyTaskResultCodes() == null ? null :
                     getVerifyTaskResultCodes().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("verifyTaskResults", getVerifyTaskResults() == null ? new ArrayList<String>() :
+                put("verifyTaskResults", getVerifyTaskResults() == null ? null :
                     getVerifyTaskResults().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("taskResultCodes", getTaskResultCodes() == null ? new ArrayList<Integer>() :
+                put("taskResultCodes", getTaskResultCodes() == null ? null :
                     getTaskResultCodes().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("taskResults", getTaskResults() == null ? new ArrayList<String>() :
+                put("taskResults", getTaskResults() == null ? null :
                     getTaskResults().stream().map(item -> {
                         return item;
                     }

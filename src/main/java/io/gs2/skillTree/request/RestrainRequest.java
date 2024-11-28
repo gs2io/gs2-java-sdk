@@ -107,12 +107,12 @@ public class RestrainRequest extends Gs2BasicRequest<RestrainRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? new ArrayList<String>() :
+            .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("nodeModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -126,12 +126,12 @@ public class RestrainRequest extends Gs2BasicRequest<RestrainRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("propertyId", getPropertyId());
-                put("nodeModelNames", getNodeModelNames() == null ? new ArrayList<String>() :
+                put("nodeModelNames", getNodeModelNames() == null ? null :
                     getNodeModelNames().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

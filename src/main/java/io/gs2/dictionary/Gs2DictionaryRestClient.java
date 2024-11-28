@@ -1901,7 +1901,7 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("entryModelNames", request.getEntryModelNames() == null ? new ArrayList<String>() :
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
                         request.getEntryModelNames().stream().map(item -> {
                             return item;
                         }
@@ -2600,7 +2600,7 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("entryModelNames", request.getEntryModelNames() == null ? new ArrayList<String>() :
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
                         request.getEntryModelNames().stream().map(item -> {
                             return item;
                         }
@@ -2692,7 +2692,7 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("entryModelNames", request.getEntryModelNames() == null ? new ArrayList<String>() :
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
                         request.getEntryModelNames().stream().map(item -> {
                             return item;
                         }

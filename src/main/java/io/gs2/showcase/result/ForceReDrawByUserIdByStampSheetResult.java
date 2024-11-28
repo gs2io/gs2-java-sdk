@@ -53,7 +53,7 @@ public class ForceReDrawByUserIdByStampSheetResult implements IResult, Serializa
             return null;
         }
         return new ForceReDrawByUserIdByStampSheetResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RandomDisplayItem>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RandomDisplayItem.fromJson(item);
@@ -64,7 +64,7 @@ public class ForceReDrawByUserIdByStampSheetResult implements IResult, Serializa
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<RandomDisplayItem>() :
+                put("items", getItems() == null ? null :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

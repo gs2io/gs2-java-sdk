@@ -185,7 +185,7 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
             .withDefaultMaximumMemberCount(data.get("defaultMaximumMemberCount") == null || data.get("defaultMaximumMemberCount").isNull() ? null : data.get("defaultMaximumMemberCount").intValue())
             .withMaximumMemberCount(data.get("maximumMemberCount") == null || data.get("maximumMemberCount").isNull() ? null : data.get("maximumMemberCount").intValue())
             .withInactivityPeriodDays(data.get("inactivityPeriodDays") == null || data.get("inactivityPeriodDays").isNull() ? null : data.get("inactivityPeriodDays").intValue())
-            .withRoles(data.get("roles") == null || data.get("roles").isNull() ? new ArrayList<RoleModel>() :
+            .withRoles(data.get("roles") == null || data.get("roles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("roles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return RoleModel.fromJson(item);
@@ -208,7 +208,7 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
                 put("defaultMaximumMemberCount", getDefaultMaximumMemberCount());
                 put("maximumMemberCount", getMaximumMemberCount());
                 put("inactivityPeriodDays", getInactivityPeriodDays());
-                put("roles", getRoles() == null ? new ArrayList<RoleModel>() :
+                put("roles", getRoles() == null ? null :
                     getRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

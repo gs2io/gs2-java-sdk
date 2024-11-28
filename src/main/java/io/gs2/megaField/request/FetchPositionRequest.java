@@ -107,7 +107,7 @@ public class FetchPositionRequest extends Gs2BasicRequest<FetchPositionRequest> 
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
-            .withUserIds(data.get("userIds") == null || data.get("userIds").isNull() ? new ArrayList<String>() :
+            .withUserIds(data.get("userIds") == null || data.get("userIds").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("userIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -121,7 +121,7 @@ public class FetchPositionRequest extends Gs2BasicRequest<FetchPositionRequest> 
                 put("accessToken", getAccessToken());
                 put("areaModelName", getAreaModelName());
                 put("layerModelName", getLayerModelName());
-                put("userIds", getUserIds() == null ? new ArrayList<String>() :
+                put("userIds", getUserIds() == null ? null :
                     getUserIds().stream().map(item -> {
                         return item;
                     }

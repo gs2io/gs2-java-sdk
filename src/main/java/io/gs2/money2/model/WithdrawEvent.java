@@ -69,7 +69,7 @@ public class WithdrawEvent implements IModel, Serializable {
         }
         return new WithdrawEvent()
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
-            .withWithdrawDetails(data.get("withdrawDetails") == null || data.get("withdrawDetails").isNull() ? new ArrayList<DepositTransaction>() :
+            .withWithdrawDetails(data.get("withdrawDetails") == null || data.get("withdrawDetails").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("withdrawDetails").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DepositTransaction.fromJson(item);
@@ -82,7 +82,7 @@ public class WithdrawEvent implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("slot", getSlot());
-                put("withdrawDetails", getWithdrawDetails() == null ? new ArrayList<DepositTransaction>() :
+                put("withdrawDetails", getWithdrawDetails() == null ? null :
                     getWithdrawDetails().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

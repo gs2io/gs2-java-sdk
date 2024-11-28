@@ -109,7 +109,7 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withStatusName(data.get("statusName") == null || data.get("statusName").isNull() ? null : data.get("statusName").asText())
-            .withEvents(data.get("events") == null || data.get("events").isNull() ? new ArrayList<Event>() :
+            .withEvents(data.get("events") == null || data.get("events").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("events").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Event.fromJson(item);
@@ -124,7 +124,7 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("statusName", getStatusName());
-                put("events", getEvents() == null ? new ArrayList<Event>() :
+                put("events", getEvents() == null ? null :
                     getEvents().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

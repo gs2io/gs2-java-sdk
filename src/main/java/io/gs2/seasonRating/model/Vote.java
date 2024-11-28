@@ -115,7 +115,7 @@ public class Vote implements IModel, Serializable, Comparable<Vote> {
             .withVoteId(data.get("voteId") == null || data.get("voteId").isNull() ? null : data.get("voteId").asText())
             .withSeasonName(data.get("seasonName") == null || data.get("seasonName").isNull() ? null : data.get("seasonName").asText())
             .withSessionName(data.get("sessionName") == null || data.get("sessionName").isNull() ? null : data.get("sessionName").asText())
-            .withWrittenBallots(data.get("writtenBallots") == null || data.get("writtenBallots").isNull() ? new ArrayList<WrittenBallot>() :
+            .withWrittenBallots(data.get("writtenBallots") == null || data.get("writtenBallots").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("writtenBallots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return WrittenBallot.fromJson(item);
@@ -132,7 +132,7 @@ public class Vote implements IModel, Serializable, Comparable<Vote> {
                 put("voteId", getVoteId());
                 put("seasonName", getSeasonName());
                 put("sessionName", getSessionName());
-                put("writtenBallots", getWrittenBallots() == null ? new ArrayList<WrittenBallot>() :
+                put("writtenBallots", getWrittenBallots() == null ? null :
                     getWrittenBallots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -207,13 +207,13 @@ public class CreateMissionTaskModelMasterRequest extends Gs2BasicRequest<CreateM
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withVerifyCompleteType(data.get("verifyCompleteType") == null || data.get("verifyCompleteType").isNull() ? null : data.get("verifyCompleteType").asText())
             .withTargetCounter(data.get("targetCounter") == null || data.get("targetCounter").isNull() ? null : TargetCounterModel.fromJson(data.get("targetCounter")))
-            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? new ArrayList<VerifyAction>() :
+            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyCompleteConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
@@ -236,13 +236,13 @@ public class CreateMissionTaskModelMasterRequest extends Gs2BasicRequest<CreateM
                 put("description", getDescription());
                 put("verifyCompleteType", getVerifyCompleteType());
                 put("targetCounter", getTargetCounter() != null ? getTargetCounter().toJson() : null);
-                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
+                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? null :
                     getVerifyCompleteConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                put("completeAcquireActions", getCompleteAcquireActions() == null ? null :
                     getCompleteAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

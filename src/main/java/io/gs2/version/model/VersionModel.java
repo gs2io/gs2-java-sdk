@@ -164,7 +164,7 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
             .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")))
             .withWarningVersion(data.get("warningVersion") == null || data.get("warningVersion").isNull() ? null : Version.fromJson(data.get("warningVersion")))
             .withErrorVersion(data.get("errorVersion") == null || data.get("errorVersion").isNull() ? null : Version.fromJson(data.get("errorVersion")))
-            .withScheduleVersions(data.get("scheduleVersions") == null || data.get("scheduleVersions").isNull() ? new ArrayList<ScheduleVersion>() :
+            .withScheduleVersions(data.get("scheduleVersions") == null || data.get("scheduleVersions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scheduleVersions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ScheduleVersion.fromJson(item);
@@ -185,7 +185,7 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
                 put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
                 put("warningVersion", getWarningVersion() != null ? getWarningVersion().toJson() : null);
                 put("errorVersion", getErrorVersion() != null ? getErrorVersion().toJson() : null);
-                put("scheduleVersions", getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                put("scheduleVersions", getScheduleVersions() == null ? null :
                     getScheduleVersions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

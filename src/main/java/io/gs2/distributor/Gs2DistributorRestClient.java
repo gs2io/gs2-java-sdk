@@ -158,6 +158,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                     put("description", request.getDescription());
                     put("assumeUserId", request.getAssumeUserId());
                     put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
+                    put("autoRunTransactionNotification", request.getAutoRunTransactionNotification() != null ? request.getAutoRunTransactionNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -402,6 +403,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                     put("description", request.getDescription());
                     put("assumeUserId", request.getAssumeUserId());
                     put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
+                    put("autoRunTransactionNotification", request.getAutoRunTransactionNotification() != null ? request.getAutoRunTransactionNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -653,7 +655,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("inboxNamespaceId", request.getInboxNamespaceId());
-                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? null :
                         request.getWhiteListTargetIds().stream().map(item -> {
                             return item;
                         }
@@ -823,7 +825,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
                     put("inboxNamespaceId", request.getInboxNamespaceId());
-                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? null :
                         request.getWhiteListTargetIds().stream().map(item -> {
                             return item;
                         }
@@ -2293,7 +2295,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2385,7 +2387,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2652,13 +2654,13 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
                     put("condition", request.getCondition() != null ? request.getCondition().toJson() : null);
-                    put("trueActions", request.getTrueActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("trueActions", request.getTrueActions() == null ? null :
                         request.getTrueActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("falseActions", request.getFalseActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("falseActions", request.getFalseActions() == null ? null :
                         request.getFalseActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2752,7 +2754,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("actions", request.getActions() == null ? new ArrayList<VerifyAction>() :
+                    put("actions", request.getActions() == null ? null :
                         request.getActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2845,7 +2847,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("actions", request.getActions() == null ? new ArrayList<VerifyAction>() :
+                    put("actions", request.getActions() == null ? null :
                         request.getActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -3299,6 +3301,264 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
     ) {
         final AsyncResult<GetStampSheetResultByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         getStampSheetResultByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RunTransactionTask extends Gs2RestSessionTask<RunTransactionResult> {
+        private RunTransactionRequest request;
+
+        public RunTransactionTask(
+            RunTransactionRequest request,
+            AsyncAction<AsyncResult<RunTransactionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RunTransactionResult parse(JsonNode data) {
+            return RunTransactionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/{ownerId}/{namespaceName}/user/{userId}/transaction/run";
+
+            url = url.replace("{ownerId}", this.request.getOwnerId() == null || this.request.getOwnerId().length() == 0 ? "null" : String.valueOf(this.request.getOwnerId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transaction", request.getTransaction());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void runTransactionAsync(
+            RunTransactionRequest request,
+            AsyncAction<AsyncResult<RunTransactionResult>> callback
+    ) {
+        RunTransactionTask task = new RunTransactionTask(request, callback);
+        session.execute(task);
+    }
+
+    public RunTransactionResult runTransaction(
+            RunTransactionRequest request
+    ) {
+        final AsyncResult<RunTransactionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        runTransactionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetTransactionResultTask extends Gs2RestSessionTask<GetTransactionResultResult> {
+        private GetTransactionResultRequest request;
+
+        public GetTransactionResultTask(
+            GetTransactionResultRequest request,
+            AsyncAction<AsyncResult<GetTransactionResultResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetTransactionResultResult parse(JsonNode data) {
+            return GetTransactionResultResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/transaction/{transactionId}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getTransactionResultAsync(
+            GetTransactionResultRequest request,
+            AsyncAction<AsyncResult<GetTransactionResultResult>> callback
+    ) {
+        GetTransactionResultTask task = new GetTransactionResultTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetTransactionResultResult getTransactionResult(
+            GetTransactionResultRequest request
+    ) {
+        final AsyncResult<GetTransactionResultResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getTransactionResultAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetTransactionResultByUserIdTask extends Gs2RestSessionTask<GetTransactionResultByUserIdResult> {
+        private GetTransactionResultByUserIdRequest request;
+
+        public GetTransactionResultByUserIdTask(
+            GetTransactionResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetTransactionResultByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetTransactionResultByUserIdResult parse(JsonNode data) {
+            return GetTransactionResultByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/transaction/{transactionId}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getTransactionResultByUserIdAsync(
+            GetTransactionResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetTransactionResultByUserIdResult>> callback
+    ) {
+        GetTransactionResultByUserIdTask task = new GetTransactionResultByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetTransactionResultByUserIdResult getTransactionResultByUserId(
+            GetTransactionResultByUserIdRequest request
+    ) {
+        final AsyncResult<GetTransactionResultByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getTransactionResultByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

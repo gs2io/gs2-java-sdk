@@ -141,7 +141,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withRewardIntervalMinutes(data.get("rewardIntervalMinutes") == null || data.get("rewardIntervalMinutes").isNull() ? null : data.get("rewardIntervalMinutes").intValue())
             .withDefaultMaximumIdleMinutes(data.get("defaultMaximumIdleMinutes") == null || data.get("defaultMaximumIdleMinutes").isNull() ? null : data.get("defaultMaximumIdleMinutes").intValue())
-            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireActionList>() :
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireActionList.fromJson(item);
@@ -160,7 +160,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                 put("metadata", getMetadata());
                 put("rewardIntervalMinutes", getRewardIntervalMinutes());
                 put("defaultMaximumIdleMinutes", getDefaultMaximumIdleMinutes());
-                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireActionList>() :
+                put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

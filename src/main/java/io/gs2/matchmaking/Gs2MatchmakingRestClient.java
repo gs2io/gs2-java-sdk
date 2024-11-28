@@ -1263,19 +1263,19 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
-                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    put("attributeRanges", request.getAttributeRanges() == null ? null :
                         request.getAttributeRanges().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? null :
                         request.getCapacityOfRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1370,19 +1370,19 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
-                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    put("attributeRanges", request.getAttributeRanges() == null ? null :
                         request.getAttributeRanges().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? null :
                         request.getCapacityOfRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                    put("allowUserIds", request.getAllowUserIds() == null ? null :
                         request.getAllowUserIds().stream().map(item -> {
                             return item;
                         }
@@ -1476,7 +1476,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    put("attributeRanges", request.getAttributeRanges() == null ? null :
                         request.getAttributeRanges().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1570,7 +1570,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    put("attributeRanges", request.getAttributeRanges() == null ? null :
                         request.getAttributeRanges().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5579,7 +5579,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                    put("gameResults", request.getGameResults() == null ? null :
                         request.getGameResults().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5930,7 +5930,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                 new HashMap<String, Object>() {{
                     put("ballotBody", request.getBallotBody());
                     put("ballotSignature", request.getBallotSignature());
-                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                    put("gameResults", request.getGameResults() == null ? null :
                         request.getGameResults().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -6017,13 +6017,13 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("signedBallots", request.getSignedBallots() == null ? new ArrayList<SignedBallot>() :
+                    put("signedBallots", request.getSignedBallots() == null ? null :
                         request.getSignedBallots().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                    put("gameResults", request.getGameResults() == null ? null :
                         request.getGameResults().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

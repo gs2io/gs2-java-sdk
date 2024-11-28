@@ -58,7 +58,7 @@ public class LogRate implements IModel, Serializable {
         }
         return new LogRate()
             .withBase(data.get("base") == null || data.get("base").isNull() ? null : data.get("base").doubleValue())
-            .withLogs(data.get("logs") == null || data.get("logs").isNull() ? new ArrayList<Double>() :
+            .withLogs(data.get("logs") == null || data.get("logs").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("logs").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.doubleValue();
                 }
@@ -69,7 +69,7 @@ public class LogRate implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("base", getBase());
-                put("logs", getLogs() == null ? new ArrayList<Double>() :
+                put("logs", getLogs() == null ? null :
                     getLogs().stream().map(item -> {
                         return item;
                     }

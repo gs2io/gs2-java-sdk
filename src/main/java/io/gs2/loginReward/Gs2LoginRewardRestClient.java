@@ -1239,20 +1239,20 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
                     put("periodEventId", request.getPeriodEventId());
                     put("resetHour", request.getResetHour());
                     put("repeat", request.getRepeat());
-                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                    put("rewards", request.getRewards() == null ? null :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("missedReceiveRelief", request.getMissedReceiveRelief());
-                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? null :
                         request.getMissedReceiveReliefVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? null :
                         request.getMissedReceiveReliefConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -1426,20 +1426,20 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
                     put("periodEventId", request.getPeriodEventId());
                     put("resetHour", request.getResetHour());
                     put("repeat", request.getRepeat());
-                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                    put("rewards", request.getRewards() == null ? null :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("missedReceiveRelief", request.getMissedReceiveRelief());
-                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? null :
                         request.getMissedReceiveReliefVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? null :
                         request.getMissedReceiveReliefConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2090,7 +2090,7 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2184,7 +2184,7 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2278,7 +2278,7 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("stepNumber", request.getStepNumber());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -2373,7 +2373,7 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("stepNumber", request.getStepNumber());
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                    put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

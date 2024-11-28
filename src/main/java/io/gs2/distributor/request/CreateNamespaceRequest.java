@@ -34,6 +34,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String description;
     private String assumeUserId;
     private NotificationSetting autoRunStampSheetNotification;
+    private NotificationSetting autoRunTransactionNotification;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -75,6 +76,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
 		return this;
 	}
+	public NotificationSetting getAutoRunTransactionNotification() {
+		return autoRunTransactionNotification;
+	}
+	public void setAutoRunTransactionNotification(NotificationSetting autoRunTransactionNotification) {
+		this.autoRunTransactionNotification = autoRunTransactionNotification;
+	}
+	public CreateNamespaceRequest withAutoRunTransactionNotification(NotificationSetting autoRunTransactionNotification) {
+		this.autoRunTransactionNotification = autoRunTransactionNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -95,6 +106,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAssumeUserId(data.get("assumeUserId") == null || data.get("assumeUserId").isNull() ? null : data.get("assumeUserId").asText())
             .withAutoRunStampSheetNotification(data.get("autoRunStampSheetNotification") == null || data.get("autoRunStampSheetNotification").isNull() ? null : NotificationSetting.fromJson(data.get("autoRunStampSheetNotification")))
+            .withAutoRunTransactionNotification(data.get("autoRunTransactionNotification") == null || data.get("autoRunTransactionNotification").isNull() ? null : NotificationSetting.fromJson(data.get("autoRunTransactionNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -105,6 +117,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("description", getDescription());
                 put("assumeUserId", getAssumeUserId());
                 put("autoRunStampSheetNotification", getAutoRunStampSheetNotification() != null ? getAutoRunStampSheetNotification().toJson() : null);
+                put("autoRunTransactionNotification", getAutoRunTransactionNotification() != null ? getAutoRunTransactionNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

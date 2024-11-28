@@ -130,13 +130,13 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCondition(data.get("condition") == null || data.get("condition").isNull() ? null : VerifyAction.fromJson(data.get("condition")))
-            .withTrueActions(data.get("trueActions") == null || data.get("trueActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withTrueActions(data.get("trueActions") == null || data.get("trueActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("trueActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withFalseActions(data.get("falseActions") == null || data.get("falseActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withFalseActions(data.get("falseActions") == null || data.get("falseActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("falseActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return ConsumeAction.fromJson(item);
@@ -152,13 +152,13 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("condition", getCondition() != null ? getCondition().toJson() : null);
-                put("trueActions", getTrueActions() == null ? new ArrayList<ConsumeAction>() :
+                put("trueActions", getTrueActions() == null ? null :
                     getTrueActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("falseActions", getFalseActions() == null ? new ArrayList<ConsumeAction>() :
+                put("falseActions", getFalseActions() == null ? null :
                     getFalseActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -119,7 +119,7 @@ public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdReq
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
             .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
@@ -135,7 +135,7 @@ public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdReq
                 put("missionGroupName", getMissionGroupName());
                 put("missionTaskName", getMissionTaskName());
                 put("userId", getUserId());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
+                put("config", getConfig() == null ? null :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

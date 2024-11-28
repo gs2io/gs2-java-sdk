@@ -107,7 +107,7 @@ public class SetSimpleItemsByUserIdRequest extends Gs2BasicRequest<SetSimpleItem
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCounts(data.get("counts") == null || data.get("counts").isNull() ? new ArrayList<HeldCount>() :
+            .withCounts(data.get("counts") == null || data.get("counts").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("counts").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return HeldCount.fromJson(item);
@@ -122,7 +122,7 @@ public class SetSimpleItemsByUserIdRequest extends Gs2BasicRequest<SetSimpleItem
                 put("namespaceName", getNamespaceName());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("counts", getCounts() == null ? new ArrayList<HeldCount>() :
+                put("counts", getCounts() == null ? null :
                     getCounts().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

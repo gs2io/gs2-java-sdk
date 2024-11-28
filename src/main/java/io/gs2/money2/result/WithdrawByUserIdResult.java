@@ -67,7 +67,7 @@ public class WithdrawByUserIdResult implements IResult, Serializable {
         }
         return new WithdrawByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Wallet.fromJson(data.get("item")))
-            .withWithdrawTransactions(data.get("withdrawTransactions") == null || data.get("withdrawTransactions").isNull() ? new ArrayList<DepositTransaction>() :
+            .withWithdrawTransactions(data.get("withdrawTransactions") == null || data.get("withdrawTransactions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("withdrawTransactions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return DepositTransaction.fromJson(item);
@@ -79,7 +79,7 @@ public class WithdrawByUserIdResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("withdrawTransactions", getWithdrawTransactions() == null ? new ArrayList<DepositTransaction>() :
+                put("withdrawTransactions", getWithdrawTransactions() == null ? null :
                     getWithdrawTransactions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
