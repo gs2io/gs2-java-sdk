@@ -189,14 +189,14 @@ public class BlockingPolicyModel implements IModel, Serializable {
             return null;
         }
         return new BlockingPolicyModel()
-            .withPassServices(data.get("passServices") == null || data.get("passServices").isNull() ? new ArrayList<String>() :
+            .withPassServices(data.get("passServices") == null || data.get("passServices").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("passServices").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
             .withDefaultRestriction(data.get("defaultRestriction") == null || data.get("defaultRestriction").isNull() ? null : data.get("defaultRestriction").asText())
             .withLocationDetection(data.get("locationDetection") == null || data.get("locationDetection").isNull() ? null : data.get("locationDetection").asText())
-            .withLocations(data.get("locations") == null || data.get("locations").isNull() ? new ArrayList<String>() :
+            .withLocations(data.get("locations") == null || data.get("locations").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("locations").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -209,7 +209,7 @@ public class BlockingPolicyModel implements IModel, Serializable {
             .withReputationIpDetection(data.get("reputationIpDetection") == null || data.get("reputationIpDetection").isNull() ? null : data.get("reputationIpDetection").asText())
             .withReputationIpRestriction(data.get("reputationIpRestriction") == null || data.get("reputationIpRestriction").isNull() ? null : data.get("reputationIpRestriction").asText())
             .withIpAddressesDetection(data.get("ipAddressesDetection") == null || data.get("ipAddressesDetection").isNull() ? null : data.get("ipAddressesDetection").asText())
-            .withIpAddresses(data.get("ipAddresses") == null || data.get("ipAddresses").isNull() ? new ArrayList<String>() :
+            .withIpAddresses(data.get("ipAddresses") == null || data.get("ipAddresses").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ipAddresses").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
@@ -220,14 +220,14 @@ public class BlockingPolicyModel implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("passServices", getPassServices() == null ? new ArrayList<String>() :
+                put("passServices", getPassServices() == null ? null :
                     getPassServices().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
                 put("defaultRestriction", getDefaultRestriction());
                 put("locationDetection", getLocationDetection());
-                put("locations", getLocations() == null ? new ArrayList<String>() :
+                put("locations", getLocations() == null ? null :
                     getLocations().stream().map(item -> {
                         return item;
                     }
@@ -240,7 +240,7 @@ public class BlockingPolicyModel implements IModel, Serializable {
                 put("reputationIpDetection", getReputationIpDetection());
                 put("reputationIpRestriction", getReputationIpRestriction());
                 put("ipAddressesDetection", getIpAddressesDetection());
-                put("ipAddresses", getIpAddresses() == null ? new ArrayList<String>() :
+                put("ipAddresses", getIpAddresses() == null ? null :
                     getIpAddresses().stream().map(item -> {
                         return item;
                     }
