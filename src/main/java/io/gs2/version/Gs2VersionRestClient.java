@@ -1250,6 +1250,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                     ).collect(Collectors.toList()));
                     put("needSignature", request.getNeedSignature());
                     put("signatureKeyId", request.getSignatureKeyId());
+                    put("approveRequirement", request.getApproveRequirement());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1427,6 +1428,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                     ).collect(Collectors.toList()));
                     put("needSignature", request.getNeedSignature());
                     put("signatureKeyId", request.getSignatureKeyId());
+                    put("approveRequirement", request.getApproveRequirement());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2060,6 +2062,183 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
     ) {
         final AsyncResult<AcceptByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         acceptByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RejectTask extends Gs2RestSessionTask<RejectResult> {
+        private RejectRequest request;
+
+        public RejectTask(
+            RejectRequest request,
+            AsyncAction<AsyncResult<RejectResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RejectResult parse(JsonNode data) {
+            return RejectResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "version")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/acceptVersion/reject";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("versionName", request.getVersionName());
+                    put("version", request.getVersion() != null ? request.getVersion().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void rejectAsync(
+            RejectRequest request,
+            AsyncAction<AsyncResult<RejectResult>> callback
+    ) {
+        RejectTask task = new RejectTask(request, callback);
+        session.execute(task);
+    }
+
+    public RejectResult reject(
+            RejectRequest request
+    ) {
+        final AsyncResult<RejectResult>[] resultAsyncResult = new AsyncResult[]{null};
+        rejectAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RejectByUserIdTask extends Gs2RestSessionTask<RejectByUserIdResult> {
+        private RejectByUserIdRequest request;
+
+        public RejectByUserIdTask(
+            RejectByUserIdRequest request,
+            AsyncAction<AsyncResult<RejectByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RejectByUserIdResult parse(JsonNode data) {
+            return RejectByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "version")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/acceptVersion/reject";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("versionName", request.getVersionName());
+                    put("version", request.getVersion() != null ? request.getVersion().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void rejectByUserIdAsync(
+            RejectByUserIdRequest request,
+            AsyncAction<AsyncResult<RejectByUserIdResult>> callback
+    ) {
+        RejectByUserIdTask task = new RejectByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public RejectByUserIdResult rejectByUserId(
+            RejectByUserIdRequest request
+    ) {
+        final AsyncResult<RejectByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        rejectByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

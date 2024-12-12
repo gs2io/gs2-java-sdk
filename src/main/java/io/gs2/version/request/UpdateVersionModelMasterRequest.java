@@ -42,6 +42,7 @@ public class UpdateVersionModelMasterRequest extends Gs2BasicRequest<UpdateVersi
     private List<ScheduleVersion> scheduleVersions;
     private Boolean needSignature;
     private String signatureKeyId;
+    private String approveRequirement;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -162,6 +163,16 @@ public class UpdateVersionModelMasterRequest extends Gs2BasicRequest<UpdateVersi
 		this.signatureKeyId = signatureKeyId;
 		return this;
 	}
+	public String getApproveRequirement() {
+		return approveRequirement;
+	}
+	public void setApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+	}
+	public UpdateVersionModelMasterRequest withApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+		return this;
+	}
 
     public static UpdateVersionModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -184,7 +195,8 @@ public class UpdateVersionModelMasterRequest extends Gs2BasicRequest<UpdateVersi
                 }
             ).collect(Collectors.toList()))
             .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
-            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText());
+            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText())
+            .withApproveRequirement(data.get("approveRequirement") == null || data.get("approveRequirement").isNull() ? null : data.get("approveRequirement").asText());
     }
 
     public JsonNode toJson() {
@@ -207,6 +219,7 @@ public class UpdateVersionModelMasterRequest extends Gs2BasicRequest<UpdateVersi
                 ).collect(Collectors.toList()));
                 put("needSignature", getNeedSignature());
                 put("signatureKeyId", getSignatureKeyId());
+                put("approveRequirement", getApproveRequirement());
             }}
         );
     }

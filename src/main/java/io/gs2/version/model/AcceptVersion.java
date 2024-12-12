@@ -33,6 +33,7 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
 	private String versionName;
 	private String userId;
 	private Version version;
+	private String status;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -76,6 +77,16 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
 		this.version = version;
 		return this;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public AcceptVersion withStatus(String status) {
+		this.status = status;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -116,6 +127,7 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
             .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")))
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -128,6 +140,7 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
                 put("versionName", getVersionName());
                 put("userId", getUserId());
                 put("version", getVersion() != null ? getVersion().toJson() : null);
+                put("status", getStatus());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -148,6 +161,7 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
         result = prime * result + ((this.versionName == null) ? 0 : this.versionName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.version == null) ? 0 : this.version.hashCode());
+        result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -181,6 +195,11 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
 		if (version == null) {
 			return other.version == null;
 		} else if (!version.equals(other.version)) {
+			return false;
+		}
+		if (status == null) {
+			return other.status == null;
+		} else if (!status.equals(other.status)) {
 			return false;
 		}
 		if (createdAt == null) {

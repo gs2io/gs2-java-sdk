@@ -41,6 +41,7 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 	private List<ScheduleVersion> scheduleVersions;
 	private Boolean needSignature;
 	private String signatureKeyId;
+	private String approveRequirement;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -164,6 +165,16 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		this.signatureKeyId = signatureKeyId;
 		return this;
 	}
+	public String getApproveRequirement() {
+		return approveRequirement;
+	}
+	public void setApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+	}
+	public VersionModelMaster withApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -217,6 +228,7 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
             ).collect(Collectors.toList()))
             .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
             .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText())
+            .withApproveRequirement(data.get("approveRequirement") == null || data.get("approveRequirement").isNull() ? null : data.get("approveRequirement").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -242,6 +254,7 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
                 ).collect(Collectors.toList()));
                 put("needSignature", getNeedSignature());
                 put("signatureKeyId", getSignatureKeyId());
+                put("approveRequirement", getApproveRequirement());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -270,6 +283,7 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
         result = prime * result + ((this.scheduleVersions == null) ? 0 : this.scheduleVersions.hashCode());
         result = prime * result + ((this.needSignature == null) ? 0 : this.needSignature.hashCode());
         result = prime * result + ((this.signatureKeyId == null) ? 0 : this.signatureKeyId.hashCode());
+        result = prime * result + ((this.approveRequirement == null) ? 0 : this.approveRequirement.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -343,6 +357,11 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		if (signatureKeyId == null) {
 			return other.signatureKeyId == null;
 		} else if (!signatureKeyId.equals(other.signatureKeyId)) {
+			return false;
+		}
+		if (approveRequirement == null) {
+			return other.approveRequirement == null;
+		} else if (!approveRequirement.equals(other.approveRequirement)) {
 			return false;
 		}
 		if (createdAt == null) {

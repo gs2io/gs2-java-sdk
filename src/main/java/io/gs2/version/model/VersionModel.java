@@ -40,6 +40,7 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
 	private List<ScheduleVersion> scheduleVersions;
 	private Boolean needSignature;
 	private String signatureKeyId;
+	private String approveRequirement;
 	public String getVersionModelId() {
 		return versionModelId;
 	}
@@ -150,6 +151,16 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
 		this.signatureKeyId = signatureKeyId;
 		return this;
 	}
+	public String getApproveRequirement() {
+		return approveRequirement;
+	}
+	public void setApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+	}
+	public VersionModel withApproveRequirement(String approveRequirement) {
+		this.approveRequirement = approveRequirement;
+		return this;
+	}
 
     public static VersionModel fromJson(JsonNode data) {
         if (data == null) {
@@ -171,7 +182,8 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
                 }
             ).collect(Collectors.toList()))
             .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
-            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText());
+            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText())
+            .withApproveRequirement(data.get("approveRequirement") == null || data.get("approveRequirement").isNull() ? null : data.get("approveRequirement").asText());
     }
 
     public JsonNode toJson() {
@@ -193,6 +205,7 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
                 ).collect(Collectors.toList()));
                 put("needSignature", getNeedSignature());
                 put("signatureKeyId", getSignatureKeyId());
+                put("approveRequirement", getApproveRequirement());
             }}
         );
     }
@@ -217,6 +230,7 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
         result = prime * result + ((this.scheduleVersions == null) ? 0 : this.scheduleVersions.hashCode());
         result = prime * result + ((this.needSignature == null) ? 0 : this.needSignature.hashCode());
         result = prime * result + ((this.signatureKeyId == null) ? 0 : this.signatureKeyId.hashCode());
+        result = prime * result + ((this.approveRequirement == null) ? 0 : this.approveRequirement.hashCode());
 		return result;
 	}
 
@@ -282,6 +296,11 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
 		if (signatureKeyId == null) {
 			return other.signatureKeyId == null;
 		} else if (!signatureKeyId.equals(other.signatureKeyId)) {
+			return false;
+		}
+		if (approveRequirement == null) {
+			return other.approveRequirement == null;
+		} else if (!approveRequirement.equals(other.approveRequirement)) {
 			return false;
 		}
 		return true;

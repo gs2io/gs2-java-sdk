@@ -2992,6 +2992,893 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeLikesTask extends Gs2RestSessionTask<DescribeLikesResult> {
+        private DescribeLikesRequest request;
+
+        public DescribeLikesTask(
+            DescribeLikesRequest request,
+            AsyncAction<AsyncResult<DescribeLikesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeLikesResult parse(JsonNode data) {
+            return DescribeLikesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeLikesAsync(
+            DescribeLikesRequest request,
+            AsyncAction<AsyncResult<DescribeLikesResult>> callback
+    ) {
+        DescribeLikesTask task = new DescribeLikesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeLikesResult describeLikes(
+            DescribeLikesRequest request
+    ) {
+        final AsyncResult<DescribeLikesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeLikesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeLikesByUserIdTask extends Gs2RestSessionTask<DescribeLikesByUserIdResult> {
+        private DescribeLikesByUserIdRequest request;
+
+        public DescribeLikesByUserIdTask(
+            DescribeLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeLikesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeLikesByUserIdResult parse(JsonNode data) {
+            return DescribeLikesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeLikesByUserIdAsync(
+            DescribeLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeLikesByUserIdResult>> callback
+    ) {
+        DescribeLikesByUserIdTask task = new DescribeLikesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeLikesByUserIdResult describeLikesByUserId(
+            DescribeLikesByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeLikesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeLikesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AddLikesTask extends Gs2RestSessionTask<AddLikesResult> {
+        private AddLikesRequest request;
+
+        public AddLikesTask(
+            AddLikesRequest request,
+            AsyncAction<AsyncResult<AddLikesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddLikesResult parse(JsonNode data) {
+            return AddLikesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addLikesAsync(
+            AddLikesRequest request,
+            AsyncAction<AsyncResult<AddLikesResult>> callback
+    ) {
+        AddLikesTask task = new AddLikesTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddLikesResult addLikes(
+            AddLikesRequest request
+    ) {
+        final AsyncResult<AddLikesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addLikesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AddLikesByUserIdTask extends Gs2RestSessionTask<AddLikesByUserIdResult> {
+        private AddLikesByUserIdRequest request;
+
+        public AddLikesByUserIdTask(
+            AddLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<AddLikesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddLikesByUserIdResult parse(JsonNode data) {
+            return AddLikesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addLikesByUserIdAsync(
+            AddLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<AddLikesByUserIdResult>> callback
+    ) {
+        AddLikesByUserIdTask task = new AddLikesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddLikesByUserIdResult addLikesByUserId(
+            AddLikesByUserIdRequest request
+    ) {
+        final AsyncResult<AddLikesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addLikesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetLikeTask extends Gs2RestSessionTask<GetLikeResult> {
+        private GetLikeRequest request;
+
+        public GetLikeTask(
+            GetLikeRequest request,
+            AsyncAction<AsyncResult<GetLikeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetLikeResult parse(JsonNode data) {
+            return GetLikeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/like/{entryModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getLikeAsync(
+            GetLikeRequest request,
+            AsyncAction<AsyncResult<GetLikeResult>> callback
+    ) {
+        GetLikeTask task = new GetLikeTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetLikeResult getLike(
+            GetLikeRequest request
+    ) {
+        final AsyncResult<GetLikeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getLikeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetLikeByUserIdTask extends Gs2RestSessionTask<GetLikeByUserIdResult> {
+        private GetLikeByUserIdRequest request;
+
+        public GetLikeByUserIdTask(
+            GetLikeByUserIdRequest request,
+            AsyncAction<AsyncResult<GetLikeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetLikeByUserIdResult parse(JsonNode data) {
+            return GetLikeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/like/{entryModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getLikeByUserIdAsync(
+            GetLikeByUserIdRequest request,
+            AsyncAction<AsyncResult<GetLikeByUserIdResult>> callback
+    ) {
+        GetLikeByUserIdTask task = new GetLikeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetLikeByUserIdResult getLikeByUserId(
+            GetLikeByUserIdRequest request
+    ) {
+        final AsyncResult<GetLikeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getLikeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetLikesTask extends Gs2RestSessionTask<ResetLikesResult> {
+        private ResetLikesRequest request;
+
+        public ResetLikesTask(
+            ResetLikesRequest request,
+            AsyncAction<AsyncResult<ResetLikesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetLikesResult parse(JsonNode data) {
+            return ResetLikesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetLikesAsync(
+            ResetLikesRequest request,
+            AsyncAction<AsyncResult<ResetLikesResult>> callback
+    ) {
+        ResetLikesTask task = new ResetLikesTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetLikesResult resetLikes(
+            ResetLikesRequest request
+    ) {
+        final AsyncResult<ResetLikesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetLikesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetLikesByUserIdTask extends Gs2RestSessionTask<ResetLikesByUserIdResult> {
+        private ResetLikesByUserIdRequest request;
+
+        public ResetLikesByUserIdTask(
+            ResetLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetLikesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetLikesByUserIdResult parse(JsonNode data) {
+            return ResetLikesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/like";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetLikesByUserIdAsync(
+            ResetLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetLikesByUserIdResult>> callback
+    ) {
+        ResetLikesByUserIdTask task = new ResetLikesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetLikesByUserIdResult resetLikesByUserId(
+            ResetLikesByUserIdRequest request
+    ) {
+        final AsyncResult<ResetLikesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetLikesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteLikesTask extends Gs2RestSessionTask<DeleteLikesResult> {
+        private DeleteLikesRequest request;
+
+        public DeleteLikesTask(
+            DeleteLikesRequest request,
+            AsyncAction<AsyncResult<DeleteLikesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteLikesResult parse(JsonNode data) {
+            return DeleteLikesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/like/delete";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteLikesAsync(
+            DeleteLikesRequest request,
+            AsyncAction<AsyncResult<DeleteLikesResult>> callback
+    ) {
+        DeleteLikesTask task = new DeleteLikesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteLikesResult deleteLikes(
+            DeleteLikesRequest request
+    ) {
+        final AsyncResult<DeleteLikesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteLikesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteLikesByUserIdTask extends Gs2RestSessionTask<DeleteLikesByUserIdResult> {
+        private DeleteLikesByUserIdRequest request;
+
+        public DeleteLikesByUserIdTask(
+            DeleteLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteLikesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteLikesByUserIdResult parse(JsonNode data) {
+            return DeleteLikesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/like/delete";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteLikesByUserIdAsync(
+            DeleteLikesByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteLikesByUserIdResult>> callback
+    ) {
+        DeleteLikesByUserIdTask task = new DeleteLikesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteLikesByUserIdResult deleteLikesByUserId(
+            DeleteLikesByUserIdRequest request
+    ) {
+        final AsyncResult<DeleteLikesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteLikesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
         private ExportMasterRequest request;
 
