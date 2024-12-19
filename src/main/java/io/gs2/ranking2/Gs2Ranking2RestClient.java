@@ -1404,6 +1404,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("rewardCalculationIndex", request.getRewardCalculationIndex());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("contextStack", request.getContextStack());
@@ -1580,6 +1581,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("rewardCalculationIndex", request.getRewardCalculationIndex());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("contextStack", request.getContextStack());
@@ -4163,6 +4165,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("rewardCalculationIndex", request.getRewardCalculationIndex());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("contextStack", request.getContextStack());
@@ -4341,6 +4344,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("rewardCalculationIndex", request.getRewardCalculationIndex());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("contextStack", request.getContextStack());

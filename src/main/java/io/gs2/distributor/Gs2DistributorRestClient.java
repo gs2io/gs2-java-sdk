@@ -2792,6 +2792,90 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class BatchExecuteApiTask extends Gs2RestSessionTask<BatchExecuteApiResult> {
+        private BatchExecuteApiRequest request;
+
+        public BatchExecuteApiTask(
+            BatchExecuteApiRequest request,
+            AsyncAction<AsyncResult<BatchExecuteApiResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public BatchExecuteApiResult parse(JsonNode data) {
+            return BatchExecuteApiResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/batch/execute";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("requestPayloads", request.getRequestPayloads() == null ? null :
+                        request.getRequestPayloads().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void batchExecuteApiAsync(
+            BatchExecuteApiRequest request,
+            AsyncAction<AsyncResult<BatchExecuteApiResult>> callback
+    ) {
+        BatchExecuteApiTask task = new BatchExecuteApiTask(request, callback);
+        session.execute(task);
+    }
+
+    public BatchExecuteApiResult batchExecuteApi(
+            BatchExecuteApiRequest request
+    ) {
+        final AsyncResult<BatchExecuteApiResult>[] resultAsyncResult = new AsyncResult[]{null};
+        batchExecuteApiAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IfExpressionByUserIdTask extends Gs2RestSessionTask<IfExpressionByUserIdResult> {
         private IfExpressionByUserIdRequest request;
 

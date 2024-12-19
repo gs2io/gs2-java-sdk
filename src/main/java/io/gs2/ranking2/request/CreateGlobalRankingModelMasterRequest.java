@@ -39,6 +39,7 @@ public class CreateGlobalRankingModelMasterRequest extends Gs2BasicRequest<Creat
     private Boolean sum;
     private String orderDirection;
     private List<RankingReward> rankingRewards;
+    private String rewardCalculationIndex;
     private String entryPeriodEventId;
     private String accessPeriodEventId;
 	public String getNamespaceName() {
@@ -131,6 +132,16 @@ public class CreateGlobalRankingModelMasterRequest extends Gs2BasicRequest<Creat
 		this.rankingRewards = rankingRewards;
 		return this;
 	}
+	public String getRewardCalculationIndex() {
+		return rewardCalculationIndex;
+	}
+	public void setRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+	}
+	public CreateGlobalRankingModelMasterRequest withRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+		return this;
+	}
 	public String getEntryPeriodEventId() {
 		return entryPeriodEventId;
 	}
@@ -171,6 +182,7 @@ public class CreateGlobalRankingModelMasterRequest extends Gs2BasicRequest<Creat
                     return RankingReward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withRewardCalculationIndex(data.get("rewardCalculationIndex") == null || data.get("rewardCalculationIndex").isNull() ? null : data.get("rewardCalculationIndex").asText())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText());
     }
@@ -192,6 +204,7 @@ public class CreateGlobalRankingModelMasterRequest extends Gs2BasicRequest<Creat
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("rewardCalculationIndex", getRewardCalculationIndex());
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
             }}

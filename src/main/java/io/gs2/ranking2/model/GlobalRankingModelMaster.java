@@ -40,6 +40,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
 	private String entryPeriodEventId;
 	private List<RankingReward> rankingRewards;
 	private String accessPeriodEventId;
+	private String rewardCalculationIndex;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -153,6 +154,16 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+	public String getRewardCalculationIndex() {
+		return rewardCalculationIndex;
+	}
+	public void setRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+	}
+	public GlobalRankingModelMaster withRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -205,6 +216,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
                 }
             ).collect(Collectors.toList()))
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withRewardCalculationIndex(data.get("rewardCalculationIndex") == null || data.get("rewardCalculationIndex").isNull() ? null : data.get("rewardCalculationIndex").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -229,6 +241,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
                     }
                 ).collect(Collectors.toList()));
                 put("accessPeriodEventId", getAccessPeriodEventId());
+                put("rewardCalculationIndex", getRewardCalculationIndex());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -256,6 +269,7 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.rankingRewards == null) ? 0 : this.rankingRewards.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
+        result = prime * result + ((this.rewardCalculationIndex == null) ? 0 : this.rewardCalculationIndex.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -324,6 +338,11 @@ public class GlobalRankingModelMaster implements IModel, Serializable, Comparabl
 		if (accessPeriodEventId == null) {
 			return other.accessPeriodEventId == null;
 		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
+			return false;
+		}
+		if (rewardCalculationIndex == null) {
+			return other.rewardCalculationIndex == null;
+		} else if (!rewardCalculationIndex.equals(other.rewardCalculationIndex)) {
 			return false;
 		}
 		if (createdAt == null) {

@@ -40,6 +40,7 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
 	private String entryPeriodEventId;
 	private List<RankingReward> rankingRewards;
 	private String accessPeriodEventId;
+	private String rewardCalculationIndex;
 	public String getClusterRankingModelId() {
 		return clusterRankingModelId;
 	}
@@ -150,6 +151,16 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+	public String getRewardCalculationIndex() {
+		return rewardCalculationIndex;
+	}
+	public void setRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+	}
+	public ClusterRankingModel withRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+		return this;
+	}
 
     public static ClusterRankingModel fromJson(JsonNode data) {
         if (data == null) {
@@ -171,7 +182,8 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
                     return RankingReward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText());
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withRewardCalculationIndex(data.get("rewardCalculationIndex") == null || data.get("rewardCalculationIndex").isNull() ? null : data.get("rewardCalculationIndex").asText());
     }
 
     public JsonNode toJson() {
@@ -193,6 +205,7 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
                     }
                 ).collect(Collectors.toList()));
                 put("accessPeriodEventId", getAccessPeriodEventId());
+                put("rewardCalculationIndex", getRewardCalculationIndex());
             }}
         );
     }
@@ -217,6 +230,7 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.rankingRewards == null) ? 0 : this.rankingRewards.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
+        result = prime * result + ((this.rewardCalculationIndex == null) ? 0 : this.rewardCalculationIndex.hashCode());
 		return result;
 	}
 
@@ -282,6 +296,11 @@ public class ClusterRankingModel implements IModel, Serializable, Comparable<Clu
 		if (accessPeriodEventId == null) {
 			return other.accessPeriodEventId == null;
 		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
+			return false;
+		}
+		if (rewardCalculationIndex == null) {
+			return other.rewardCalculationIndex == null;
+		} else if (!rewardCalculationIndex.equals(other.rewardCalculationIndex)) {
 			return false;
 		}
 		return true;

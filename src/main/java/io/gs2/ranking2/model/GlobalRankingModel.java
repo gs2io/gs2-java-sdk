@@ -39,6 +39,7 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
 	private String entryPeriodEventId;
 	private List<RankingReward> rankingRewards;
 	private String accessPeriodEventId;
+	private String rewardCalculationIndex;
 	public String getGlobalRankingModelId() {
 		return globalRankingModelId;
 	}
@@ -139,6 +140,16 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+	public String getRewardCalculationIndex() {
+		return rewardCalculationIndex;
+	}
+	public void setRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+	}
+	public GlobalRankingModel withRewardCalculationIndex(String rewardCalculationIndex) {
+		this.rewardCalculationIndex = rewardCalculationIndex;
+		return this;
+	}
 
     public static GlobalRankingModel fromJson(JsonNode data) {
         if (data == null) {
@@ -159,7 +170,8 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
                     return RankingReward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText());
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withRewardCalculationIndex(data.get("rewardCalculationIndex") == null || data.get("rewardCalculationIndex").isNull() ? null : data.get("rewardCalculationIndex").asText());
     }
 
     public JsonNode toJson() {
@@ -180,6 +192,7 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
                     }
                 ).collect(Collectors.toList()));
                 put("accessPeriodEventId", getAccessPeriodEventId());
+                put("rewardCalculationIndex", getRewardCalculationIndex());
             }}
         );
     }
@@ -203,6 +216,7 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.rankingRewards == null) ? 0 : this.rankingRewards.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
+        result = prime * result + ((this.rewardCalculationIndex == null) ? 0 : this.rewardCalculationIndex.hashCode());
 		return result;
 	}
 
@@ -263,6 +277,11 @@ public class GlobalRankingModel implements IModel, Serializable, Comparable<Glob
 		if (accessPeriodEventId == null) {
 			return other.accessPeriodEventId == null;
 		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
+			return false;
+		}
+		if (rewardCalculationIndex == null) {
+			return other.rewardCalculationIndex == null;
+		} else if (!rewardCalculationIndex.equals(other.rewardCalculationIndex)) {
 			return false;
 		}
 		return true;
