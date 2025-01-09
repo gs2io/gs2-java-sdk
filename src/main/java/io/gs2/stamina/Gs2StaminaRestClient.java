@@ -3921,6 +3921,181 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class ApplyStaminaTask extends Gs2RestSessionTask<ApplyStaminaResult> {
+        private ApplyStaminaRequest request;
+
+        public ApplyStaminaTask(
+            ApplyStaminaRequest request,
+            AsyncAction<AsyncResult<ApplyStaminaResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ApplyStaminaResult parse(JsonNode data) {
+            return ApplyStaminaResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/apply";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void applyStaminaAsync(
+            ApplyStaminaRequest request,
+            AsyncAction<AsyncResult<ApplyStaminaResult>> callback
+    ) {
+        ApplyStaminaTask task = new ApplyStaminaTask(request, callback);
+        session.execute(task);
+    }
+
+    public ApplyStaminaResult applyStamina(
+            ApplyStaminaRequest request
+    ) {
+        final AsyncResult<ApplyStaminaResult>[] resultAsyncResult = new AsyncResult[]{null};
+        applyStaminaAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ApplyStaminaByUserIdTask extends Gs2RestSessionTask<ApplyStaminaByUserIdResult> {
+        private ApplyStaminaByUserIdRequest request;
+
+        public ApplyStaminaByUserIdTask(
+            ApplyStaminaByUserIdRequest request,
+            AsyncAction<AsyncResult<ApplyStaminaByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ApplyStaminaByUserIdResult parse(JsonNode data) {
+            return ApplyStaminaByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/apply";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void applyStaminaByUserIdAsync(
+            ApplyStaminaByUserIdRequest request,
+            AsyncAction<AsyncResult<ApplyStaminaByUserIdResult>> callback
+    ) {
+        ApplyStaminaByUserIdTask task = new ApplyStaminaByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ApplyStaminaByUserIdResult applyStaminaByUserId(
+            ApplyStaminaByUserIdRequest request
+    ) {
+        final AsyncResult<ApplyStaminaByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        applyStaminaByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class RecoverStaminaByUserIdTask extends Gs2RestSessionTask<RecoverStaminaByUserIdResult> {
         private RecoverStaminaByUserIdRequest request;
 

@@ -4763,6 +4763,100 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class SetFormTask extends Gs2RestSessionTask<SetFormResult> {
+        private SetFormRequest request;
+
+        public SetFormTask(
+            SetFormRequest request,
+            AsyncAction<AsyncResult<SetFormResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetFormResult parse(JsonNode data) {
+            return SetFormResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? null :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setFormAsync(
+            SetFormRequest request,
+            AsyncAction<AsyncResult<SetFormResult>> callback
+    ) {
+        SetFormTask task = new SetFormTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetFormResult setForm(
+            SetFormRequest request
+    ) {
+        final AsyncResult<SetFormResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setFormAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetFormByUserIdTask extends Gs2RestSessionTask<SetFormByUserIdResult> {
         private SetFormByUserIdRequest request;
 
