@@ -6009,6 +6009,100 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class SetPropertyFormTask extends Gs2RestSessionTask<SetPropertyFormResult> {
+        private SetPropertyFormRequest request;
+
+        public SetPropertyFormTask(
+            SetPropertyFormRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetPropertyFormResult parse(JsonNode data) {
+            return SetPropertyFormResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? null :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setPropertyFormAsync(
+            SetPropertyFormRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormResult>> callback
+    ) {
+        SetPropertyFormTask task = new SetPropertyFormTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetPropertyFormResult setPropertyForm(
+            SetPropertyFormRequest request
+    ) {
+        final AsyncResult<SetPropertyFormResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setPropertyFormAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetPropertyFormByUserIdTask extends Gs2RestSessionTask<SetPropertyFormByUserIdResult> {
         private SetPropertyFormByUserIdRequest request;
 
