@@ -38,6 +38,7 @@ public class UpdateGuildByGuildNameRequest extends Gs2BasicRequest<UpdateGuildBy
     private Integer attribute3;
     private Integer attribute4;
     private Integer attribute5;
+    private String metadata;
     private String joinPolicy;
     private List<RoleModel> customRoles;
     private String guildMemberDefaultRole;
@@ -132,6 +133,16 @@ public class UpdateGuildByGuildNameRequest extends Gs2BasicRequest<UpdateGuildBy
 		this.attribute5 = attribute5;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public UpdateGuildByGuildNameRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 	public String getJoinPolicy() {
 		return joinPolicy;
 	}
@@ -190,6 +201,7 @@ public class UpdateGuildByGuildNameRequest extends Gs2BasicRequest<UpdateGuildBy
             .withAttribute3(data.get("attribute3") == null || data.get("attribute3").isNull() ? null : data.get("attribute3").intValue())
             .withAttribute4(data.get("attribute4") == null || data.get("attribute4").isNull() ? null : data.get("attribute4").intValue())
             .withAttribute5(data.get("attribute5") == null || data.get("attribute5").isNull() ? null : data.get("attribute5").intValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withJoinPolicy(data.get("joinPolicy") == null || data.get("joinPolicy").isNull() ? null : data.get("joinPolicy").asText())
             .withCustomRoles(data.get("customRoles") == null || data.get("customRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("customRoles").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -212,6 +224,7 @@ public class UpdateGuildByGuildNameRequest extends Gs2BasicRequest<UpdateGuildBy
                 put("attribute3", getAttribute3());
                 put("attribute4", getAttribute4());
                 put("attribute5", getAttribute5());
+                put("metadata", getMetadata());
                 put("joinPolicy", getJoinPolicy());
                 put("customRoles", getCustomRoles() == null ? null :
                     getCustomRoles().stream().map(item -> {

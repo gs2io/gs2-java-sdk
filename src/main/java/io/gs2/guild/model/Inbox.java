@@ -32,6 +32,7 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
 	private String inboxId;
 	private String guildName;
 	private List<String> fromUserIds;
+	private List<ReceiveMemberRequest> receiveMemberRequests;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -55,14 +56,27 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
 		this.guildName = guildName;
 		return this;
 	}
+    @Deprecated
 	public List<String> getFromUserIds() {
 		return fromUserIds;
 	}
+    @Deprecated
 	public void setFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
 	}
+    @Deprecated
 	public Inbox withFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
+		return this;
+	}
+	public List<ReceiveMemberRequest> getReceiveMemberRequests() {
+		return receiveMemberRequests;
+	}
+	public void setReceiveMemberRequests(List<ReceiveMemberRequest> receiveMemberRequests) {
+		this.receiveMemberRequests = receiveMemberRequests;
+	}
+	public Inbox withReceiveMemberRequests(List<ReceiveMemberRequest> receiveMemberRequests) {
+		this.receiveMemberRequests = receiveMemberRequests;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -108,6 +122,12 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withReceiveMemberRequests(data.get("receiveMemberRequests") == null || data.get("receiveMemberRequests").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("receiveMemberRequests").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ReceiveMemberRequest.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -121,6 +141,12 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
                 put("fromUserIds", getFromUserIds() == null ? null :
                     getFromUserIds().stream().map(item -> {
                         return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("receiveMemberRequests", getReceiveMemberRequests() == null ? null :
+                    getReceiveMemberRequests().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
@@ -142,6 +168,7 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
         result = prime * result + ((this.inboxId == null) ? 0 : this.inboxId.hashCode());
         result = prime * result + ((this.guildName == null) ? 0 : this.guildName.hashCode());
         result = prime * result + ((this.fromUserIds == null) ? 0 : this.fromUserIds.hashCode());
+        result = prime * result + ((this.receiveMemberRequests == null) ? 0 : this.receiveMemberRequests.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -170,6 +197,11 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
 		if (fromUserIds == null) {
 			return other.fromUserIds == null;
 		} else if (!fromUserIds.equals(other.fromUserIds)) {
+			return false;
+		}
+		if (receiveMemberRequests == null) {
+			return other.receiveMemberRequests == null;
+		} else if (!receiveMemberRequests.equals(other.receiveMemberRequests)) {
 			return false;
 		}
 		if (createdAt == null) {

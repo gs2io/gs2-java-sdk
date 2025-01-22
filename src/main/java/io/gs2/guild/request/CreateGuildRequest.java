@@ -38,6 +38,8 @@ public class CreateGuildRequest extends Gs2BasicRequest<CreateGuildRequest> {
     private Integer attribute3;
     private Integer attribute4;
     private Integer attribute5;
+    private String metadata;
+    private String memberMetadata;
     private String joinPolicy;
     private List<RoleModel> customRoles;
     private String guildMemberDefaultRole;
@@ -132,6 +134,26 @@ public class CreateGuildRequest extends Gs2BasicRequest<CreateGuildRequest> {
 		this.attribute5 = attribute5;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public CreateGuildRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+	public String getMemberMetadata() {
+		return memberMetadata;
+	}
+	public void setMemberMetadata(String memberMetadata) {
+		this.memberMetadata = memberMetadata;
+	}
+	public CreateGuildRequest withMemberMetadata(String memberMetadata) {
+		this.memberMetadata = memberMetadata;
+		return this;
+	}
 	public String getJoinPolicy() {
 		return joinPolicy;
 	}
@@ -190,6 +212,8 @@ public class CreateGuildRequest extends Gs2BasicRequest<CreateGuildRequest> {
             .withAttribute3(data.get("attribute3") == null || data.get("attribute3").isNull() ? null : data.get("attribute3").intValue())
             .withAttribute4(data.get("attribute4") == null || data.get("attribute4").isNull() ? null : data.get("attribute4").intValue())
             .withAttribute5(data.get("attribute5") == null || data.get("attribute5").isNull() ? null : data.get("attribute5").intValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withMemberMetadata(data.get("memberMetadata") == null || data.get("memberMetadata").isNull() ? null : data.get("memberMetadata").asText())
             .withJoinPolicy(data.get("joinPolicy") == null || data.get("joinPolicy").isNull() ? null : data.get("joinPolicy").asText())
             .withCustomRoles(data.get("customRoles") == null || data.get("customRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("customRoles").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -212,6 +236,8 @@ public class CreateGuildRequest extends Gs2BasicRequest<CreateGuildRequest> {
                 put("attribute3", getAttribute3());
                 put("attribute4", getAttribute4());
                 put("attribute5", getAttribute5());
+                put("metadata", getMetadata());
+                put("memberMetadata", getMemberMetadata());
                 put("joinPolicy", getJoinPolicy());
                 put("customRoles", getCustomRoles() == null ? null :
                     getCustomRoles().stream().map(item -> {

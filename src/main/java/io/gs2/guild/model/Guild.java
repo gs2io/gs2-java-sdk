@@ -38,6 +38,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
 	private Integer attribute3;
 	private Integer attribute4;
 	private Integer attribute5;
+	private String metadata;
 	private String joinPolicy;
 	private List<RoleModel> customRoles;
 	private String guildMemberDefaultRole;
@@ -136,6 +137,16 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
 		this.attribute5 = attribute5;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public Guild withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 	public String getJoinPolicy() {
 		return joinPolicy;
 	}
@@ -231,6 +242,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
             .withAttribute3(data.get("attribute3") == null || data.get("attribute3").isNull() ? null : data.get("attribute3").intValue())
             .withAttribute4(data.get("attribute4") == null || data.get("attribute4").isNull() ? null : data.get("attribute4").intValue())
             .withAttribute5(data.get("attribute5") == null || data.get("attribute5").isNull() ? null : data.get("attribute5").intValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withJoinPolicy(data.get("joinPolicy") == null || data.get("joinPolicy").isNull() ? null : data.get("joinPolicy").asText())
             .withCustomRoles(data.get("customRoles") == null || data.get("customRoles").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("customRoles").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -263,6 +275,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
                 put("attribute3", getAttribute3());
                 put("attribute4", getAttribute4());
                 put("attribute5", getAttribute5());
+                put("metadata", getMetadata());
                 put("joinPolicy", getJoinPolicy());
                 put("customRoles", getCustomRoles() == null ? null :
                     getCustomRoles().stream().map(item -> {
@@ -303,6 +316,7 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
         result = prime * result + ((this.attribute3 == null) ? 0 : this.attribute3.hashCode());
         result = prime * result + ((this.attribute4 == null) ? 0 : this.attribute4.hashCode());
         result = prime * result + ((this.attribute5 == null) ? 0 : this.attribute5.hashCode());
+        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.joinPolicy == null) ? 0 : this.joinPolicy.hashCode());
         result = prime * result + ((this.customRoles == null) ? 0 : this.customRoles.hashCode());
         result = prime * result + ((this.guildMemberDefaultRole == null) ? 0 : this.guildMemberDefaultRole.hashCode());
@@ -366,6 +380,11 @@ public class Guild implements IModel, Serializable, Comparable<Guild> {
 		if (attribute5 == null) {
 			return other.attribute5 == null;
 		} else if (!attribute5.equals(other.attribute5)) {
+			return false;
+		}
+		if (metadata == null) {
+			return other.metadata == null;
+		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
 		if (joinPolicy == null) {

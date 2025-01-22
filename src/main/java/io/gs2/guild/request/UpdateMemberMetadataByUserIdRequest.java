@@ -27,12 +27,13 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
+public class UpdateMemberMetadataByUserIdRequest extends Gs2BasicRequest<UpdateMemberMetadataByUserIdRequest> {
     private String namespaceName;
-    private String accessToken;
     private String guildModelName;
-    private String targetGuildName;
+    private String guildName;
+    private String userId;
     private String metadata;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -40,18 +41,8 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public SendRequestRequest withNamespaceName(String namespaceName) {
+	public UpdateMemberMetadataByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getAccessToken() {
-		return accessToken;
-	}
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-	public SendRequestRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
 		return this;
 	}
 	public String getGuildModelName() {
@@ -60,18 +51,28 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setGuildModelName(String guildModelName) {
 		this.guildModelName = guildModelName;
 	}
-	public SendRequestRequest withGuildModelName(String guildModelName) {
+	public UpdateMemberMetadataByUserIdRequest withGuildModelName(String guildModelName) {
 		this.guildModelName = guildModelName;
 		return this;
 	}
-	public String getTargetGuildName() {
-		return targetGuildName;
+	public String getGuildName() {
+		return guildName;
 	}
-	public void setTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
+	public void setGuildName(String guildName) {
+		this.guildName = guildName;
 	}
-	public SendRequestRequest withTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
+	public UpdateMemberMetadataByUserIdRequest withGuildName(String guildName) {
+		this.guildName = guildName;
+		return this;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public UpdateMemberMetadataByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 	public String getMetadata() {
@@ -80,8 +81,18 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-	public SendRequestRequest withMetadata(String metadata) {
+	public UpdateMemberMetadataByUserIdRequest withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateMemberMetadataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
@@ -93,31 +104,33 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SendRequestRequest withDuplicationAvoider(String duplicationAvoider) {
+	public UpdateMemberMetadataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SendRequestRequest fromJson(JsonNode data) {
+    public static UpdateMemberMetadataByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SendRequestRequest()
+        return new UpdateMemberMetadataByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
-            .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+            .withGuildName(data.get("guildName") == null || data.get("guildName").isNull() ? null : data.get("guildName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("accessToken", getAccessToken());
                 put("guildModelName", getGuildModelName());
-                put("targetGuildName", getTargetGuildName());
+                put("guildName", getGuildName());
+                put("userId", getUserId());
                 put("metadata", getMetadata());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

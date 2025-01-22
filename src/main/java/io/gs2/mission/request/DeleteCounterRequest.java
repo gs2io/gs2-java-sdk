@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.guild.request;
+package io.gs2.mission.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,12 +27,10 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
+public class DeleteCounterRequest extends Gs2BasicRequest<DeleteCounterRequest> {
     private String namespaceName;
     private String accessToken;
-    private String guildModelName;
-    private String targetGuildName;
-    private String metadata;
+    private String counterName;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -40,7 +38,7 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public SendRequestRequest withNamespaceName(String namespaceName) {
+	public DeleteCounterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -50,38 +48,18 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public SendRequestRequest withAccessToken(String accessToken) {
+	public DeleteCounterRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getGuildModelName() {
-		return guildModelName;
+	public String getCounterName() {
+		return counterName;
 	}
-	public void setGuildModelName(String guildModelName) {
-		this.guildModelName = guildModelName;
+	public void setCounterName(String counterName) {
+		this.counterName = counterName;
 	}
-	public SendRequestRequest withGuildModelName(String guildModelName) {
-		this.guildModelName = guildModelName;
-		return this;
-	}
-	public String getTargetGuildName() {
-		return targetGuildName;
-	}
-	public void setTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
-	}
-	public SendRequestRequest withTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
-		return this;
-	}
-	public String getMetadata() {
-		return metadata;
-	}
-	public void setMetadata(String metadata) {
-		this.metadata = metadata;
-	}
-	public SendRequestRequest withMetadata(String metadata) {
-		this.metadata = metadata;
+	public DeleteCounterRequest withCounterName(String counterName) {
+		this.counterName = counterName;
 		return this;
 	}
 
@@ -93,21 +71,19 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SendRequestRequest withDuplicationAvoider(String duplicationAvoider) {
+	public DeleteCounterRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SendRequestRequest fromJson(JsonNode data) {
+    public static DeleteCounterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SendRequestRequest()
+        return new DeleteCounterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
-            .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText());
     }
 
     public JsonNode toJson() {
@@ -115,9 +91,7 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("guildModelName", getGuildModelName());
-                put("targetGuildName", getTargetGuildName());
-                put("metadata", getMetadata());
+                put("counterName", getCounterName());
             }}
         );
     }

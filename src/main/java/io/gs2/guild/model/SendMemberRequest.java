@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class SendMemberRequest implements IModel, Serializable, Comparable<SendMemberRequest> {
 	private String userId;
 	private String targetGuildName;
+	private String metadata;
 	public String getUserId() {
 		return userId;
 	}
@@ -51,6 +52,16 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 		this.targetGuildName = targetGuildName;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public SendMemberRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 
     public static SendMemberRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -58,7 +69,8 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         }
         return new SendMemberRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText());
+            .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
 
     public JsonNode toJson() {
@@ -66,6 +78,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("targetGuildName", getTargetGuildName());
+                put("metadata", getMetadata());
             }}
         );
     }
@@ -81,6 +94,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.targetGuildName == null) ? 0 : this.targetGuildName.hashCode());
+        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
 		return result;
 	}
 
@@ -101,6 +115,11 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 		if (targetGuildName == null) {
 			return other.targetGuildName == null;
 		} else if (!targetGuildName.equals(other.targetGuildName)) {
+			return false;
+		}
+		if (metadata == null) {
+			return other.metadata == null;
+		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
 		return true;

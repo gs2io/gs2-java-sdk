@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class Member implements IModel, Serializable {
 	private String userId;
 	private String roleName;
+	private String metadata;
 	private Long joinedAt;
 	public String getUserId() {
 		return userId;
@@ -52,6 +53,16 @@ public class Member implements IModel, Serializable {
 		this.roleName = roleName;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public Member withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 	public Long getJoinedAt() {
 		return joinedAt;
 	}
@@ -70,6 +81,7 @@ public class Member implements IModel, Serializable {
         return new Member()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRoleName(data.get("roleName") == null || data.get("roleName").isNull() ? null : data.get("roleName").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withJoinedAt(data.get("joinedAt") == null || data.get("joinedAt").isNull() ? null : data.get("joinedAt").longValue());
     }
 
@@ -78,6 +90,7 @@ public class Member implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("roleName", getRoleName());
+                put("metadata", getMetadata());
                 put("joinedAt", getJoinedAt());
             }}
         );
@@ -89,6 +102,7 @@ public class Member implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.roleName == null) ? 0 : this.roleName.hashCode());
+        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.joinedAt == null) ? 0 : this.joinedAt.hashCode());
 		return result;
 	}
@@ -110,6 +124,11 @@ public class Member implements IModel, Serializable {
 		if (roleName == null) {
 			return other.roleName == null;
 		} else if (!roleName.equals(other.roleName)) {
+			return false;
+		}
+		if (metadata == null) {
+			return other.metadata == null;
+		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
 		if (joinedAt == null) {

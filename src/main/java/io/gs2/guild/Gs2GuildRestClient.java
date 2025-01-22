@@ -2019,6 +2019,8 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute3", request.getAttribute3());
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
+                    put("metadata", request.getMetadata());
+                    put("memberMetadata", request.getMemberMetadata());
                     put("joinPolicy", request.getJoinPolicy());
                     put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
@@ -2121,6 +2123,8 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute3", request.getAttribute3());
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
+                    put("metadata", request.getMetadata());
+                    put("memberMetadata", request.getMemberMetadata());
                     put("joinPolicy", request.getJoinPolicy());
                     put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
@@ -2393,6 +2397,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute3", request.getAttribute3());
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
+                    put("metadata", request.getMetadata());
                     put("joinPolicy", request.getJoinPolicy());
                     put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
@@ -2495,6 +2500,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("attribute3", request.getAttribute3());
                     put("attribute4", request.getAttribute4());
                     put("attribute5", request.getAttribute5());
+                    put("metadata", request.getMetadata());
                     put("joinPolicy", request.getJoinPolicy());
                     put("customRoles", request.getCustomRoles() == null ? null :
                         request.getCustomRoles().stream().map(item -> {
@@ -3073,6 +3079,185 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
     ) {
         final AsyncResult<BatchUpdateMemberRoleByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
         batchUpdateMemberRoleByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateMemberMetadataTask extends Gs2RestSessionTask<UpdateMemberMetadataResult> {
+        private UpdateMemberMetadataRequest request;
+
+        public UpdateMemberMetadataTask(
+            UpdateMemberMetadataRequest request,
+            AsyncAction<AsyncResult<UpdateMemberMetadataResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateMemberMetadataResult parse(JsonNode data) {
+            return UpdateMemberMetadataResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/guild/{guildName}/member/me/metadata";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateMemberMetadataAsync(
+            UpdateMemberMetadataRequest request,
+            AsyncAction<AsyncResult<UpdateMemberMetadataResult>> callback
+    ) {
+        UpdateMemberMetadataTask task = new UpdateMemberMetadataTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateMemberMetadataResult updateMemberMetadata(
+            UpdateMemberMetadataRequest request
+    ) {
+        final AsyncResult<UpdateMemberMetadataResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateMemberMetadataAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateMemberMetadataByUserIdTask extends Gs2RestSessionTask<UpdateMemberMetadataByUserIdResult> {
+        private UpdateMemberMetadataByUserIdRequest request;
+
+        public UpdateMemberMetadataByUserIdTask(
+            UpdateMemberMetadataByUserIdRequest request,
+            AsyncAction<AsyncResult<UpdateMemberMetadataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateMemberMetadataByUserIdResult parse(JsonNode data) {
+            return UpdateMemberMetadataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/guild/{guildName}/member/{userId}/metadata";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateMemberMetadataByUserIdAsync(
+            UpdateMemberMetadataByUserIdRequest request,
+            AsyncAction<AsyncResult<UpdateMemberMetadataByUserIdResult>> callback
+    ) {
+        UpdateMemberMetadataByUserIdTask task = new UpdateMemberMetadataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateMemberMetadataByUserIdResult updateMemberMetadataByUserId(
+            UpdateMemberMetadataByUserIdRequest request
+    ) {
+        final AsyncResult<UpdateMemberMetadataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateMemberMetadataByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -6813,6 +6998,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -6902,6 +7088,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

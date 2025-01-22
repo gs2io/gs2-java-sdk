@@ -27,11 +27,11 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
+public class UpdateMemberMetadataRequest extends Gs2BasicRequest<UpdateMemberMetadataRequest> {
     private String namespaceName;
-    private String accessToken;
     private String guildModelName;
-    private String targetGuildName;
+    private String guildName;
+    private String accessToken;
     private String metadata;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -40,18 +40,8 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public SendRequestRequest withNamespaceName(String namespaceName) {
+	public UpdateMemberMetadataRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getAccessToken() {
-		return accessToken;
-	}
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-	public SendRequestRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
 		return this;
 	}
 	public String getGuildModelName() {
@@ -60,18 +50,28 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setGuildModelName(String guildModelName) {
 		this.guildModelName = guildModelName;
 	}
-	public SendRequestRequest withGuildModelName(String guildModelName) {
+	public UpdateMemberMetadataRequest withGuildModelName(String guildModelName) {
 		this.guildModelName = guildModelName;
 		return this;
 	}
-	public String getTargetGuildName() {
-		return targetGuildName;
+	public String getGuildName() {
+		return guildName;
 	}
-	public void setTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
+	public void setGuildName(String guildName) {
+		this.guildName = guildName;
 	}
-	public SendRequestRequest withTargetGuildName(String targetGuildName) {
-		this.targetGuildName = targetGuildName;
+	public UpdateMemberMetadataRequest withGuildName(String guildName) {
+		this.guildName = guildName;
+		return this;
+	}
+	public String getAccessToken() {
+		return accessToken;
+	}
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+	public UpdateMemberMetadataRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 		return this;
 	}
 	public String getMetadata() {
@@ -80,7 +80,7 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-	public SendRequestRequest withMetadata(String metadata) {
+	public UpdateMemberMetadataRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
@@ -93,20 +93,20 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SendRequestRequest withDuplicationAvoider(String duplicationAvoider) {
+	public UpdateMemberMetadataRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SendRequestRequest fromJson(JsonNode data) {
+    public static UpdateMemberMetadataRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SendRequestRequest()
+        return new UpdateMemberMetadataRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
-            .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
+            .withGuildName(data.get("guildName") == null || data.get("guildName").isNull() ? null : data.get("guildName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
 
@@ -114,9 +114,9 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("accessToken", getAccessToken());
                 put("guildModelName", getGuildModelName());
-                put("targetGuildName", getTargetGuildName());
+                put("guildName", getGuildName());
+                put("accessToken", getAccessToken());
                 put("metadata", getMetadata());
             }}
         );

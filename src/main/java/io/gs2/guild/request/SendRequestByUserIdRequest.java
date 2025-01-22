@@ -32,6 +32,7 @@ public class SendRequestByUserIdRequest extends Gs2BasicRequest<SendRequestByUse
     private String userId;
     private String guildModelName;
     private String targetGuildName;
+    private String metadata;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -74,6 +75,16 @@ public class SendRequestByUserIdRequest extends Gs2BasicRequest<SendRequestByUse
 		this.targetGuildName = targetGuildName;
 		return this;
 	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public SendRequestByUserIdRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -107,6 +118,7 @@ public class SendRequestByUserIdRequest extends Gs2BasicRequest<SendRequestByUse
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
             .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -117,6 +129,7 @@ public class SendRequestByUserIdRequest extends Gs2BasicRequest<SendRequestByUse
                 put("userId", getUserId());
                 put("guildModelName", getGuildModelName());
                 put("targetGuildName", getTargetGuildName());
+                put("metadata", getMetadata());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
