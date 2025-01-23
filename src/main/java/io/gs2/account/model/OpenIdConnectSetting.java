@@ -36,6 +36,8 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 	private String appleKeyId;
 	private String applePrivateKeyPem;
 	private String doneEndpointUrl;
+	private List<ScopeValue> additionalScopeValues;
+	private List<String> additionalReturnValues;
 	public String getConfigurationPath() {
 		return configurationPath;
 	}
@@ -106,6 +108,26 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 		this.doneEndpointUrl = doneEndpointUrl;
 		return this;
 	}
+	public List<ScopeValue> getAdditionalScopeValues() {
+		return additionalScopeValues;
+	}
+	public void setAdditionalScopeValues(List<ScopeValue> additionalScopeValues) {
+		this.additionalScopeValues = additionalScopeValues;
+	}
+	public OpenIdConnectSetting withAdditionalScopeValues(List<ScopeValue> additionalScopeValues) {
+		this.additionalScopeValues = additionalScopeValues;
+		return this;
+	}
+	public List<String> getAdditionalReturnValues() {
+		return additionalReturnValues;
+	}
+	public void setAdditionalReturnValues(List<String> additionalReturnValues) {
+		this.additionalReturnValues = additionalReturnValues;
+	}
+	public OpenIdConnectSetting withAdditionalReturnValues(List<String> additionalReturnValues) {
+		this.additionalReturnValues = additionalReturnValues;
+		return this;
+	}
 
     public static OpenIdConnectSetting fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +140,18 @@ public class OpenIdConnectSetting implements IModel, Serializable {
             .withAppleTeamId(data.get("appleTeamId") == null || data.get("appleTeamId").isNull() ? null : data.get("appleTeamId").asText())
             .withAppleKeyId(data.get("appleKeyId") == null || data.get("appleKeyId").isNull() ? null : data.get("appleKeyId").asText())
             .withApplePrivateKeyPem(data.get("applePrivateKeyPem") == null || data.get("applePrivateKeyPem").isNull() ? null : data.get("applePrivateKeyPem").asText())
-            .withDoneEndpointUrl(data.get("doneEndpointUrl") == null || data.get("doneEndpointUrl").isNull() ? null : data.get("doneEndpointUrl").asText());
+            .withDoneEndpointUrl(data.get("doneEndpointUrl") == null || data.get("doneEndpointUrl").isNull() ? null : data.get("doneEndpointUrl").asText())
+            .withAdditionalScopeValues(data.get("additionalScopeValues") == null || data.get("additionalScopeValues").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalScopeValues").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ScopeValue.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAdditionalReturnValues(data.get("additionalReturnValues") == null || data.get("additionalReturnValues").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalReturnValues").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -131,6 +164,17 @@ public class OpenIdConnectSetting implements IModel, Serializable {
                 put("appleKeyId", getAppleKeyId());
                 put("applePrivateKeyPem", getApplePrivateKeyPem());
                 put("doneEndpointUrl", getDoneEndpointUrl());
+                put("additionalScopeValues", getAdditionalScopeValues() == null ? null :
+                    getAdditionalScopeValues().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("additionalReturnValues", getAdditionalReturnValues() == null ? null :
+                    getAdditionalReturnValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -146,6 +190,8 @@ public class OpenIdConnectSetting implements IModel, Serializable {
         result = prime * result + ((this.appleKeyId == null) ? 0 : this.appleKeyId.hashCode());
         result = prime * result + ((this.applePrivateKeyPem == null) ? 0 : this.applePrivateKeyPem.hashCode());
         result = prime * result + ((this.doneEndpointUrl == null) ? 0 : this.doneEndpointUrl.hashCode());
+        result = prime * result + ((this.additionalScopeValues == null) ? 0 : this.additionalScopeValues.hashCode());
+        result = prime * result + ((this.additionalReturnValues == null) ? 0 : this.additionalReturnValues.hashCode());
 		return result;
 	}
 
@@ -191,6 +237,16 @@ public class OpenIdConnectSetting implements IModel, Serializable {
 		if (doneEndpointUrl == null) {
 			return other.doneEndpointUrl == null;
 		} else if (!doneEndpointUrl.equals(other.doneEndpointUrl)) {
+			return false;
+		}
+		if (additionalScopeValues == null) {
+			return other.additionalScopeValues == null;
+		} else if (!additionalScopeValues.equals(other.additionalScopeValues)) {
+			return false;
+		}
+		if (additionalReturnValues == null) {
+			return other.additionalReturnValues == null;
+		} else if (!additionalReturnValues.equals(other.additionalReturnValues)) {
 			return false;
 		}
 		return true;

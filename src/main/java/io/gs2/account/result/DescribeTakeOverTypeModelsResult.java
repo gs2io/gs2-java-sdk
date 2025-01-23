@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.account.model.*;
+import io.gs2.account.model.ScopeValue;
 import io.gs2.account.model.OpenIdConnectSetting;
 import io.gs2.account.model.TakeOverTypeModel;
 
