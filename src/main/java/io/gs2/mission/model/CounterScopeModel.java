@@ -36,6 +36,8 @@ public class CounterScopeModel implements IModel, Serializable {
 	private Integer resetHour;
 	private String conditionName;
 	private VerifyAction condition;
+	private Long anchorTimestamp;
+	private Integer days;
 	public String getScopeType() {
 		return scopeType;
 	}
@@ -106,6 +108,26 @@ public class CounterScopeModel implements IModel, Serializable {
 		this.condition = condition;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public CounterScopeModel withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public CounterScopeModel withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 
     public static CounterScopeModel fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +140,9 @@ public class CounterScopeModel implements IModel, Serializable {
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
             .withConditionName(data.get("conditionName") == null || data.get("conditionName").isNull() ? null : data.get("conditionName").asText())
-            .withCondition(data.get("condition") == null || data.get("condition").isNull() ? null : VerifyAction.fromJson(data.get("condition")));
+            .withCondition(data.get("condition") == null || data.get("condition").isNull() ? null : VerifyAction.fromJson(data.get("condition")))
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +155,8 @@ public class CounterScopeModel implements IModel, Serializable {
                 put("resetHour", getResetHour());
                 put("conditionName", getConditionName());
                 put("condition", getCondition() != null ? getCondition().toJson() : null);
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
             }}
         );
     }
@@ -146,6 +172,8 @@ public class CounterScopeModel implements IModel, Serializable {
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
         result = prime * result + ((this.conditionName == null) ? 0 : this.conditionName.hashCode());
         result = prime * result + ((this.condition == null) ? 0 : this.condition.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.days == null) ? 0 : this.days.hashCode());
 		return result;
 	}
 
@@ -191,6 +219,16 @@ public class CounterScopeModel implements IModel, Serializable {
 		if (condition == null) {
 			return other.condition == null;
 		} else if (!condition.equals(other.condition)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (days == null) {
+			return other.days == null;
+		} else if (!days.equals(other.days)) {
 			return false;
 		}
 		return true;

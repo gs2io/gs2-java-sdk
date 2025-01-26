@@ -38,6 +38,8 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
 	private String resetDayOfWeek;
 	private Integer resetHour;
 	private String completeNotificationNamespaceId;
+	private Long anchorTimestamp;
+	private Integer days;
 	public String getMissionGroupId() {
 		return missionGroupId;
 	}
@@ -128,6 +130,26 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public MissionGroupModel withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public MissionGroupModel withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 
     public static MissionGroupModel fromJson(JsonNode data) {
         if (data == null) {
@@ -147,7 +169,9 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
-            .withCompleteNotificationNamespaceId(data.get("completeNotificationNamespaceId") == null || data.get("completeNotificationNamespaceId").isNull() ? null : data.get("completeNotificationNamespaceId").asText());
+            .withCompleteNotificationNamespaceId(data.get("completeNotificationNamespaceId") == null || data.get("completeNotificationNamespaceId").isNull() ? null : data.get("completeNotificationNamespaceId").asText())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue());
     }
 
     public JsonNode toJson() {
@@ -167,6 +191,8 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
                 put("completeNotificationNamespaceId", getCompleteNotificationNamespaceId());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
             }}
         );
     }
@@ -189,6 +215,8 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
         result = prime * result + ((this.resetDayOfWeek == null) ? 0 : this.resetDayOfWeek.hashCode());
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
         result = prime * result + ((this.completeNotificationNamespaceId == null) ? 0 : this.completeNotificationNamespaceId.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.days == null) ? 0 : this.days.hashCode());
 		return result;
 	}
 
@@ -244,6 +272,16 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
 		if (completeNotificationNamespaceId == null) {
 			return other.completeNotificationNamespaceId == null;
 		} else if (!completeNotificationNamespaceId.equals(other.completeNotificationNamespaceId)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (days == null) {
+			return other.days == null;
+		} else if (!days.equals(other.days)) {
 			return false;
 		}
 		return true;

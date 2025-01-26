@@ -1046,6 +1046,181 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class EvaluateCompleteTask extends Gs2RestSessionTask<EvaluateCompleteResult> {
+        private EvaluateCompleteRequest request;
+
+        public EvaluateCompleteTask(
+            EvaluateCompleteRequest request,
+            AsyncAction<AsyncResult<EvaluateCompleteResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public EvaluateCompleteResult parse(JsonNode data) {
+            return EvaluateCompleteResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/complete/group/{missionGroupName}/eval";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void evaluateCompleteAsync(
+            EvaluateCompleteRequest request,
+            AsyncAction<AsyncResult<EvaluateCompleteResult>> callback
+    ) {
+        EvaluateCompleteTask task = new EvaluateCompleteTask(request, callback);
+        session.execute(task);
+    }
+
+    public EvaluateCompleteResult evaluateComplete(
+            EvaluateCompleteRequest request
+    ) {
+        final AsyncResult<EvaluateCompleteResult>[] resultAsyncResult = new AsyncResult[]{null};
+        evaluateCompleteAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class EvaluateCompleteByUserIdTask extends Gs2RestSessionTask<EvaluateCompleteByUserIdResult> {
+        private EvaluateCompleteByUserIdRequest request;
+
+        public EvaluateCompleteByUserIdTask(
+            EvaluateCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<EvaluateCompleteByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public EvaluateCompleteByUserIdResult parse(JsonNode data) {
+            return EvaluateCompleteByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/complete/group/{missionGroupName}/eval";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void evaluateCompleteByUserIdAsync(
+            EvaluateCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<EvaluateCompleteByUserIdResult>> callback
+    ) {
+        EvaluateCompleteByUserIdTask task = new EvaluateCompleteByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public EvaluateCompleteByUserIdResult evaluateCompleteByUserId(
+            EvaluateCompleteByUserIdRequest request
+    ) {
+        final AsyncResult<EvaluateCompleteByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        evaluateCompleteByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteCompleteByUserIdTask extends Gs2RestSessionTask<DeleteCompleteByUserIdResult> {
         private DeleteCompleteByUserIdRequest request;
 
@@ -2187,6 +2362,8 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("resetDayOfMonth", request.getResetDayOfMonth());
                     put("resetDayOfWeek", request.getResetDayOfWeek());
                     put("resetHour", request.getResetHour());
+                    put("anchorTimestamp", request.getAnchorTimestamp());
+                    put("days", request.getDays());
                     put("completeNotificationNamespaceId", request.getCompleteNotificationNamespaceId());
                     put("contextStack", request.getContextStack());
                 }}
@@ -2356,6 +2533,8 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("resetDayOfMonth", request.getResetDayOfMonth());
                     put("resetDayOfWeek", request.getResetDayOfWeek());
                     put("resetHour", request.getResetHour());
+                    put("anchorTimestamp", request.getAnchorTimestamp());
+                    put("days", request.getDays());
                     put("completeNotificationNamespaceId", request.getCompleteNotificationNamespaceId());
                     put("contextStack", request.getContextStack());
                 }}

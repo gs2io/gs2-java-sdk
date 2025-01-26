@@ -37,6 +37,8 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
 	private Integer resetDayOfMonth;
 	private String resetDayOfWeek;
 	private Integer resetHour;
+	private Long anchorTimestamp;
+	private Integer days;
 	private String completeNotificationNamespaceId;
 	private Long createdAt;
 	private Long updatedAt;
@@ -121,6 +123,26 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
 		this.resetHour = resetHour;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public MissionGroupModelMaster withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public MissionGroupModelMaster withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 	public String getCompleteNotificationNamespaceId() {
 		return completeNotificationNamespaceId;
 	}
@@ -175,6 +197,8 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue())
             .withCompleteNotificationNamespaceId(data.get("completeNotificationNamespaceId") == null || data.get("completeNotificationNamespaceId").isNull() ? null : data.get("completeNotificationNamespaceId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -192,6 +216,8 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
                 put("resetDayOfMonth", getResetDayOfMonth());
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
                 put("completeNotificationNamespaceId", getCompleteNotificationNamespaceId());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -217,6 +243,8 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
         result = prime * result + ((this.resetDayOfMonth == null) ? 0 : this.resetDayOfMonth.hashCode());
         result = prime * result + ((this.resetDayOfWeek == null) ? 0 : this.resetDayOfWeek.hashCode());
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.days == null) ? 0 : this.days.hashCode());
         result = prime * result + ((this.completeNotificationNamespaceId == null) ? 0 : this.completeNotificationNamespaceId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -271,6 +299,16 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
 		if (resetHour == null) {
 			return other.resetHour == null;
 		} else if (!resetHour.equals(other.resetHour)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (days == null) {
+			return other.days == null;
+		} else if (!days.equals(other.days)) {
 			return false;
 		}
 		if (completeNotificationNamespaceId == null) {

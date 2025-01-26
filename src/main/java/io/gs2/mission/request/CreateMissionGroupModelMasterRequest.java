@@ -36,6 +36,8 @@ public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<Create
     private Integer resetDayOfMonth;
     private String resetDayOfWeek;
     private Integer resetHour;
+    private Long anchorTimestamp;
+    private Integer days;
     private String completeNotificationNamespaceId;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -117,6 +119,26 @@ public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<Create
 		this.resetHour = resetHour;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public CreateMissionGroupModelMasterRequest withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public CreateMissionGroupModelMasterRequest withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 	public String getCompleteNotificationNamespaceId() {
 		return completeNotificationNamespaceId;
 	}
@@ -141,6 +163,8 @@ public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<Create
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue())
             .withCompleteNotificationNamespaceId(data.get("completeNotificationNamespaceId") == null || data.get("completeNotificationNamespaceId").isNull() ? null : data.get("completeNotificationNamespaceId").asText());
     }
 
@@ -155,6 +179,8 @@ public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<Create
                 put("resetDayOfMonth", getResetDayOfMonth());
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
                 put("completeNotificationNamespaceId", getCompleteNotificationNamespaceId());
             }}
         );
