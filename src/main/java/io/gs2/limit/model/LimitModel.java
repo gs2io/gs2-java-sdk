@@ -36,6 +36,8 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
 	private Integer resetDayOfMonth;
 	private String resetDayOfWeek;
 	private Integer resetHour;
+	private Long anchorTimestamp;
+	private Integer days;
 	public String getLimitModelId() {
 		return limitModelId;
 	}
@@ -106,6 +108,26 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
 		this.resetHour = resetHour;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public LimitModel withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public LimitModel withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 
     public static LimitModel fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +140,9 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
-            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue());
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +155,8 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
                 put("resetDayOfMonth", getResetDayOfMonth());
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
             }}
         );
     }
@@ -151,6 +177,8 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
         result = prime * result + ((this.resetDayOfMonth == null) ? 0 : this.resetDayOfMonth.hashCode());
         result = prime * result + ((this.resetDayOfWeek == null) ? 0 : this.resetDayOfWeek.hashCode());
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.days == null) ? 0 : this.days.hashCode());
 		return result;
 	}
 
@@ -196,6 +224,16 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
 		if (resetHour == null) {
 			return other.resetHour == null;
 		} else if (!resetHour.equals(other.resetHour)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (days == null) {
+			return other.days == null;
+		} else if (!days.equals(other.days)) {
 			return false;
 		}
 		return true;

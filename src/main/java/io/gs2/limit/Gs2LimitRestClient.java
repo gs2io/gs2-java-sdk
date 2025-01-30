@@ -2454,6 +2454,8 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
                     put("resetDayOfMonth", request.getResetDayOfMonth());
                     put("resetDayOfWeek", request.getResetDayOfWeek());
                     put("resetHour", request.getResetHour());
+                    put("anchorTimestamp", request.getAnchorTimestamp());
+                    put("days", request.getDays());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2622,6 +2624,8 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
                     put("resetDayOfMonth", request.getResetDayOfMonth());
                     put("resetDayOfWeek", request.getResetDayOfWeek());
                     put("resetHour", request.getResetHour());
+                    put("anchorTimestamp", request.getAnchorTimestamp());
+                    put("days", request.getDays());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

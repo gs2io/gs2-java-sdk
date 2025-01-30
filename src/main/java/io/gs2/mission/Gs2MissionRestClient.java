@@ -4645,6 +4645,193 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class ResetCounterTask extends Gs2RestSessionTask<ResetCounterResult> {
+        private ResetCounterRequest request;
+
+        public ResetCounterTask(
+            ResetCounterRequest request,
+            AsyncAction<AsyncResult<ResetCounterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetCounterResult parse(JsonNode data) {
+            return ResetCounterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/counter/{counterName}/reset";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("scopes", request.getScopes() == null ? null :
+                        request.getScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetCounterAsync(
+            ResetCounterRequest request,
+            AsyncAction<AsyncResult<ResetCounterResult>> callback
+    ) {
+        ResetCounterTask task = new ResetCounterTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetCounterResult resetCounter(
+            ResetCounterRequest request
+    ) {
+        final AsyncResult<ResetCounterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetCounterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetCounterByUserIdTask extends Gs2RestSessionTask<ResetCounterByUserIdResult> {
+        private ResetCounterByUserIdRequest request;
+
+        public ResetCounterByUserIdTask(
+            ResetCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetCounterByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetCounterByUserIdResult parse(JsonNode data) {
+            return ResetCounterByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{counterName}/reset";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("scopes", request.getScopes() == null ? null :
+                        request.getScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetCounterByUserIdAsync(
+            ResetCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetCounterByUserIdResult>> callback
+    ) {
+        ResetCounterByUserIdTask task = new ResetCounterByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetCounterByUserIdResult resetCounterByUserId(
+            ResetCounterByUserIdRequest request
+    ) {
+        final AsyncResult<ResetCounterByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetCounterByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteCounterTask extends Gs2RestSessionTask<DeleteCounterResult> {
         private DeleteCounterRequest request;
 
@@ -5044,6 +5231,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<DecreaseByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         decreaseByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetByStampTaskTask extends Gs2RestSessionTask<ResetByStampTaskResult> {
+        private ResetByStampTaskRequest request;
+
+        public ResetByStampTaskTask(
+            ResetByStampTaskRequest request,
+            AsyncAction<AsyncResult<ResetByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetByStampTaskResult parse(JsonNode data) {
+            return ResetByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/reset";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetByStampTaskAsync(
+            ResetByStampTaskRequest request,
+            AsyncAction<AsyncResult<ResetByStampTaskResult>> callback
+    ) {
+        ResetByStampTaskTask task = new ResetByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetByStampTaskResult resetByStampTask(
+            ResetByStampTaskRequest request
+    ) {
+        final AsyncResult<ResetByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

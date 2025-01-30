@@ -37,6 +37,8 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 	private Integer resetDayOfMonth;
 	private String resetDayOfWeek;
 	private Integer resetHour;
+	private Long anchorTimestamp;
+	private Integer days;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -120,6 +122,26 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 		this.resetHour = resetHour;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public LimitModelMaster withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	public LimitModelMaster withDays(Integer days) {
+		this.days = days;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -164,6 +186,8 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -180,6 +204,8 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
                 put("resetDayOfMonth", getResetDayOfMonth());
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("days", getDays());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -204,6 +230,8 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
         result = prime * result + ((this.resetDayOfMonth == null) ? 0 : this.resetDayOfMonth.hashCode());
         result = prime * result + ((this.resetDayOfWeek == null) ? 0 : this.resetDayOfWeek.hashCode());
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.days == null) ? 0 : this.days.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -257,6 +285,16 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 		if (resetHour == null) {
 			return other.resetHour == null;
 		} else if (!resetHour.equals(other.resetHour)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (days == null) {
+			return other.days == null;
+		} else if (!days.equals(other.days)) {
 			return false;
 		}
 		if (createdAt == null) {
