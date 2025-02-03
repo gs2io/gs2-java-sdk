@@ -1932,6 +1932,7 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("triggerStrategy", request.getTriggerStrategy());
                     put("ttl", request.getTtl());
+                    put("eventId", request.getEventId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

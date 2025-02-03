@@ -33,6 +33,7 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
     private String userId;
     private String triggerStrategy;
     private Integer ttl;
+    private String eventId;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -85,6 +86,16 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
 		this.ttl = ttl;
 		return this;
 	}
+	public String getEventId() {
+		return eventId;
+	}
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
+	}
+	public TriggerByUserIdRequest withEventId(String eventId) {
+		this.eventId = eventId;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -119,6 +130,7 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withTriggerStrategy(data.get("triggerStrategy") == null || data.get("triggerStrategy").isNull() ? null : data.get("triggerStrategy").asText())
             .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").intValue())
+            .withEventId(data.get("eventId") == null || data.get("eventId").isNull() ? null : data.get("eventId").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -130,6 +142,7 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
                 put("userId", getUserId());
                 put("triggerStrategy", getTriggerStrategy());
                 put("ttl", getTtl());
+                put("eventId", getEventId());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
