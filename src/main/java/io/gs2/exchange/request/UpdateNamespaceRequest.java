@@ -38,6 +38,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private TransactionSetting transactionSetting;
     private ScriptSetting exchangeScript;
     private ScriptSetting incrementalExchangeScript;
+    private ScriptSetting acquireAwaitScript;
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
@@ -111,6 +112,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.incrementalExchangeScript = incrementalExchangeScript;
 		return this;
 	}
+	public ScriptSetting getAcquireAwaitScript() {
+		return acquireAwaitScript;
+	}
+	public void setAcquireAwaitScript(ScriptSetting acquireAwaitScript) {
+		this.acquireAwaitScript = acquireAwaitScript;
+	}
+	public UpdateNamespaceRequest withAcquireAwaitScript(ScriptSetting acquireAwaitScript) {
+		this.acquireAwaitScript = acquireAwaitScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -160,6 +171,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
             .withIncrementalExchangeScript(data.get("incrementalExchangeScript") == null || data.get("incrementalExchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("incrementalExchangeScript")))
+            .withAcquireAwaitScript(data.get("acquireAwaitScript") == null || data.get("acquireAwaitScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireAwaitScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
@@ -175,6 +187,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
                 put("incrementalExchangeScript", getIncrementalExchangeScript() != null ? getIncrementalExchangeScript().toJson() : null);
+                put("acquireAwaitScript", getAcquireAwaitScript() != null ? getAcquireAwaitScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());

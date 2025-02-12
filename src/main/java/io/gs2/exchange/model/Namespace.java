@@ -37,6 +37,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private TransactionSetting transactionSetting;
 	private ScriptSetting exchangeScript;
 	private ScriptSetting incrementalExchangeScript;
+	private ScriptSetting acquireAwaitScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -123,6 +124,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.incrementalExchangeScript = incrementalExchangeScript;
 		return this;
 	}
+	public ScriptSetting getAcquireAwaitScript() {
+		return acquireAwaitScript;
+	}
+	public void setAcquireAwaitScript(ScriptSetting acquireAwaitScript) {
+		this.acquireAwaitScript = acquireAwaitScript;
+	}
+	public Namespace withAcquireAwaitScript(ScriptSetting acquireAwaitScript) {
+		this.acquireAwaitScript = acquireAwaitScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -203,6 +214,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
             .withIncrementalExchangeScript(data.get("incrementalExchangeScript") == null || data.get("incrementalExchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("incrementalExchangeScript")))
+            .withAcquireAwaitScript(data.get("acquireAwaitScript") == null || data.get("acquireAwaitScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireAwaitScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -222,6 +234,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
                 put("incrementalExchangeScript", getIncrementalExchangeScript() != null ? getIncrementalExchangeScript().toJson() : null);
+                put("acquireAwaitScript", getAcquireAwaitScript() != null ? getAcquireAwaitScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -249,6 +262,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.exchangeScript == null) ? 0 : this.exchangeScript.hashCode());
         result = prime * result + ((this.incrementalExchangeScript == null) ? 0 : this.incrementalExchangeScript.hashCode());
+        result = prime * result + ((this.acquireAwaitScript == null) ? 0 : this.acquireAwaitScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -305,6 +319,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (incrementalExchangeScript == null) {
 			return other.incrementalExchangeScript == null;
 		} else if (!incrementalExchangeScript.equals(other.incrementalExchangeScript)) {
+			return false;
+		}
+		if (acquireAwaitScript == null) {
+			return other.acquireAwaitScript == null;
+		} else if (!acquireAwaitScript.equals(other.acquireAwaitScript)) {
 			return false;
 		}
 		if (logSetting == null) {
