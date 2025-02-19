@@ -39,6 +39,8 @@ public class InvokeScriptResult implements IResult, Serializable {
     private String result;
     private Transaction transaction;
     private RandomStatus randomStatus;
+    private Boolean atomicCommit;
+    private io.gs2.core.model.TransactionResult transactionResult;
     private Integer executeTime;
     private Integer charged;
     private List<String> output;
@@ -95,6 +97,32 @@ public class InvokeScriptResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAtomicCommit() {
+		return atomicCommit;
+	}
+
+	public void setAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+	}
+
+	public InvokeScriptResult withAtomicCommit(Boolean atomicCommit) {
+		this.atomicCommit = atomicCommit;
+		return this;
+	}
+
+	public io.gs2.core.model.TransactionResult getTransactionResult() {
+		return transactionResult;
+	}
+
+	public void setTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+	}
+
+	public InvokeScriptResult withTransactionResult(io.gs2.core.model.TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+		return this;
+	}
+
 	public Integer getExecuteTime() {
 		return executeTime;
 	}
@@ -143,6 +171,8 @@ public class InvokeScriptResult implements IResult, Serializable {
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
             .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : Transaction.fromJson(data.get("transaction")))
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
+            .withAtomicCommit(data.get("atomicCommit") == null || data.get("atomicCommit").isNull() ? null : data.get("atomicCommit").booleanValue())
+            .withTransactionResult(data.get("transactionResult") == null || data.get("transactionResult").isNull() ? null : io.gs2.core.model.TransactionResult.fromJson(data.get("transactionResult")))
             .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
             .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
             .withOutput(data.get("output") == null || data.get("output").isNull() ? null :
@@ -159,6 +189,8 @@ public class InvokeScriptResult implements IResult, Serializable {
                 put("result", getResult());
                 put("transaction", getTransaction() != null ? getTransaction().toJson() : null);
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
+                put("atomicCommit", getAtomicCommit());
+                put("transactionResult", getTransactionResult() != null ? getTransactionResult().toJson() : null);
                 put("executeTime", getExecuteTime());
                 put("charged", getCharged());
                 put("output", getOutput() == null ? null :
