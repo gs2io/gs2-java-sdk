@@ -162,6 +162,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
                     put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
                     put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
+                    put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -409,6 +410,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
                     put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
                     put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
+                    put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

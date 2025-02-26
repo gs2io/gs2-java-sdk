@@ -4788,7 +4788,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}/raw";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
@@ -6034,7 +6034,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}/raw";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));

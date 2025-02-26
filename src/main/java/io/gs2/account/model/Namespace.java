@@ -38,6 +38,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting authenticationScript;
 	private ScriptSetting createTakeOverScript;
 	private ScriptSetting doTakeOverScript;
+	private ScriptSetting banScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -132,6 +133,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.doTakeOverScript = doTakeOverScript;
 		return this;
 	}
+	public ScriptSetting getBanScript() {
+		return banScript;
+	}
+	public void setBanScript(ScriptSetting banScript) {
+		this.banScript = banScript;
+	}
+	public Namespace withBanScript(ScriptSetting banScript) {
+		this.banScript = banScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -187,6 +198,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withAuthenticationScript(data.get("authenticationScript") == null || data.get("authenticationScript").isNull() ? null : ScriptSetting.fromJson(data.get("authenticationScript")))
             .withCreateTakeOverScript(data.get("createTakeOverScript") == null || data.get("createTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("createTakeOverScript")))
             .withDoTakeOverScript(data.get("doTakeOverScript") == null || data.get("doTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("doTakeOverScript")))
+            .withBanScript(data.get("banScript") == null || data.get("banScript").isNull() ? null : ScriptSetting.fromJson(data.get("banScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -205,6 +217,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("authenticationScript", getAuthenticationScript() != null ? getAuthenticationScript().toJson() : null);
                 put("createTakeOverScript", getCreateTakeOverScript() != null ? getCreateTakeOverScript().toJson() : null);
                 put("doTakeOverScript", getDoTakeOverScript() != null ? getDoTakeOverScript().toJson() : null);
+                put("banScript", getBanScript() != null ? getBanScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -231,6 +244,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.authenticationScript == null) ? 0 : this.authenticationScript.hashCode());
         result = prime * result + ((this.createTakeOverScript == null) ? 0 : this.createTakeOverScript.hashCode());
         result = prime * result + ((this.doTakeOverScript == null) ? 0 : this.doTakeOverScript.hashCode());
+        result = prime * result + ((this.banScript == null) ? 0 : this.banScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -290,6 +304,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (doTakeOverScript == null) {
 			return other.doTakeOverScript == null;
 		} else if (!doTakeOverScript.equals(other.doTakeOverScript)) {
+			return false;
+		}
+		if (banScript == null) {
+			return other.banScript == null;
+		} else if (!banScript.equals(other.banScript)) {
 			return false;
 		}
 		if (logSetting == null) {
