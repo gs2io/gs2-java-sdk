@@ -2792,6 +2792,93 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class FreezeMasterDataByTimestampTask extends Gs2RestSessionTask<FreezeMasterDataByTimestampResult> {
+        private FreezeMasterDataByTimestampRequest request;
+
+        public FreezeMasterDataByTimestampTask(
+            FreezeMasterDataByTimestampRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataByTimestampResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FreezeMasterDataByTimestampResult parse(JsonNode data) {
+            return FreezeMasterDataByTimestampResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/masterdata/freeze/timestamp/raw";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("timestamp", request.getTimestamp());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void freezeMasterDataByTimestampAsync(
+            FreezeMasterDataByTimestampRequest request,
+            AsyncAction<AsyncResult<FreezeMasterDataByTimestampResult>> callback
+    ) {
+        FreezeMasterDataByTimestampTask task = new FreezeMasterDataByTimestampTask(request, callback);
+        session.execute(task);
+    }
+
+    public FreezeMasterDataByTimestampResult freezeMasterDataByTimestamp(
+            FreezeMasterDataByTimestampRequest request
+    ) {
+        final AsyncResult<FreezeMasterDataByTimestampResult>[] resultAsyncResult = new AsyncResult[]{null};
+        freezeMasterDataByTimestampAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class BatchExecuteApiTask extends Gs2RestSessionTask<BatchExecuteApiResult> {
         private BatchExecuteApiRequest request;
 
