@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class GooglePlaySetting implements IModel, Serializable {
 	private String packageName;
 	private String publicKey;
+	private String credentialsJSON;
 	public String getPackageName() {
 		return packageName;
 	}
@@ -51,6 +52,16 @@ public class GooglePlaySetting implements IModel, Serializable {
 		this.publicKey = publicKey;
 		return this;
 	}
+	public String getCredentialsJSON() {
+		return credentialsJSON;
+	}
+	public void setCredentialsJSON(String credentialsJSON) {
+		this.credentialsJSON = credentialsJSON;
+	}
+	public GooglePlaySetting withCredentialsJSON(String credentialsJSON) {
+		this.credentialsJSON = credentialsJSON;
+		return this;
+	}
 
     public static GooglePlaySetting fromJson(JsonNode data) {
         if (data == null) {
@@ -58,7 +69,8 @@ public class GooglePlaySetting implements IModel, Serializable {
         }
         return new GooglePlaySetting()
             .withPackageName(data.get("packageName") == null || data.get("packageName").isNull() ? null : data.get("packageName").asText())
-            .withPublicKey(data.get("publicKey") == null || data.get("publicKey").isNull() ? null : data.get("publicKey").asText());
+            .withPublicKey(data.get("publicKey") == null || data.get("publicKey").isNull() ? null : data.get("publicKey").asText())
+            .withCredentialsJSON(data.get("credentialsJSON") == null || data.get("credentialsJSON").isNull() ? null : data.get("credentialsJSON").asText());
     }
 
     public JsonNode toJson() {
@@ -66,6 +78,7 @@ public class GooglePlaySetting implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("packageName", getPackageName());
                 put("publicKey", getPublicKey());
+                put("credentialsJSON", getCredentialsJSON());
             }}
         );
     }
@@ -76,6 +89,7 @@ public class GooglePlaySetting implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.packageName == null) ? 0 : this.packageName.hashCode());
         result = prime * result + ((this.publicKey == null) ? 0 : this.publicKey.hashCode());
+        result = prime * result + ((this.credentialsJSON == null) ? 0 : this.credentialsJSON.hashCode());
 		return result;
 	}
 
@@ -96,6 +110,11 @@ public class GooglePlaySetting implements IModel, Serializable {
 		if (publicKey == null) {
 			return other.publicKey == null;
 		} else if (!publicKey.equals(other.publicKey)) {
+			return false;
+		}
+		if (credentialsJSON == null) {
+			return other.credentialsJSON == null;
+		} else if (!credentialsJSON.equals(other.credentialsJSON)) {
 			return false;
 		}
 		return true;

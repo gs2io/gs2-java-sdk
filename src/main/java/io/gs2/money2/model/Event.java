@@ -36,6 +36,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 	private VerifyReceiptEvent verifyReceiptEvent;
 	private DepositEvent depositEvent;
 	private WithdrawEvent withdrawEvent;
+	private RefundEvent refundEvent;
 	private Long createdAt;
 	private Long revision;
 	public String getEventId() {
@@ -108,6 +109,16 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		this.withdrawEvent = withdrawEvent;
 		return this;
 	}
+	public RefundEvent getRefundEvent() {
+		return refundEvent;
+	}
+	public void setRefundEvent(RefundEvent refundEvent) {
+		this.refundEvent = refundEvent;
+	}
+	public Event withRefundEvent(RefundEvent refundEvent) {
+		this.refundEvent = refundEvent;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -141,6 +152,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
             .withVerifyReceiptEvent(data.get("verifyReceiptEvent") == null || data.get("verifyReceiptEvent").isNull() ? null : VerifyReceiptEvent.fromJson(data.get("verifyReceiptEvent")))
             .withDepositEvent(data.get("depositEvent") == null || data.get("depositEvent").isNull() ? null : DepositEvent.fromJson(data.get("depositEvent")))
             .withWithdrawEvent(data.get("withdrawEvent") == null || data.get("withdrawEvent").isNull() ? null : WithdrawEvent.fromJson(data.get("withdrawEvent")))
+            .withRefundEvent(data.get("refundEvent") == null || data.get("refundEvent").isNull() ? null : RefundEvent.fromJson(data.get("refundEvent")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -155,6 +167,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
                 put("verifyReceiptEvent", getVerifyReceiptEvent() != null ? getVerifyReceiptEvent().toJson() : null);
                 put("depositEvent", getDepositEvent() != null ? getDepositEvent().toJson() : null);
                 put("withdrawEvent", getWithdrawEvent() != null ? getWithdrawEvent().toJson() : null);
+                put("refundEvent", getRefundEvent() != null ? getRefundEvent().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -177,6 +190,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
         result = prime * result + ((this.verifyReceiptEvent == null) ? 0 : this.verifyReceiptEvent.hashCode());
         result = prime * result + ((this.depositEvent == null) ? 0 : this.depositEvent.hashCode());
         result = prime * result + ((this.withdrawEvent == null) ? 0 : this.withdrawEvent.hashCode());
+        result = prime * result + ((this.refundEvent == null) ? 0 : this.refundEvent.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -224,6 +238,11 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		if (withdrawEvent == null) {
 			return other.withdrawEvent == null;
 		} else if (!withdrawEvent.equals(other.withdrawEvent)) {
+			return false;
+		}
+		if (refundEvent == null) {
+			return other.refundEvent == null;
+		} else if (!refundEvent.equals(other.refundEvent)) {
 			return false;
 		}
 		if (createdAt == null) {

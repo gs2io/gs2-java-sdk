@@ -32,6 +32,7 @@ import io.gs2.money2.model.DepositTransaction;
 import io.gs2.money2.model.WalletSummary;
 import io.gs2.money2.model.DepositEvent;
 import io.gs2.money2.model.WithdrawEvent;
+import io.gs2.money2.model.RefundEvent;
 import io.gs2.money2.model.Event;
 
 @SuppressWarnings("serial")
