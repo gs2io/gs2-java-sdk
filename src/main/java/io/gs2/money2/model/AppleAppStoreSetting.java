@@ -30,7 +30,7 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AppleAppStoreSetting implements IModel, Serializable {
 	private String bundleId;
-	private String teamId;
+	private String issuerId;
 	private String keyId;
 	private String privateKeyPem;
 	public String getBundleId() {
@@ -43,14 +43,14 @@ public class AppleAppStoreSetting implements IModel, Serializable {
 		this.bundleId = bundleId;
 		return this;
 	}
-	public String getTeamId() {
-		return teamId;
+	public String getIssuerId() {
+		return issuerId;
 	}
-	public void setTeamId(String teamId) {
-		this.teamId = teamId;
+	public void setIssuerId(String issuerId) {
+		this.issuerId = issuerId;
 	}
-	public AppleAppStoreSetting withTeamId(String teamId) {
-		this.teamId = teamId;
+	public AppleAppStoreSetting withIssuerId(String issuerId) {
+		this.issuerId = issuerId;
 		return this;
 	}
 	public String getKeyId() {
@@ -80,7 +80,7 @@ public class AppleAppStoreSetting implements IModel, Serializable {
         }
         return new AppleAppStoreSetting()
             .withBundleId(data.get("bundleId") == null || data.get("bundleId").isNull() ? null : data.get("bundleId").asText())
-            .withTeamId(data.get("teamId") == null || data.get("teamId").isNull() ? null : data.get("teamId").asText())
+            .withIssuerId(data.get("issuerId") == null || data.get("issuerId").isNull() ? null : data.get("issuerId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withPrivateKeyPem(data.get("privateKeyPem") == null || data.get("privateKeyPem").isNull() ? null : data.get("privateKeyPem").asText());
     }
@@ -89,7 +89,7 @@ public class AppleAppStoreSetting implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("bundleId", getBundleId());
-                put("teamId", getTeamId());
+                put("issuerId", getIssuerId());
                 put("keyId", getKeyId());
                 put("privateKeyPem", getPrivateKeyPem());
             }}
@@ -101,7 +101,7 @@ public class AppleAppStoreSetting implements IModel, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.bundleId == null) ? 0 : this.bundleId.hashCode());
-        result = prime * result + ((this.teamId == null) ? 0 : this.teamId.hashCode());
+        result = prime * result + ((this.issuerId == null) ? 0 : this.issuerId.hashCode());
         result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
         result = prime * result + ((this.privateKeyPem == null) ? 0 : this.privateKeyPem.hashCode());
 		return result;
@@ -121,9 +121,9 @@ public class AppleAppStoreSetting implements IModel, Serializable {
 		} else if (!bundleId.equals(other.bundleId)) {
 			return false;
 		}
-		if (teamId == null) {
-			return other.teamId == null;
-		} else if (!teamId.equals(other.teamId)) {
+		if (issuerId == null) {
+			return other.issuerId == null;
+		} else if (!issuerId.equals(other.issuerId)) {
 			return false;
 		}
 		if (keyId == null) {
