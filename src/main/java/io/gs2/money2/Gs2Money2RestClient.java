@@ -2335,6 +2335,342 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeSubscriptionStatusesTask extends Gs2RestSessionTask<DescribeSubscriptionStatusesResult> {
+        private DescribeSubscriptionStatusesRequest request;
+
+        public DescribeSubscriptionStatusesTask(
+            DescribeSubscriptionStatusesRequest request,
+            AsyncAction<AsyncResult<DescribeSubscriptionStatusesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSubscriptionStatusesResult parse(JsonNode data) {
+            return DescribeSubscriptionStatusesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSubscriptionStatusesAsync(
+            DescribeSubscriptionStatusesRequest request,
+            AsyncAction<AsyncResult<DescribeSubscriptionStatusesResult>> callback
+    ) {
+        DescribeSubscriptionStatusesTask task = new DescribeSubscriptionStatusesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSubscriptionStatusesResult describeSubscriptionStatuses(
+            DescribeSubscriptionStatusesRequest request
+    ) {
+        final AsyncResult<DescribeSubscriptionStatusesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSubscriptionStatusesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSubscriptionStatusesByUserIdTask extends Gs2RestSessionTask<DescribeSubscriptionStatusesByUserIdResult> {
+        private DescribeSubscriptionStatusesByUserIdRequest request;
+
+        public DescribeSubscriptionStatusesByUserIdTask(
+            DescribeSubscriptionStatusesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSubscriptionStatusesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSubscriptionStatusesByUserIdResult parse(JsonNode data) {
+            return DescribeSubscriptionStatusesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSubscriptionStatusesByUserIdAsync(
+            DescribeSubscriptionStatusesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSubscriptionStatusesByUserIdResult>> callback
+    ) {
+        DescribeSubscriptionStatusesByUserIdTask task = new DescribeSubscriptionStatusesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSubscriptionStatusesByUserIdResult describeSubscriptionStatusesByUserId(
+            DescribeSubscriptionStatusesByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeSubscriptionStatusesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSubscriptionStatusesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSubscriptionStatusTask extends Gs2RestSessionTask<GetSubscriptionStatusResult> {
+        private GetSubscriptionStatusRequest request;
+
+        public GetSubscriptionStatusTask(
+            GetSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<GetSubscriptionStatusResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSubscriptionStatusResult parse(JsonNode data) {
+            return GetSubscriptionStatusResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/subscription/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSubscriptionStatusAsync(
+            GetSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<GetSubscriptionStatusResult>> callback
+    ) {
+        GetSubscriptionStatusTask task = new GetSubscriptionStatusTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSubscriptionStatusResult getSubscriptionStatus(
+            GetSubscriptionStatusRequest request
+    ) {
+        final AsyncResult<GetSubscriptionStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSubscriptionStatusAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSubscriptionStatusByUserIdTask extends Gs2RestSessionTask<GetSubscriptionStatusByUserIdResult> {
+        private GetSubscriptionStatusByUserIdRequest request;
+
+        public GetSubscriptionStatusByUserIdTask(
+            GetSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSubscriptionStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSubscriptionStatusByUserIdResult parse(JsonNode data) {
+            return GetSubscriptionStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/subscription/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSubscriptionStatusByUserIdAsync(
+            GetSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSubscriptionStatusByUserIdResult>> callback
+    ) {
+        GetSubscriptionStatusByUserIdTask task = new GetSubscriptionStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSubscriptionStatusByUserIdResult getSubscriptionStatusByUserId(
+            GetSubscriptionStatusByUserIdRequest request
+    ) {
+        final AsyncResult<GetSubscriptionStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSubscriptionStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeStoreContentModelsTask extends Gs2RestSessionTask<DescribeStoreContentModelsResult> {
         private DescribeStoreContentModelsRequest request;
 
@@ -2898,6 +3234,589 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
     ) {
         final AsyncResult<DeleteStoreContentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteStoreContentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeStoreSubscriptionContentModelsTask extends Gs2RestSessionTask<DescribeStoreSubscriptionContentModelsResult> {
+        private DescribeStoreSubscriptionContentModelsRequest request;
+
+        public DescribeStoreSubscriptionContentModelsTask(
+            DescribeStoreSubscriptionContentModelsRequest request,
+            AsyncAction<AsyncResult<DescribeStoreSubscriptionContentModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeStoreSubscriptionContentModelsResult parse(JsonNode data) {
+            return DescribeStoreSubscriptionContentModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/subscription/content";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeStoreSubscriptionContentModelsAsync(
+            DescribeStoreSubscriptionContentModelsRequest request,
+            AsyncAction<AsyncResult<DescribeStoreSubscriptionContentModelsResult>> callback
+    ) {
+        DescribeStoreSubscriptionContentModelsTask task = new DescribeStoreSubscriptionContentModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeStoreSubscriptionContentModelsResult describeStoreSubscriptionContentModels(
+            DescribeStoreSubscriptionContentModelsRequest request
+    ) {
+        final AsyncResult<DescribeStoreSubscriptionContentModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeStoreSubscriptionContentModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetStoreSubscriptionContentModelTask extends Gs2RestSessionTask<GetStoreSubscriptionContentModelResult> {
+        private GetStoreSubscriptionContentModelRequest request;
+
+        public GetStoreSubscriptionContentModelTask(
+            GetStoreSubscriptionContentModelRequest request,
+            AsyncAction<AsyncResult<GetStoreSubscriptionContentModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetStoreSubscriptionContentModelResult parse(JsonNode data) {
+            return GetStoreSubscriptionContentModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/subscription/content/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getStoreSubscriptionContentModelAsync(
+            GetStoreSubscriptionContentModelRequest request,
+            AsyncAction<AsyncResult<GetStoreSubscriptionContentModelResult>> callback
+    ) {
+        GetStoreSubscriptionContentModelTask task = new GetStoreSubscriptionContentModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetStoreSubscriptionContentModelResult getStoreSubscriptionContentModel(
+            GetStoreSubscriptionContentModelRequest request
+    ) {
+        final AsyncResult<GetStoreSubscriptionContentModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getStoreSubscriptionContentModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeStoreSubscriptionContentModelMastersTask extends Gs2RestSessionTask<DescribeStoreSubscriptionContentModelMastersResult> {
+        private DescribeStoreSubscriptionContentModelMastersRequest request;
+
+        public DescribeStoreSubscriptionContentModelMastersTask(
+            DescribeStoreSubscriptionContentModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeStoreSubscriptionContentModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeStoreSubscriptionContentModelMastersResult parse(JsonNode data) {
+            return DescribeStoreSubscriptionContentModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeStoreSubscriptionContentModelMastersAsync(
+            DescribeStoreSubscriptionContentModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeStoreSubscriptionContentModelMastersResult>> callback
+    ) {
+        DescribeStoreSubscriptionContentModelMastersTask task = new DescribeStoreSubscriptionContentModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeStoreSubscriptionContentModelMastersResult describeStoreSubscriptionContentModelMasters(
+            DescribeStoreSubscriptionContentModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeStoreSubscriptionContentModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeStoreSubscriptionContentModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateStoreSubscriptionContentModelMasterTask extends Gs2RestSessionTask<CreateStoreSubscriptionContentModelMasterResult> {
+        private CreateStoreSubscriptionContentModelMasterRequest request;
+
+        public CreateStoreSubscriptionContentModelMasterTask(
+            CreateStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateStoreSubscriptionContentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateStoreSubscriptionContentModelMasterResult parse(JsonNode data) {
+            return CreateStoreSubscriptionContentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("scheduleNamespaceId", request.getScheduleNamespaceId());
+                    put("triggerName", request.getTriggerName());
+                    put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
+                    put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createStoreSubscriptionContentModelMasterAsync(
+            CreateStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateStoreSubscriptionContentModelMasterResult>> callback
+    ) {
+        CreateStoreSubscriptionContentModelMasterTask task = new CreateStoreSubscriptionContentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateStoreSubscriptionContentModelMasterResult createStoreSubscriptionContentModelMaster(
+            CreateStoreSubscriptionContentModelMasterRequest request
+    ) {
+        final AsyncResult<CreateStoreSubscriptionContentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createStoreSubscriptionContentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetStoreSubscriptionContentModelMasterTask extends Gs2RestSessionTask<GetStoreSubscriptionContentModelMasterResult> {
+        private GetStoreSubscriptionContentModelMasterRequest request;
+
+        public GetStoreSubscriptionContentModelMasterTask(
+            GetStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetStoreSubscriptionContentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetStoreSubscriptionContentModelMasterResult parse(JsonNode data) {
+            return GetStoreSubscriptionContentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/subscription/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getStoreSubscriptionContentModelMasterAsync(
+            GetStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetStoreSubscriptionContentModelMasterResult>> callback
+    ) {
+        GetStoreSubscriptionContentModelMasterTask task = new GetStoreSubscriptionContentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetStoreSubscriptionContentModelMasterResult getStoreSubscriptionContentModelMaster(
+            GetStoreSubscriptionContentModelMasterRequest request
+    ) {
+        final AsyncResult<GetStoreSubscriptionContentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getStoreSubscriptionContentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateStoreSubscriptionContentModelMasterTask extends Gs2RestSessionTask<UpdateStoreSubscriptionContentModelMasterResult> {
+        private UpdateStoreSubscriptionContentModelMasterRequest request;
+
+        public UpdateStoreSubscriptionContentModelMasterTask(
+            UpdateStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateStoreSubscriptionContentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateStoreSubscriptionContentModelMasterResult parse(JsonNode data) {
+            return UpdateStoreSubscriptionContentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/subscription/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("scheduleNamespaceId", request.getScheduleNamespaceId());
+                    put("triggerName", request.getTriggerName());
+                    put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
+                    put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateStoreSubscriptionContentModelMasterAsync(
+            UpdateStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateStoreSubscriptionContentModelMasterResult>> callback
+    ) {
+        UpdateStoreSubscriptionContentModelMasterTask task = new UpdateStoreSubscriptionContentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateStoreSubscriptionContentModelMasterResult updateStoreSubscriptionContentModelMaster(
+            UpdateStoreSubscriptionContentModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateStoreSubscriptionContentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateStoreSubscriptionContentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteStoreSubscriptionContentModelMasterTask extends Gs2RestSessionTask<DeleteStoreSubscriptionContentModelMasterResult> {
+        private DeleteStoreSubscriptionContentModelMasterRequest request;
+
+        public DeleteStoreSubscriptionContentModelMasterTask(
+            DeleteStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteStoreSubscriptionContentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteStoreSubscriptionContentModelMasterResult parse(JsonNode data) {
+            return DeleteStoreSubscriptionContentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/subscription/{contentName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{contentName}", this.request.getContentName() == null || this.request.getContentName().length() == 0 ? "null" : String.valueOf(this.request.getContentName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteStoreSubscriptionContentModelMasterAsync(
+            DeleteStoreSubscriptionContentModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteStoreSubscriptionContentModelMasterResult>> callback
+    ) {
+        DeleteStoreSubscriptionContentModelMasterTask task = new DeleteStoreSubscriptionContentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteStoreSubscriptionContentModelMasterResult deleteStoreSubscriptionContentModelMaster(
+            DeleteStoreSubscriptionContentModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteStoreSubscriptionContentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteStoreSubscriptionContentModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

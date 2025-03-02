@@ -30,10 +30,10 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SubscribeTransaction implements IModel, Serializable, Comparable<SubscribeTransaction> {
 	private String subscribeTransactionId;
+	private String contentName;
 	private String transactionId;
 	private String store;
 	private String userId;
-	private String status;
 	private String statusDetail;
 	private Long expiresAt;
 	private Long createdAt;
@@ -47,6 +47,16 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 	}
 	public SubscribeTransaction withSubscribeTransactionId(String subscribeTransactionId) {
 		this.subscribeTransactionId = subscribeTransactionId;
+		return this;
+	}
+	public String getContentName() {
+		return contentName;
+	}
+	public void setContentName(String contentName) {
+		this.contentName = contentName;
+	}
+	public SubscribeTransaction withContentName(String contentName) {
+		this.contentName = contentName;
 		return this;
 	}
 	public String getTransactionId() {
@@ -77,16 +87,6 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 	}
 	public SubscribeTransaction withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public SubscribeTransaction withStatus(String status) {
-		this.status = status;
 		return this;
 	}
 	public String getStatusDetail() {
@@ -146,10 +146,10 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
         }
         return new SubscribeTransaction()
             .withSubscribeTransactionId(data.get("subscribeTransactionId") == null || data.get("subscribeTransactionId").isNull() ? null : data.get("subscribeTransactionId").asText())
+            .withContentName(data.get("contentName") == null || data.get("contentName").isNull() ? null : data.get("contentName").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStore(data.get("store") == null || data.get("store").isNull() ? null : data.get("store").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
             .withStatusDetail(data.get("statusDetail") == null || data.get("statusDetail").isNull() ? null : data.get("statusDetail").asText())
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -161,10 +161,10 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("subscribeTransactionId", getSubscribeTransactionId());
+                put("contentName", getContentName());
                 put("transactionId", getTransactionId());
                 put("store", getStore());
                 put("userId", getUserId());
-                put("status", getStatus());
                 put("statusDetail", getStatusDetail());
                 put("expiresAt", getExpiresAt());
                 put("createdAt", getCreatedAt());
@@ -184,10 +184,10 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.subscribeTransactionId == null) ? 0 : this.subscribeTransactionId.hashCode());
+        result = prime * result + ((this.contentName == null) ? 0 : this.contentName.hashCode());
         result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
         result = prime * result + ((this.store == null) ? 0 : this.store.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.statusDetail == null) ? 0 : this.statusDetail.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -210,6 +210,11 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 		} else if (!subscribeTransactionId.equals(other.subscribeTransactionId)) {
 			return false;
 		}
+		if (contentName == null) {
+			return other.contentName == null;
+		} else if (!contentName.equals(other.contentName)) {
+			return false;
+		}
 		if (transactionId == null) {
 			return other.transactionId == null;
 		} else if (!transactionId.equals(other.transactionId)) {
@@ -223,11 +228,6 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
-			return false;
-		}
-		if (status == null) {
-			return other.status == null;
-		} else if (!status.equals(other.status)) {
 			return false;
 		}
 		if (statusDetail == null) {
