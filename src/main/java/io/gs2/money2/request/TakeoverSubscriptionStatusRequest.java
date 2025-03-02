@@ -24,14 +24,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.money2.model.Receipt;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TakeoverSubscriptionStatusRequest extends Gs2BasicRequest<TakeoverSubscriptionStatusRequest> {
     private String namespaceName;
     private String accessToken;
-    private Receipt receipt;
+    private String receipt;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -53,13 +52,13 @@ public class TakeoverSubscriptionStatusRequest extends Gs2BasicRequest<TakeoverS
 		this.accessToken = accessToken;
 		return this;
 	}
-	public Receipt getReceipt() {
+	public String getReceipt() {
 		return receipt;
 	}
-	public void setReceipt(Receipt receipt) {
+	public void setReceipt(String receipt) {
 		this.receipt = receipt;
 	}
-	public TakeoverSubscriptionStatusRequest withReceipt(Receipt receipt) {
+	public TakeoverSubscriptionStatusRequest withReceipt(String receipt) {
 		this.receipt = receipt;
 		return this;
 	}
@@ -84,7 +83,7 @@ public class TakeoverSubscriptionStatusRequest extends Gs2BasicRequest<TakeoverS
         return new TakeoverSubscriptionStatusRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : Receipt.fromJson(data.get("receipt")));
+            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText());
     }
 
     public JsonNode toJson() {
@@ -92,7 +91,7 @@ public class TakeoverSubscriptionStatusRequest extends Gs2BasicRequest<TakeoverS
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("receipt", getReceipt() != null ? getReceipt().toJson() : null);
+                put("receipt", getReceipt());
             }}
         );
     }

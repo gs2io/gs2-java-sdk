@@ -24,14 +24,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.money2.model.Receipt;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TakeoverSubscriptionStatusByUserIdRequest extends Gs2BasicRequest<TakeoverSubscriptionStatusByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private Receipt receipt;
+    private String receipt;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -54,13 +53,13 @@ public class TakeoverSubscriptionStatusByUserIdRequest extends Gs2BasicRequest<T
 		this.userId = userId;
 		return this;
 	}
-	public Receipt getReceipt() {
+	public String getReceipt() {
 		return receipt;
 	}
-	public void setReceipt(Receipt receipt) {
+	public void setReceipt(String receipt) {
 		this.receipt = receipt;
 	}
-	public TakeoverSubscriptionStatusByUserIdRequest withReceipt(Receipt receipt) {
+	public TakeoverSubscriptionStatusByUserIdRequest withReceipt(String receipt) {
 		this.receipt = receipt;
 		return this;
 	}
@@ -95,7 +94,7 @@ public class TakeoverSubscriptionStatusByUserIdRequest extends Gs2BasicRequest<T
         return new TakeoverSubscriptionStatusByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : Receipt.fromJson(data.get("receipt")))
+            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -104,7 +103,7 @@ public class TakeoverSubscriptionStatusByUserIdRequest extends Gs2BasicRequest<T
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("receipt", getReceipt() != null ? getReceipt().toJson() : null);
+                put("receipt", getReceipt());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

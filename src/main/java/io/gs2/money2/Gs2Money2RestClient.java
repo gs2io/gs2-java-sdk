@@ -2712,7 +2712,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("receipt", request.getReceipt());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2800,7 +2800,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("receipt", request.getReceipt());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2887,7 +2887,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("receipt", request.getReceipt());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2975,7 +2975,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("receipt", request.getReceipt());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
