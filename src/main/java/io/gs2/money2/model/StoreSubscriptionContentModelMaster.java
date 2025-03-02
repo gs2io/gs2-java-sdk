@@ -35,6 +35,7 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 	private String metadata;
 	private String scheduleNamespaceId;
 	private String triggerName;
+	private Integer reallocateSpanDays;
 	private AppleAppStoreSubscriptionContent appleAppStore;
 	private GooglePlaySubscriptionContent googlePlay;
 	private Long createdAt;
@@ -100,6 +101,16 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 		this.triggerName = triggerName;
 		return this;
 	}
+	public Integer getReallocateSpanDays() {
+		return reallocateSpanDays;
+	}
+	public void setReallocateSpanDays(Integer reallocateSpanDays) {
+		this.reallocateSpanDays = reallocateSpanDays;
+	}
+	public StoreSubscriptionContentModelMaster withReallocateSpanDays(Integer reallocateSpanDays) {
+		this.reallocateSpanDays = reallocateSpanDays;
+		return this;
+	}
 	public AppleAppStoreSubscriptionContent getAppleAppStore() {
 		return appleAppStore;
 	}
@@ -162,6 +173,7 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withScheduleNamespaceId(data.get("scheduleNamespaceId") == null || data.get("scheduleNamespaceId").isNull() ? null : data.get("scheduleNamespaceId").asText())
             .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText())
+            .withReallocateSpanDays(data.get("reallocateSpanDays") == null || data.get("reallocateSpanDays").isNull() ? null : data.get("reallocateSpanDays").intValue())
             .withAppleAppStore(data.get("appleAppStore") == null || data.get("appleAppStore").isNull() ? null : AppleAppStoreSubscriptionContent.fromJson(data.get("appleAppStore")))
             .withGooglePlay(data.get("googlePlay") == null || data.get("googlePlay").isNull() ? null : GooglePlaySubscriptionContent.fromJson(data.get("googlePlay")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -178,6 +190,7 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
                 put("metadata", getMetadata());
                 put("scheduleNamespaceId", getScheduleNamespaceId());
                 put("triggerName", getTriggerName());
+                put("reallocateSpanDays", getReallocateSpanDays());
                 put("appleAppStore", getAppleAppStore() != null ? getAppleAppStore().toJson() : null);
                 put("googlePlay", getGooglePlay() != null ? getGooglePlay().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -202,6 +215,7 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.scheduleNamespaceId == null) ? 0 : this.scheduleNamespaceId.hashCode());
         result = prime * result + ((this.triggerName == null) ? 0 : this.triggerName.hashCode());
+        result = prime * result + ((this.reallocateSpanDays == null) ? 0 : this.reallocateSpanDays.hashCode());
         result = prime * result + ((this.appleAppStore == null) ? 0 : this.appleAppStore.hashCode());
         result = prime * result + ((this.googlePlay == null) ? 0 : this.googlePlay.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -247,6 +261,11 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 		if (triggerName == null) {
 			return other.triggerName == null;
 		} else if (!triggerName.equals(other.triggerName)) {
+			return false;
+		}
+		if (reallocateSpanDays == null) {
+			return other.reallocateSpanDays == null;
+		} else if (!reallocateSpanDays.equals(other.reallocateSpanDays)) {
 			return false;
 		}
 		if (appleAppStore == null) {

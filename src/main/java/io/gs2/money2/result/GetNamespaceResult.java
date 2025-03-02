@@ -30,6 +30,7 @@ import io.gs2.money2.model.GooglePlaySetting;
 import io.gs2.money2.model.FakeSetting;
 import io.gs2.money2.model.PlatformSetting;
 import io.gs2.money2.model.ScriptSetting;
+import io.gs2.money2.model.NotificationSetting;
 import io.gs2.money2.model.LogSetting;
 import io.gs2.money2.model.Namespace;
 

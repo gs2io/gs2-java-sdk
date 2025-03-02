@@ -29,6 +29,7 @@ import io.gs2.money2.model.GooglePlaySetting;
 import io.gs2.money2.model.FakeSetting;
 import io.gs2.money2.model.PlatformSetting;
 import io.gs2.money2.model.ScriptSetting;
+import io.gs2.money2.model.NotificationSetting;
 import io.gs2.money2.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -40,6 +41,11 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private PlatformSetting platformSetting;
     private ScriptSetting depositBalanceScript;
     private ScriptSetting withdrawBalanceScript;
+    private String subscribeScript;
+    private String renewScript;
+    private String unsubscribeScript;
+    private ScriptSetting takeOverScript;
+    private NotificationSetting changeSubscriptionStatusNotification;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -101,6 +107,56 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.withdrawBalanceScript = withdrawBalanceScript;
 		return this;
 	}
+	public String getSubscribeScript() {
+		return subscribeScript;
+	}
+	public void setSubscribeScript(String subscribeScript) {
+		this.subscribeScript = subscribeScript;
+	}
+	public UpdateNamespaceRequest withSubscribeScript(String subscribeScript) {
+		this.subscribeScript = subscribeScript;
+		return this;
+	}
+	public String getRenewScript() {
+		return renewScript;
+	}
+	public void setRenewScript(String renewScript) {
+		this.renewScript = renewScript;
+	}
+	public UpdateNamespaceRequest withRenewScript(String renewScript) {
+		this.renewScript = renewScript;
+		return this;
+	}
+	public String getUnsubscribeScript() {
+		return unsubscribeScript;
+	}
+	public void setUnsubscribeScript(String unsubscribeScript) {
+		this.unsubscribeScript = unsubscribeScript;
+	}
+	public UpdateNamespaceRequest withUnsubscribeScript(String unsubscribeScript) {
+		this.unsubscribeScript = unsubscribeScript;
+		return this;
+	}
+	public ScriptSetting getTakeOverScript() {
+		return takeOverScript;
+	}
+	public void setTakeOverScript(ScriptSetting takeOverScript) {
+		this.takeOverScript = takeOverScript;
+	}
+	public UpdateNamespaceRequest withTakeOverScript(ScriptSetting takeOverScript) {
+		this.takeOverScript = takeOverScript;
+		return this;
+	}
+	public NotificationSetting getChangeSubscriptionStatusNotification() {
+		return changeSubscriptionStatusNotification;
+	}
+	public void setChangeSubscriptionStatusNotification(NotificationSetting changeSubscriptionStatusNotification) {
+		this.changeSubscriptionStatusNotification = changeSubscriptionStatusNotification;
+	}
+	public UpdateNamespaceRequest withChangeSubscriptionStatusNotification(NotificationSetting changeSubscriptionStatusNotification) {
+		this.changeSubscriptionStatusNotification = changeSubscriptionStatusNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -123,6 +179,11 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
             .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
             .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
+            .withSubscribeScript(data.get("subscribeScript") == null || data.get("subscribeScript").isNull() ? null : data.get("subscribeScript").asText())
+            .withRenewScript(data.get("renewScript") == null || data.get("renewScript").isNull() ? null : data.get("renewScript").asText())
+            .withUnsubscribeScript(data.get("unsubscribeScript") == null || data.get("unsubscribeScript").isNull() ? null : data.get("unsubscribeScript").asText())
+            .withTakeOverScript(data.get("takeOverScript") == null || data.get("takeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("takeOverScript")))
+            .withChangeSubscriptionStatusNotification(data.get("changeSubscriptionStatusNotification") == null || data.get("changeSubscriptionStatusNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeSubscriptionStatusNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -135,6 +196,11 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
                 put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
                 put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
+                put("subscribeScript", getSubscribeScript());
+                put("renewScript", getRenewScript());
+                put("unsubscribeScript", getUnsubscribeScript());
+                put("takeOverScript", getTakeOverScript() != null ? getTakeOverScript().toJson() : null);
+                put("changeSubscriptionStatusNotification", getChangeSubscriptionStatusNotification() != null ? getChangeSubscriptionStatusNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

@@ -37,6 +37,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private PlatformSetting platformSetting;
 	private ScriptSetting depositBalanceScript;
 	private ScriptSetting withdrawBalanceScript;
+	private String subscribeScript;
+	private String renewScript;
+	private String unsubscribeScript;
+	private ScriptSetting takeOverScript;
+	private NotificationSetting changeSubscriptionStatusNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -121,6 +126,56 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.withdrawBalanceScript = withdrawBalanceScript;
 		return this;
 	}
+	public String getSubscribeScript() {
+		return subscribeScript;
+	}
+	public void setSubscribeScript(String subscribeScript) {
+		this.subscribeScript = subscribeScript;
+	}
+	public Namespace withSubscribeScript(String subscribeScript) {
+		this.subscribeScript = subscribeScript;
+		return this;
+	}
+	public String getRenewScript() {
+		return renewScript;
+	}
+	public void setRenewScript(String renewScript) {
+		this.renewScript = renewScript;
+	}
+	public Namespace withRenewScript(String renewScript) {
+		this.renewScript = renewScript;
+		return this;
+	}
+	public String getUnsubscribeScript() {
+		return unsubscribeScript;
+	}
+	public void setUnsubscribeScript(String unsubscribeScript) {
+		this.unsubscribeScript = unsubscribeScript;
+	}
+	public Namespace withUnsubscribeScript(String unsubscribeScript) {
+		this.unsubscribeScript = unsubscribeScript;
+		return this;
+	}
+	public ScriptSetting getTakeOverScript() {
+		return takeOverScript;
+	}
+	public void setTakeOverScript(ScriptSetting takeOverScript) {
+		this.takeOverScript = takeOverScript;
+	}
+	public Namespace withTakeOverScript(ScriptSetting takeOverScript) {
+		this.takeOverScript = takeOverScript;
+		return this;
+	}
+	public NotificationSetting getChangeSubscriptionStatusNotification() {
+		return changeSubscriptionStatusNotification;
+	}
+	public void setChangeSubscriptionStatusNotification(NotificationSetting changeSubscriptionStatusNotification) {
+		this.changeSubscriptionStatusNotification = changeSubscriptionStatusNotification;
+	}
+	public Namespace withChangeSubscriptionStatusNotification(NotificationSetting changeSubscriptionStatusNotification) {
+		this.changeSubscriptionStatusNotification = changeSubscriptionStatusNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -175,6 +230,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
             .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
             .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
+            .withSubscribeScript(data.get("subscribeScript") == null || data.get("subscribeScript").isNull() ? null : data.get("subscribeScript").asText())
+            .withRenewScript(data.get("renewScript") == null || data.get("renewScript").isNull() ? null : data.get("renewScript").asText())
+            .withUnsubscribeScript(data.get("unsubscribeScript") == null || data.get("unsubscribeScript").isNull() ? null : data.get("unsubscribeScript").asText())
+            .withTakeOverScript(data.get("takeOverScript") == null || data.get("takeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("takeOverScript")))
+            .withChangeSubscriptionStatusNotification(data.get("changeSubscriptionStatusNotification") == null || data.get("changeSubscriptionStatusNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeSubscriptionStatusNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -192,6 +252,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
                 put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
                 put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
+                put("subscribeScript", getSubscribeScript());
+                put("renewScript", getRenewScript());
+                put("unsubscribeScript", getUnsubscribeScript());
+                put("takeOverScript", getTakeOverScript() != null ? getTakeOverScript().toJson() : null);
+                put("changeSubscriptionStatusNotification", getChangeSubscriptionStatusNotification() != null ? getChangeSubscriptionStatusNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -217,6 +282,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.platformSetting == null) ? 0 : this.platformSetting.hashCode());
         result = prime * result + ((this.depositBalanceScript == null) ? 0 : this.depositBalanceScript.hashCode());
         result = prime * result + ((this.withdrawBalanceScript == null) ? 0 : this.withdrawBalanceScript.hashCode());
+        result = prime * result + ((this.subscribeScript == null) ? 0 : this.subscribeScript.hashCode());
+        result = prime * result + ((this.renewScript == null) ? 0 : this.renewScript.hashCode());
+        result = prime * result + ((this.unsubscribeScript == null) ? 0 : this.unsubscribeScript.hashCode());
+        result = prime * result + ((this.takeOverScript == null) ? 0 : this.takeOverScript.hashCode());
+        result = prime * result + ((this.changeSubscriptionStatusNotification == null) ? 0 : this.changeSubscriptionStatusNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -271,6 +341,31 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (withdrawBalanceScript == null) {
 			return other.withdrawBalanceScript == null;
 		} else if (!withdrawBalanceScript.equals(other.withdrawBalanceScript)) {
+			return false;
+		}
+		if (subscribeScript == null) {
+			return other.subscribeScript == null;
+		} else if (!subscribeScript.equals(other.subscribeScript)) {
+			return false;
+		}
+		if (renewScript == null) {
+			return other.renewScript == null;
+		} else if (!renewScript.equals(other.renewScript)) {
+			return false;
+		}
+		if (unsubscribeScript == null) {
+			return other.unsubscribeScript == null;
+		} else if (!unsubscribeScript.equals(other.unsubscribeScript)) {
+			return false;
+		}
+		if (takeOverScript == null) {
+			return other.takeOverScript == null;
+		} else if (!takeOverScript.equals(other.takeOverScript)) {
+			return false;
+		}
+		if (changeSubscriptionStatusNotification == null) {
+			return other.changeSubscriptionStatusNotification == null;
+		} else if (!changeSubscriptionStatusNotification.equals(other.changeSubscriptionStatusNotification)) {
 			return false;
 		}
 		if (logSetting == null) {

@@ -36,6 +36,7 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 	private String userId;
 	private String statusDetail;
 	private Long expiresAt;
+	private Long lastAllocatedAt;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -109,6 +110,16 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 		this.expiresAt = expiresAt;
 		return this;
 	}
+	public Long getLastAllocatedAt() {
+		return lastAllocatedAt;
+	}
+	public void setLastAllocatedAt(Long lastAllocatedAt) {
+		this.lastAllocatedAt = lastAllocatedAt;
+	}
+	public SubscribeTransaction withLastAllocatedAt(Long lastAllocatedAt) {
+		this.lastAllocatedAt = lastAllocatedAt;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -152,6 +163,7 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withStatusDetail(data.get("statusDetail") == null || data.get("statusDetail").isNull() ? null : data.get("statusDetail").asText())
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withLastAllocatedAt(data.get("lastAllocatedAt") == null || data.get("lastAllocatedAt").isNull() ? null : data.get("lastAllocatedAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -167,6 +179,7 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
                 put("userId", getUserId());
                 put("statusDetail", getStatusDetail());
                 put("expiresAt", getExpiresAt());
+                put("lastAllocatedAt", getLastAllocatedAt());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -190,6 +203,7 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.statusDetail == null) ? 0 : this.statusDetail.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.lastAllocatedAt == null) ? 0 : this.lastAllocatedAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -238,6 +252,11 @@ public class SubscribeTransaction implements IModel, Serializable, Comparable<Su
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (lastAllocatedAt == null) {
+			return other.lastAllocatedAt == null;
+		} else if (!lastAllocatedAt.equals(other.lastAllocatedAt)) {
 			return false;
 		}
 		if (createdAt == null) {

@@ -36,6 +36,7 @@ public class UpdateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
     private String metadata;
     private String scheduleNamespaceId;
     private String triggerName;
+    private Integer reallocateSpanDays;
     private AppleAppStoreSubscriptionContent appleAppStore;
     private GooglePlaySubscriptionContent googlePlay;
 	public String getNamespaceName() {
@@ -98,6 +99,16 @@ public class UpdateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
 		this.triggerName = triggerName;
 		return this;
 	}
+	public Integer getReallocateSpanDays() {
+		return reallocateSpanDays;
+	}
+	public void setReallocateSpanDays(Integer reallocateSpanDays) {
+		this.reallocateSpanDays = reallocateSpanDays;
+	}
+	public UpdateStoreSubscriptionContentModelMasterRequest withReallocateSpanDays(Integer reallocateSpanDays) {
+		this.reallocateSpanDays = reallocateSpanDays;
+		return this;
+	}
 	public AppleAppStoreSubscriptionContent getAppleAppStore() {
 		return appleAppStore;
 	}
@@ -130,6 +141,7 @@ public class UpdateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withScheduleNamespaceId(data.get("scheduleNamespaceId") == null || data.get("scheduleNamespaceId").isNull() ? null : data.get("scheduleNamespaceId").asText())
             .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText())
+            .withReallocateSpanDays(data.get("reallocateSpanDays") == null || data.get("reallocateSpanDays").isNull() ? null : data.get("reallocateSpanDays").intValue())
             .withAppleAppStore(data.get("appleAppStore") == null || data.get("appleAppStore").isNull() ? null : AppleAppStoreSubscriptionContent.fromJson(data.get("appleAppStore")))
             .withGooglePlay(data.get("googlePlay") == null || data.get("googlePlay").isNull() ? null : GooglePlaySubscriptionContent.fromJson(data.get("googlePlay")));
     }
@@ -143,6 +155,7 @@ public class UpdateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
                 put("metadata", getMetadata());
                 put("scheduleNamespaceId", getScheduleNamespaceId());
                 put("triggerName", getTriggerName());
+                put("reallocateSpanDays", getReallocateSpanDays());
                 put("appleAppStore", getAppleAppStore() != null ? getAppleAppStore().toJson() : null);
                 put("googlePlay", getGooglePlay() != null ? getGooglePlay().toJson() : null);
             }}

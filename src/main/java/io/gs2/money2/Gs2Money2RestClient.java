@@ -161,6 +161,11 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
                     put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
+                    put("subscribeScript", request.getSubscribeScript());
+                    put("renewScript", request.getRenewScript());
+                    put("unsubscribeScript", request.getUnsubscribeScript());
+                    put("takeOverScript", request.getTakeOverScript() != null ? request.getTakeOverScript().toJson() : null);
+                    put("changeSubscriptionStatusNotification", request.getChangeSubscriptionStatusNotification() != null ? request.getChangeSubscriptionStatusNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -407,6 +412,11 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
                     put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
+                    put("subscribeScript", request.getSubscribeScript());
+                    put("renewScript", request.getRenewScript());
+                    put("unsubscribeScript", request.getUnsubscribeScript());
+                    put("takeOverScript", request.getTakeOverScript() != null ? request.getTakeOverScript().toJson() : null);
+                    put("changeSubscriptionStatusNotification", request.getChangeSubscriptionStatusNotification() != null ? request.getChangeSubscriptionStatusNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -2671,6 +2681,356 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class AllocateSubscriptionStatusTask extends Gs2RestSessionTask<AllocateSubscriptionStatusResult> {
+        private AllocateSubscriptionStatusRequest request;
+
+        public AllocateSubscriptionStatusTask(
+            AllocateSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<AllocateSubscriptionStatusResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AllocateSubscriptionStatusResult parse(JsonNode data) {
+            return AllocateSubscriptionStatusResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/allocate/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void allocateSubscriptionStatusAsync(
+            AllocateSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<AllocateSubscriptionStatusResult>> callback
+    ) {
+        AllocateSubscriptionStatusTask task = new AllocateSubscriptionStatusTask(request, callback);
+        session.execute(task);
+    }
+
+    public AllocateSubscriptionStatusResult allocateSubscriptionStatus(
+            AllocateSubscriptionStatusRequest request
+    ) {
+        final AsyncResult<AllocateSubscriptionStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        allocateSubscriptionStatusAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AllocateSubscriptionStatusByUserIdTask extends Gs2RestSessionTask<AllocateSubscriptionStatusByUserIdResult> {
+        private AllocateSubscriptionStatusByUserIdRequest request;
+
+        public AllocateSubscriptionStatusByUserIdTask(
+            AllocateSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<AllocateSubscriptionStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AllocateSubscriptionStatusByUserIdResult parse(JsonNode data) {
+            return AllocateSubscriptionStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/allocate/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void allocateSubscriptionStatusByUserIdAsync(
+            AllocateSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<AllocateSubscriptionStatusByUserIdResult>> callback
+    ) {
+        AllocateSubscriptionStatusByUserIdTask task = new AllocateSubscriptionStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AllocateSubscriptionStatusByUserIdResult allocateSubscriptionStatusByUserId(
+            AllocateSubscriptionStatusByUserIdRequest request
+    ) {
+        final AsyncResult<AllocateSubscriptionStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        allocateSubscriptionStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class TakeoverSubscriptionStatusTask extends Gs2RestSessionTask<TakeoverSubscriptionStatusResult> {
+        private TakeoverSubscriptionStatusRequest request;
+
+        public TakeoverSubscriptionStatusTask(
+            TakeoverSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<TakeoverSubscriptionStatusResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public TakeoverSubscriptionStatusResult parse(JsonNode data) {
+            return TakeoverSubscriptionStatusResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/takeover/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void takeoverSubscriptionStatusAsync(
+            TakeoverSubscriptionStatusRequest request,
+            AsyncAction<AsyncResult<TakeoverSubscriptionStatusResult>> callback
+    ) {
+        TakeoverSubscriptionStatusTask task = new TakeoverSubscriptionStatusTask(request, callback);
+        session.execute(task);
+    }
+
+    public TakeoverSubscriptionStatusResult takeoverSubscriptionStatus(
+            TakeoverSubscriptionStatusRequest request
+    ) {
+        final AsyncResult<TakeoverSubscriptionStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        takeoverSubscriptionStatusAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class TakeoverSubscriptionStatusByUserIdTask extends Gs2RestSessionTask<TakeoverSubscriptionStatusByUserIdResult> {
+        private TakeoverSubscriptionStatusByUserIdRequest request;
+
+        public TakeoverSubscriptionStatusByUserIdTask(
+            TakeoverSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<TakeoverSubscriptionStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public TakeoverSubscriptionStatusByUserIdResult parse(JsonNode data) {
+            return TakeoverSubscriptionStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/takeover/subscription";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receipt", request.getReceipt() != null ? request.getReceipt().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void takeoverSubscriptionStatusByUserIdAsync(
+            TakeoverSubscriptionStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<TakeoverSubscriptionStatusByUserIdResult>> callback
+    ) {
+        TakeoverSubscriptionStatusByUserIdTask task = new TakeoverSubscriptionStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public TakeoverSubscriptionStatusByUserIdResult takeoverSubscriptionStatusByUserId(
+            TakeoverSubscriptionStatusByUserIdRequest request
+    ) {
+        final AsyncResult<TakeoverSubscriptionStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        takeoverSubscriptionStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeStoreContentModelsTask extends Gs2RestSessionTask<DescribeStoreContentModelsResult> {
         private DescribeStoreContentModelsRequest request;
 
@@ -3533,6 +3893,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("metadata", request.getMetadata());
                     put("scheduleNamespaceId", request.getScheduleNamespaceId());
                     put("triggerName", request.getTriggerName());
+                    put("reallocateSpanDays", request.getReallocateSpanDays());
                     put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
                     put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -3701,6 +4062,7 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("metadata", request.getMetadata());
                     put("scheduleNamespaceId", request.getScheduleNamespaceId());
                     put("triggerName", request.getTriggerName());
+                    put("reallocateSpanDays", request.getReallocateSpanDays());
                     put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
                     put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);
                     put("contextStack", request.getContextStack());

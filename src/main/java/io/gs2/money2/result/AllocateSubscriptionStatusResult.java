@@ -25,39 +25,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.money2.model.*;
-import io.gs2.money2.model.AppleAppStoreSetting;
-import io.gs2.money2.model.GooglePlaySetting;
-import io.gs2.money2.model.FakeSetting;
-import io.gs2.money2.model.PlatformSetting;
-import io.gs2.money2.model.ScriptSetting;
-import io.gs2.money2.model.NotificationSetting;
-import io.gs2.money2.model.LogSetting;
-import io.gs2.money2.model.Namespace;
+import io.gs2.money2.model.SubscribeTransaction;
+import io.gs2.money2.model.SubscriptionStatus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateNamespaceResult implements IResult, Serializable {
-    private Namespace item;
+public class AllocateSubscriptionStatusResult implements IResult, Serializable {
+    private SubscriptionStatus item;
 
-	public Namespace getItem() {
+	public SubscriptionStatus getItem() {
 		return item;
 	}
 
-	public void setItem(Namespace item) {
+	public void setItem(SubscriptionStatus item) {
 		this.item = item;
 	}
 
-	public UpdateNamespaceResult withItem(Namespace item) {
+	public AllocateSubscriptionStatusResult withItem(SubscriptionStatus item) {
 		this.item = item;
 		return this;
 	}
 
-    public static UpdateNamespaceResult fromJson(JsonNode data) {
+    public static AllocateSubscriptionStatusResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new UpdateNamespaceResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Namespace.fromJson(data.get("item")));
+        return new AllocateSubscriptionStatusResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SubscriptionStatus.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
