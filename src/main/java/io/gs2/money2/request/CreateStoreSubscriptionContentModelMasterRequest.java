@@ -36,6 +36,8 @@ public class CreateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
     private String metadata;
     private String scheduleNamespaceId;
     private String triggerName;
+    private String triggerExtendMode;
+    private Integer rollupHour;
     private Integer reallocateSpanDays;
     private AppleAppStoreSubscriptionContent appleAppStore;
     private GooglePlaySubscriptionContent googlePlay;
@@ -99,6 +101,26 @@ public class CreateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
 		this.triggerName = triggerName;
 		return this;
 	}
+	public String getTriggerExtendMode() {
+		return triggerExtendMode;
+	}
+	public void setTriggerExtendMode(String triggerExtendMode) {
+		this.triggerExtendMode = triggerExtendMode;
+	}
+	public CreateStoreSubscriptionContentModelMasterRequest withTriggerExtendMode(String triggerExtendMode) {
+		this.triggerExtendMode = triggerExtendMode;
+		return this;
+	}
+	public Integer getRollupHour() {
+		return rollupHour;
+	}
+	public void setRollupHour(Integer rollupHour) {
+		this.rollupHour = rollupHour;
+	}
+	public CreateStoreSubscriptionContentModelMasterRequest withRollupHour(Integer rollupHour) {
+		this.rollupHour = rollupHour;
+		return this;
+	}
 	public Integer getReallocateSpanDays() {
 		return reallocateSpanDays;
 	}
@@ -141,6 +163,8 @@ public class CreateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withScheduleNamespaceId(data.get("scheduleNamespaceId") == null || data.get("scheduleNamespaceId").isNull() ? null : data.get("scheduleNamespaceId").asText())
             .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText())
+            .withTriggerExtendMode(data.get("triggerExtendMode") == null || data.get("triggerExtendMode").isNull() ? null : data.get("triggerExtendMode").asText())
+            .withRollupHour(data.get("rollupHour") == null || data.get("rollupHour").isNull() ? null : data.get("rollupHour").intValue())
             .withReallocateSpanDays(data.get("reallocateSpanDays") == null || data.get("reallocateSpanDays").isNull() ? null : data.get("reallocateSpanDays").intValue())
             .withAppleAppStore(data.get("appleAppStore") == null || data.get("appleAppStore").isNull() ? null : AppleAppStoreSubscriptionContent.fromJson(data.get("appleAppStore")))
             .withGooglePlay(data.get("googlePlay") == null || data.get("googlePlay").isNull() ? null : GooglePlaySubscriptionContent.fromJson(data.get("googlePlay")));
@@ -155,6 +179,8 @@ public class CreateStoreSubscriptionContentModelMasterRequest extends Gs2BasicRe
                 put("metadata", getMetadata());
                 put("scheduleNamespaceId", getScheduleNamespaceId());
                 put("triggerName", getTriggerName());
+                put("triggerExtendMode", getTriggerExtendMode());
+                put("rollupHour", getRollupHour());
                 put("reallocateSpanDays", getReallocateSpanDays());
                 put("appleAppStore", getAppleAppStore() != null ? getAppleAppStore().toJson() : null);
                 put("googlePlay", getGooglePlay() != null ? getGooglePlay().toJson() : null);

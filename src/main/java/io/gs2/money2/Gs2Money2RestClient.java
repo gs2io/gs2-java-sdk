@@ -3893,6 +3893,8 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("metadata", request.getMetadata());
                     put("scheduleNamespaceId", request.getScheduleNamespaceId());
                     put("triggerName", request.getTriggerName());
+                    put("triggerExtendMode", request.getTriggerExtendMode());
+                    put("rollupHour", request.getRollupHour());
                     put("reallocateSpanDays", request.getReallocateSpanDays());
                     put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
                     put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);
@@ -4062,6 +4064,8 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("metadata", request.getMetadata());
                     put("scheduleNamespaceId", request.getScheduleNamespaceId());
                     put("triggerName", request.getTriggerName());
+                    put("triggerExtendMode", request.getTriggerExtendMode());
+                    put("rollupHour", request.getRollupHour());
                     put("reallocateSpanDays", request.getReallocateSpanDays());
                     put("appleAppStore", request.getAppleAppStore() != null ? request.getAppleAppStore().toJson() : null);
                     put("googlePlay", request.getGooglePlay() != null ? request.getGooglePlay().toJson() : null);

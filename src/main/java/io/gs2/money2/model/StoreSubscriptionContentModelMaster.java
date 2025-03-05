@@ -36,6 +36,8 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 	private String scheduleNamespaceId;
 	private String triggerName;
 	private Integer reallocateSpanDays;
+	private String triggerExtendMode;
+	private Integer rollupHour;
 	private AppleAppStoreSubscriptionContent appleAppStore;
 	private GooglePlaySubscriptionContent googlePlay;
 	private Long createdAt;
@@ -111,6 +113,26 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 		this.reallocateSpanDays = reallocateSpanDays;
 		return this;
 	}
+	public String getTriggerExtendMode() {
+		return triggerExtendMode;
+	}
+	public void setTriggerExtendMode(String triggerExtendMode) {
+		this.triggerExtendMode = triggerExtendMode;
+	}
+	public StoreSubscriptionContentModelMaster withTriggerExtendMode(String triggerExtendMode) {
+		this.triggerExtendMode = triggerExtendMode;
+		return this;
+	}
+	public Integer getRollupHour() {
+		return rollupHour;
+	}
+	public void setRollupHour(Integer rollupHour) {
+		this.rollupHour = rollupHour;
+	}
+	public StoreSubscriptionContentModelMaster withRollupHour(Integer rollupHour) {
+		this.rollupHour = rollupHour;
+		return this;
+	}
 	public AppleAppStoreSubscriptionContent getAppleAppStore() {
 		return appleAppStore;
 	}
@@ -174,6 +196,8 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
             .withScheduleNamespaceId(data.get("scheduleNamespaceId") == null || data.get("scheduleNamespaceId").isNull() ? null : data.get("scheduleNamespaceId").asText())
             .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText())
             .withReallocateSpanDays(data.get("reallocateSpanDays") == null || data.get("reallocateSpanDays").isNull() ? null : data.get("reallocateSpanDays").intValue())
+            .withTriggerExtendMode(data.get("triggerExtendMode") == null || data.get("triggerExtendMode").isNull() ? null : data.get("triggerExtendMode").asText())
+            .withRollupHour(data.get("rollupHour") == null || data.get("rollupHour").isNull() ? null : data.get("rollupHour").intValue())
             .withAppleAppStore(data.get("appleAppStore") == null || data.get("appleAppStore").isNull() ? null : AppleAppStoreSubscriptionContent.fromJson(data.get("appleAppStore")))
             .withGooglePlay(data.get("googlePlay") == null || data.get("googlePlay").isNull() ? null : GooglePlaySubscriptionContent.fromJson(data.get("googlePlay")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -191,6 +215,8 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
                 put("scheduleNamespaceId", getScheduleNamespaceId());
                 put("triggerName", getTriggerName());
                 put("reallocateSpanDays", getReallocateSpanDays());
+                put("triggerExtendMode", getTriggerExtendMode());
+                put("rollupHour", getRollupHour());
                 put("appleAppStore", getAppleAppStore() != null ? getAppleAppStore().toJson() : null);
                 put("googlePlay", getGooglePlay() != null ? getGooglePlay().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -216,6 +242,8 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
         result = prime * result + ((this.scheduleNamespaceId == null) ? 0 : this.scheduleNamespaceId.hashCode());
         result = prime * result + ((this.triggerName == null) ? 0 : this.triggerName.hashCode());
         result = prime * result + ((this.reallocateSpanDays == null) ? 0 : this.reallocateSpanDays.hashCode());
+        result = prime * result + ((this.triggerExtendMode == null) ? 0 : this.triggerExtendMode.hashCode());
+        result = prime * result + ((this.rollupHour == null) ? 0 : this.rollupHour.hashCode());
         result = prime * result + ((this.appleAppStore == null) ? 0 : this.appleAppStore.hashCode());
         result = prime * result + ((this.googlePlay == null) ? 0 : this.googlePlay.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -266,6 +294,16 @@ public class StoreSubscriptionContentModelMaster implements IModel, Serializable
 		if (reallocateSpanDays == null) {
 			return other.reallocateSpanDays == null;
 		} else if (!reallocateSpanDays.equals(other.reallocateSpanDays)) {
+			return false;
+		}
+		if (triggerExtendMode == null) {
+			return other.triggerExtendMode == null;
+		} else if (!triggerExtendMode.equals(other.triggerExtendMode)) {
+			return false;
+		}
+		if (rollupHour == null) {
+			return other.rollupHour == null;
+		} else if (!rollupHour.equals(other.rollupHour)) {
 			return false;
 		}
 		if (appleAppStore == null) {
