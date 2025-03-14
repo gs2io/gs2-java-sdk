@@ -32,8 +32,9 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 	private String triggerId;
 	private String name;
 	private String userId;
-	private Long createdAt;
+	private Long triggeredAt;
 	private Long expiresAt;
+	private Long createdAt;
 	private Long revision;
 	public String getTriggerId() {
 		return triggerId;
@@ -65,14 +66,14 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 		this.userId = userId;
 		return this;
 	}
-	public Long getCreatedAt() {
-		return createdAt;
+	public Long getTriggeredAt() {
+		return triggeredAt;
 	}
-	public void setCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
+	public void setTriggeredAt(Long triggeredAt) {
+		this.triggeredAt = triggeredAt;
 	}
-	public Trigger withCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
+	public Trigger withTriggeredAt(Long triggeredAt) {
+		this.triggeredAt = triggeredAt;
 		return this;
 	}
 	public Long getExpiresAt() {
@@ -83,6 +84,16 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 	}
 	public Trigger withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
+		return this;
+	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Trigger withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
 		return this;
 	}
 	public Long getRevision() {
@@ -104,8 +115,9 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
             .withTriggerId(data.get("triggerId") == null || data.get("triggerId").isNull() ? null : data.get("triggerId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withTriggeredAt(data.get("triggeredAt") == null || data.get("triggeredAt").isNull() ? null : data.get("triggeredAt").longValue())
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
@@ -115,8 +127,9 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
                 put("triggerId", getTriggerId());
                 put("name", getName());
                 put("userId", getUserId());
-                put("createdAt", getCreatedAt());
+                put("triggeredAt", getTriggeredAt());
                 put("expiresAt", getExpiresAt());
+                put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
         );
@@ -134,8 +147,9 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
         result = prime * result + ((this.triggerId == null) ? 0 : this.triggerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.triggeredAt == null) ? 0 : this.triggeredAt.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
@@ -164,14 +178,19 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 		} else if (!userId.equals(other.userId)) {
 			return false;
 		}
-		if (createdAt == null) {
-			return other.createdAt == null;
-		} else if (!createdAt.equals(other.createdAt)) {
+		if (triggeredAt == null) {
+			return other.triggeredAt == null;
+		} else if (!triggeredAt.equals(other.triggeredAt)) {
 			return false;
 		}
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
 			return false;
 		}
 		if (revision == null) {
