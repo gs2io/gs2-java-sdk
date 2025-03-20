@@ -38,6 +38,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	private List<Config> config;
 	private Long acquirableAt;
 	private Long exchangedAt;
+	private Long createdAt;
 	private Long revision;
 	public String getAwaitId() {
 		return awaitId;
@@ -129,6 +130,16 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		this.exchangedAt = exchangedAt;
 		return this;
 	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Await withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+		return this;
+	}
 	public Long getRevision() {
 		return revision;
 	}
@@ -159,6 +170,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
             ).collect(Collectors.toList()))
             .withAcquirableAt(data.get("acquirableAt") == null || data.get("acquirableAt").isNull() ? null : data.get("acquirableAt").longValue())
             .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
@@ -179,6 +191,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
                 ).collect(Collectors.toList()));
                 put("acquirableAt", getAcquirableAt());
                 put("exchangedAt", getExchangedAt());
+                put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
         );
@@ -202,6 +215,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
         result = prime * result + ((this.config == null) ? 0 : this.config.hashCode());
         result = prime * result + ((this.acquirableAt == null) ? 0 : this.acquirableAt.hashCode());
         result = prime * result + ((this.exchangedAt == null) ? 0 : this.exchangedAt.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
@@ -258,6 +272,11 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		if (exchangedAt == null) {
 			return other.exchangedAt == null;
 		} else if (!exchangedAt.equals(other.exchangedAt)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
 			return false;
 		}
 		if (revision == null) {

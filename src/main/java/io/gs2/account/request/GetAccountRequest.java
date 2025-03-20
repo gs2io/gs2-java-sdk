@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetAccountRequest extends Gs2BasicRequest<GetAccountRequest> {
     private String namespaceName;
     private String userId;
+    private Boolean includeLastAuthenticatedAt;
     private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -51,6 +52,16 @@ public class GetAccountRequest extends Gs2BasicRequest<GetAccountRequest> {
 		this.userId = userId;
 		return this;
 	}
+	public Boolean getIncludeLastAuthenticatedAt() {
+		return includeLastAuthenticatedAt;
+	}
+	public void setIncludeLastAuthenticatedAt(Boolean includeLastAuthenticatedAt) {
+		this.includeLastAuthenticatedAt = includeLastAuthenticatedAt;
+	}
+	public GetAccountRequest withIncludeLastAuthenticatedAt(Boolean includeLastAuthenticatedAt) {
+		this.includeLastAuthenticatedAt = includeLastAuthenticatedAt;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -69,6 +80,7 @@ public class GetAccountRequest extends Gs2BasicRequest<GetAccountRequest> {
         return new GetAccountRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withIncludeLastAuthenticatedAt(data.get("includeLastAuthenticatedAt") == null || data.get("includeLastAuthenticatedAt").isNull() ? null : data.get("includeLastAuthenticatedAt").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -77,6 +89,7 @@ public class GetAccountRequest extends Gs2BasicRequest<GetAccountRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("includeLastAuthenticatedAt", getIncludeLastAuthenticatedAt());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

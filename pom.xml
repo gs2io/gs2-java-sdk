@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.gs2</groupId>
 	<artifactId>gs2-java-sdk</artifactId>
-	<version>3.1.291</version>
+	<version>3.1.292</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
