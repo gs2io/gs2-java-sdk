@@ -29,17 +29,17 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DepositTransaction implements IModel, Serializable {
-	private Float price;
+	private Double price;
 	private String currency;
 	private Integer count;
 	private Long depositedAt;
-	public Float getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(Float price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public DepositTransaction withPrice(Float price) {
+	public DepositTransaction withPrice(Double price) {
 		this.price = price;
 		return this;
 	}
@@ -79,7 +79,7 @@ public class DepositTransaction implements IModel, Serializable {
             return null;
         }
         return new DepositTransaction()
-            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue())
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").doubleValue())
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
             .withDepositedAt(data.get("depositedAt") == null || data.get("depositedAt").isNull() ? null : data.get("depositedAt").longValue());

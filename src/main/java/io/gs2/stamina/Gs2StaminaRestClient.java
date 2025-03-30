@@ -5076,6 +5076,911 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyStaminaValueTask extends Gs2RestSessionTask<VerifyStaminaValueResult> {
+        private VerifyStaminaValueRequest request;
+
+        public VerifyStaminaValueTask(
+            VerifyStaminaValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaValueResult parse(JsonNode data) {
+            return VerifyStaminaValueResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaValueAsync(
+            VerifyStaminaValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueResult>> callback
+    ) {
+        VerifyStaminaValueTask task = new VerifyStaminaValueTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaValueResult verifyStaminaValue(
+            VerifyStaminaValueRequest request
+    ) {
+        final AsyncResult<VerifyStaminaValueResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaValueAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaValueByUserIdTask extends Gs2RestSessionTask<VerifyStaminaValueByUserIdResult> {
+        private VerifyStaminaValueByUserIdRequest request;
+
+        public VerifyStaminaValueByUserIdTask(
+            VerifyStaminaValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaValueByUserIdResult parse(JsonNode data) {
+            return VerifyStaminaValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaValueByUserIdAsync(
+            VerifyStaminaValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueByUserIdResult>> callback
+    ) {
+        VerifyStaminaValueByUserIdTask task = new VerifyStaminaValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaValueByUserIdResult verifyStaminaValueByUserId(
+            VerifyStaminaValueByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStaminaValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaMaxValueTask extends Gs2RestSessionTask<VerifyStaminaMaxValueResult> {
+        private VerifyStaminaMaxValueRequest request;
+
+        public VerifyStaminaMaxValueTask(
+            VerifyStaminaMaxValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaMaxValueResult parse(JsonNode data) {
+            return VerifyStaminaMaxValueResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/max/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaMaxValueAsync(
+            VerifyStaminaMaxValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueResult>> callback
+    ) {
+        VerifyStaminaMaxValueTask task = new VerifyStaminaMaxValueTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaMaxValueResult verifyStaminaMaxValue(
+            VerifyStaminaMaxValueRequest request
+    ) {
+        final AsyncResult<VerifyStaminaMaxValueResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaMaxValueAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaMaxValueByUserIdTask extends Gs2RestSessionTask<VerifyStaminaMaxValueByUserIdResult> {
+        private VerifyStaminaMaxValueByUserIdRequest request;
+
+        public VerifyStaminaMaxValueByUserIdTask(
+            VerifyStaminaMaxValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaMaxValueByUserIdResult parse(JsonNode data) {
+            return VerifyStaminaMaxValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/max/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaMaxValueByUserIdAsync(
+            VerifyStaminaMaxValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueByUserIdResult>> callback
+    ) {
+        VerifyStaminaMaxValueByUserIdTask task = new VerifyStaminaMaxValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaMaxValueByUserIdResult verifyStaminaMaxValueByUserId(
+            VerifyStaminaMaxValueByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStaminaMaxValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaMaxValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverIntervalMinutesTask extends Gs2RestSessionTask<VerifyStaminaRecoverIntervalMinutesResult> {
+        private VerifyStaminaRecoverIntervalMinutesRequest request;
+
+        public VerifyStaminaRecoverIntervalMinutesTask(
+            VerifyStaminaRecoverIntervalMinutesRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverIntervalMinutesResult parse(JsonNode data) {
+            return VerifyStaminaRecoverIntervalMinutesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/recover/interval/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverIntervalMinutesAsync(
+            VerifyStaminaRecoverIntervalMinutesRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesResult>> callback
+    ) {
+        VerifyStaminaRecoverIntervalMinutesTask task = new VerifyStaminaRecoverIntervalMinutesTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverIntervalMinutesResult verifyStaminaRecoverIntervalMinutes(
+            VerifyStaminaRecoverIntervalMinutesRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverIntervalMinutesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverIntervalMinutesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverIntervalMinutesByUserIdTask extends Gs2RestSessionTask<VerifyStaminaRecoverIntervalMinutesByUserIdResult> {
+        private VerifyStaminaRecoverIntervalMinutesByUserIdRequest request;
+
+        public VerifyStaminaRecoverIntervalMinutesByUserIdTask(
+            VerifyStaminaRecoverIntervalMinutesByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverIntervalMinutesByUserIdResult parse(JsonNode data) {
+            return VerifyStaminaRecoverIntervalMinutesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/recover/interval/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverIntervalMinutesByUserIdAsync(
+            VerifyStaminaRecoverIntervalMinutesByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesByUserIdResult>> callback
+    ) {
+        VerifyStaminaRecoverIntervalMinutesByUserIdTask task = new VerifyStaminaRecoverIntervalMinutesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverIntervalMinutesByUserIdResult verifyStaminaRecoverIntervalMinutesByUserId(
+            VerifyStaminaRecoverIntervalMinutesByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverIntervalMinutesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverIntervalMinutesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverValueTask extends Gs2RestSessionTask<VerifyStaminaRecoverValueResult> {
+        private VerifyStaminaRecoverValueRequest request;
+
+        public VerifyStaminaRecoverValueTask(
+            VerifyStaminaRecoverValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverValueResult parse(JsonNode data) {
+            return VerifyStaminaRecoverValueResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/recover/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverValueAsync(
+            VerifyStaminaRecoverValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueResult>> callback
+    ) {
+        VerifyStaminaRecoverValueTask task = new VerifyStaminaRecoverValueTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverValueResult verifyStaminaRecoverValue(
+            VerifyStaminaRecoverValueRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverValueResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverValueAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverValueByUserIdTask extends Gs2RestSessionTask<VerifyStaminaRecoverValueByUserIdResult> {
+        private VerifyStaminaRecoverValueByUserIdRequest request;
+
+        public VerifyStaminaRecoverValueByUserIdTask(
+            VerifyStaminaRecoverValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverValueByUserIdResult parse(JsonNode data) {
+            return VerifyStaminaRecoverValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/recover/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverValueByUserIdAsync(
+            VerifyStaminaRecoverValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueByUserIdResult>> callback
+    ) {
+        VerifyStaminaRecoverValueByUserIdTask task = new VerifyStaminaRecoverValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverValueByUserIdResult verifyStaminaRecoverValueByUserId(
+            VerifyStaminaRecoverValueByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaOverflowValueTask extends Gs2RestSessionTask<VerifyStaminaOverflowValueResult> {
+        private VerifyStaminaOverflowValueRequest request;
+
+        public VerifyStaminaOverflowValueTask(
+            VerifyStaminaOverflowValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaOverflowValueResult parse(JsonNode data) {
+            return VerifyStaminaOverflowValueResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stamina/{staminaName}/overflow/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaOverflowValueAsync(
+            VerifyStaminaOverflowValueRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueResult>> callback
+    ) {
+        VerifyStaminaOverflowValueTask task = new VerifyStaminaOverflowValueTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaOverflowValueResult verifyStaminaOverflowValue(
+            VerifyStaminaOverflowValueRequest request
+    ) {
+        final AsyncResult<VerifyStaminaOverflowValueResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaOverflowValueAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaOverflowValueByUserIdTask extends Gs2RestSessionTask<VerifyStaminaOverflowValueByUserIdResult> {
+        private VerifyStaminaOverflowValueByUserIdRequest request;
+
+        public VerifyStaminaOverflowValueByUserIdTask(
+            VerifyStaminaOverflowValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaOverflowValueByUserIdResult parse(JsonNode data) {
+            return VerifyStaminaOverflowValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/overflow/value/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaOverflowValueByUserIdAsync(
+            VerifyStaminaOverflowValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueByUserIdResult>> callback
+    ) {
+        VerifyStaminaOverflowValueByUserIdTask task = new VerifyStaminaOverflowValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaOverflowValueByUserIdResult verifyStaminaOverflowValueByUserId(
+            VerifyStaminaOverflowValueByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStaminaOverflowValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaOverflowValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class RecoverStaminaByStampSheetTask extends Gs2RestSessionTask<RecoverStaminaByStampSheetResult> {
         private RecoverStaminaByStampSheetRequest request;
 
@@ -5620,6 +6525,406 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
     ) {
         final AsyncResult<ConsumeStaminaByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         consumeStaminaByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaValueByStampTaskTask extends Gs2RestSessionTask<VerifyStaminaValueByStampTaskResult> {
+        private VerifyStaminaValueByStampTaskRequest request;
+
+        public VerifyStaminaValueByStampTaskTask(
+            VerifyStaminaValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaValueByStampTaskResult parse(JsonNode data) {
+            return VerifyStaminaValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/value/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaValueByStampTaskAsync(
+            VerifyStaminaValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaValueByStampTaskResult>> callback
+    ) {
+        VerifyStaminaValueByStampTaskTask task = new VerifyStaminaValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaValueByStampTaskResult verifyStaminaValueByStampTask(
+            VerifyStaminaValueByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStaminaValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaValueByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaMaxValueByStampTaskTask extends Gs2RestSessionTask<VerifyStaminaMaxValueByStampTaskResult> {
+        private VerifyStaminaMaxValueByStampTaskRequest request;
+
+        public VerifyStaminaMaxValueByStampTaskTask(
+            VerifyStaminaMaxValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaMaxValueByStampTaskResult parse(JsonNode data) {
+            return VerifyStaminaMaxValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/max/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaMaxValueByStampTaskAsync(
+            VerifyStaminaMaxValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaMaxValueByStampTaskResult>> callback
+    ) {
+        VerifyStaminaMaxValueByStampTaskTask task = new VerifyStaminaMaxValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaMaxValueByStampTaskResult verifyStaminaMaxValueByStampTask(
+            VerifyStaminaMaxValueByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStaminaMaxValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaMaxValueByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverIntervalMinutesByStampTaskTask extends Gs2RestSessionTask<VerifyStaminaRecoverIntervalMinutesByStampTaskResult> {
+        private VerifyStaminaRecoverIntervalMinutesByStampTaskRequest request;
+
+        public VerifyStaminaRecoverIntervalMinutesByStampTaskTask(
+            VerifyStaminaRecoverIntervalMinutesByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverIntervalMinutesByStampTaskResult parse(JsonNode data) {
+            return VerifyStaminaRecoverIntervalMinutesByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/recover/interval/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverIntervalMinutesByStampTaskAsync(
+            VerifyStaminaRecoverIntervalMinutesByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverIntervalMinutesByStampTaskResult>> callback
+    ) {
+        VerifyStaminaRecoverIntervalMinutesByStampTaskTask task = new VerifyStaminaRecoverIntervalMinutesByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverIntervalMinutesByStampTaskResult verifyStaminaRecoverIntervalMinutesByStampTask(
+            VerifyStaminaRecoverIntervalMinutesByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverIntervalMinutesByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverIntervalMinutesByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaRecoverValueByStampTaskTask extends Gs2RestSessionTask<VerifyStaminaRecoverValueByStampTaskResult> {
+        private VerifyStaminaRecoverValueByStampTaskRequest request;
+
+        public VerifyStaminaRecoverValueByStampTaskTask(
+            VerifyStaminaRecoverValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaRecoverValueByStampTaskResult parse(JsonNode data) {
+            return VerifyStaminaRecoverValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/recover/value/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaRecoverValueByStampTaskAsync(
+            VerifyStaminaRecoverValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaRecoverValueByStampTaskResult>> callback
+    ) {
+        VerifyStaminaRecoverValueByStampTaskTask task = new VerifyStaminaRecoverValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaRecoverValueByStampTaskResult verifyStaminaRecoverValueByStampTask(
+            VerifyStaminaRecoverValueByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStaminaRecoverValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaRecoverValueByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStaminaOverflowValueByStampTaskTask extends Gs2RestSessionTask<VerifyStaminaOverflowValueByStampTaskResult> {
+        private VerifyStaminaOverflowValueByStampTaskRequest request;
+
+        public VerifyStaminaOverflowValueByStampTaskTask(
+            VerifyStaminaOverflowValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStaminaOverflowValueByStampTaskResult parse(JsonNode data) {
+            return VerifyStaminaOverflowValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/overflow/value/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStaminaOverflowValueByStampTaskAsync(
+            VerifyStaminaOverflowValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStaminaOverflowValueByStampTaskResult>> callback
+    ) {
+        VerifyStaminaOverflowValueByStampTaskTask task = new VerifyStaminaOverflowValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStaminaOverflowValueByStampTaskResult verifyStaminaOverflowValueByStampTask(
+            VerifyStaminaOverflowValueByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStaminaOverflowValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStaminaOverflowValueByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

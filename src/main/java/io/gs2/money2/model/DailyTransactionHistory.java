@@ -34,8 +34,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
 	private Integer month;
 	private Integer day;
 	private String currency;
-	private Float depositAmount;
-	private Float withdrawAmount;
+	private Double depositAmount;
+	private Double withdrawAmount;
 	private Long updatedAt;
 	private Long revision;
 	public String getDailyTransactionHistoryId() {
@@ -88,23 +88,23 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
 		this.currency = currency;
 		return this;
 	}
-	public Float getDepositAmount() {
+	public Double getDepositAmount() {
 		return depositAmount;
 	}
-	public void setDepositAmount(Float depositAmount) {
+	public void setDepositAmount(Double depositAmount) {
 		this.depositAmount = depositAmount;
 	}
-	public DailyTransactionHistory withDepositAmount(Float depositAmount) {
+	public DailyTransactionHistory withDepositAmount(Double depositAmount) {
 		this.depositAmount = depositAmount;
 		return this;
 	}
-	public Float getWithdrawAmount() {
+	public Double getWithdrawAmount() {
 		return withdrawAmount;
 	}
-	public void setWithdrawAmount(Float withdrawAmount) {
+	public void setWithdrawAmount(Double withdrawAmount) {
 		this.withdrawAmount = withdrawAmount;
 	}
-	public DailyTransactionHistory withWithdrawAmount(Float withdrawAmount) {
+	public DailyTransactionHistory withWithdrawAmount(Double withdrawAmount) {
 		this.withdrawAmount = withdrawAmount;
 		return this;
 	}
@@ -139,8 +139,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
             .withMonth(data.get("month") == null || data.get("month").isNull() ? null : data.get("month").intValue())
             .withDay(data.get("day") == null || data.get("day").isNull() ? null : data.get("day").intValue())
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
-            .withDepositAmount(data.get("depositAmount") == null || data.get("depositAmount").isNull() ? null : data.get("depositAmount").floatValue())
-            .withWithdrawAmount(data.get("withdrawAmount") == null || data.get("withdrawAmount").isNull() ? null : data.get("withdrawAmount").floatValue())
+            .withDepositAmount(data.get("depositAmount") == null || data.get("depositAmount").isNull() ? null : data.get("depositAmount").doubleValue())
+            .withWithdrawAmount(data.get("withdrawAmount") == null || data.get("withdrawAmount").isNull() ? null : data.get("withdrawAmount").doubleValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }

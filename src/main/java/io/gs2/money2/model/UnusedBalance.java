@@ -31,7 +31,7 @@ import io.gs2.core.model.IModel;
 public class UnusedBalance implements IModel, Serializable, Comparable<UnusedBalance> {
 	private String unusedBalanceId;
 	private String currency;
-	private Float balance;
+	private Double balance;
 	private Long updatedAt;
 	private Long revision;
 	public String getUnusedBalanceId() {
@@ -54,13 +54,13 @@ public class UnusedBalance implements IModel, Serializable, Comparable<UnusedBal
 		this.currency = currency;
 		return this;
 	}
-	public Float getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
-	public void setBalance(Float balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
-	public UnusedBalance withBalance(Float balance) {
+	public UnusedBalance withBalance(Double balance) {
 		this.balance = balance;
 		return this;
 	}
@@ -92,7 +92,7 @@ public class UnusedBalance implements IModel, Serializable, Comparable<UnusedBal
         return new UnusedBalance()
             .withUnusedBalanceId(data.get("unusedBalanceId") == null || data.get("unusedBalanceId").isNull() ? null : data.get("unusedBalanceId").asText())
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
-            .withBalance(data.get("balance") == null || data.get("balance").isNull() ? null : data.get("balance").floatValue())
+            .withBalance(data.get("balance") == null || data.get("balance").isNull() ? null : data.get("balance").doubleValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
