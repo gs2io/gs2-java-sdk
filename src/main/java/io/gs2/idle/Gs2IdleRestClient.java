@@ -1239,6 +1239,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("metadata", request.getMetadata());
                     put("rewardIntervalMinutes", request.getRewardIntervalMinutes());
                     put("defaultMaximumIdleMinutes", request.getDefaultMaximumIdleMinutes());
+                    put("rewardResetMode", request.getRewardResetMode());
                     put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1413,6 +1414,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("metadata", request.getMetadata());
                     put("rewardIntervalMinutes", request.getRewardIntervalMinutes());
                     put("defaultMaximumIdleMinutes", request.getDefaultMaximumIdleMinutes());
+                    put("rewardResetMode", request.getRewardResetMode());
                     put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef

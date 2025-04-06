@@ -35,6 +35,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 	private String metadata;
 	private Integer rewardIntervalMinutes;
 	private Integer defaultMaximumIdleMinutes;
+	private String rewardResetMode;
 	private List<AcquireActionList> acquireActions;
 	private String idlePeriodScheduleId;
 	private String receivePeriodScheduleId;
@@ -99,6 +100,16 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 	}
 	public CategoryModelMaster withDefaultMaximumIdleMinutes(Integer defaultMaximumIdleMinutes) {
 		this.defaultMaximumIdleMinutes = defaultMaximumIdleMinutes;
+		return this;
+	}
+	public String getRewardResetMode() {
+		return rewardResetMode;
+	}
+	public void setRewardResetMode(String rewardResetMode) {
+		this.rewardResetMode = rewardResetMode;
+	}
+	public CategoryModelMaster withRewardResetMode(String rewardResetMode) {
+		this.rewardResetMode = rewardResetMode;
 		return this;
 	}
 	public List<AcquireActionList> getAcquireActions() {
@@ -173,6 +184,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withRewardIntervalMinutes(data.get("rewardIntervalMinutes") == null || data.get("rewardIntervalMinutes").isNull() ? null : data.get("rewardIntervalMinutes").intValue())
             .withDefaultMaximumIdleMinutes(data.get("defaultMaximumIdleMinutes") == null || data.get("defaultMaximumIdleMinutes").isNull() ? null : data.get("defaultMaximumIdleMinutes").intValue())
+            .withRewardResetMode(data.get("rewardResetMode") == null || data.get("rewardResetMode").isNull() ? null : data.get("rewardResetMode").asText())
             .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -195,6 +207,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
                 put("metadata", getMetadata());
                 put("rewardIntervalMinutes", getRewardIntervalMinutes());
                 put("defaultMaximumIdleMinutes", getDefaultMaximumIdleMinutes());
+                put("rewardResetMode", getRewardResetMode());
                 put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -225,6 +238,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.rewardIntervalMinutes == null) ? 0 : this.rewardIntervalMinutes.hashCode());
         result = prime * result + ((this.defaultMaximumIdleMinutes == null) ? 0 : this.defaultMaximumIdleMinutes.hashCode());
+        result = prime * result + ((this.rewardResetMode == null) ? 0 : this.rewardResetMode.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
         result = prime * result + ((this.idlePeriodScheduleId == null) ? 0 : this.idlePeriodScheduleId.hashCode());
         result = prime * result + ((this.receivePeriodScheduleId == null) ? 0 : this.receivePeriodScheduleId.hashCode());
@@ -271,6 +285,11 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 		if (defaultMaximumIdleMinutes == null) {
 			return other.defaultMaximumIdleMinutes == null;
 		} else if (!defaultMaximumIdleMinutes.equals(other.defaultMaximumIdleMinutes)) {
+			return false;
+		}
+		if (rewardResetMode == null) {
+			return other.rewardResetMode == null;
+		} else if (!rewardResetMode.equals(other.rewardResetMode)) {
 			return false;
 		}
 		if (acquireActions == null) {

@@ -1147,7 +1147,6 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                     put("userId", request.getUserId());
                     put("args", request.getArgs());
                     put("randomStatus", request.getRandomStatus() != null ? request.getRandomStatus().toJson() : null);
-                    put("forceUseDistributor", request.getForceUseDistributor());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

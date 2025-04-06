@@ -34,7 +34,6 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
     private String userId;
     private String args;
     private RandomStatus randomStatus;
-    private Boolean forceUseDistributor;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getScriptId() {
@@ -77,16 +76,6 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 		this.randomStatus = randomStatus;
 		return this;
 	}
-	public Boolean getForceUseDistributor() {
-		return forceUseDistributor;
-	}
-	public void setForceUseDistributor(Boolean forceUseDistributor) {
-		this.forceUseDistributor = forceUseDistributor;
-	}
-	public InvokeScriptRequest withForceUseDistributor(Boolean forceUseDistributor) {
-		this.forceUseDistributor = forceUseDistributor;
-		return this;
-	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -120,7 +109,6 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
-            .withForceUseDistributor(data.get("forceUseDistributor") == null || data.get("forceUseDistributor").isNull() ? null : data.get("forceUseDistributor").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -131,7 +119,6 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
                 put("userId", getUserId());
                 put("args", getArgs());
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
-                put("forceUseDistributor", getForceUseDistributor());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

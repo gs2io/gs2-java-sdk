@@ -36,6 +36,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
     private String metadata;
     private Integer rewardIntervalMinutes;
     private Integer defaultMaximumIdleMinutes;
+    private String rewardResetMode;
     private List<AcquireActionList> acquireActions;
     private String idlePeriodScheduleId;
     private String receivePeriodScheduleId;
@@ -99,6 +100,16 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
 		this.defaultMaximumIdleMinutes = defaultMaximumIdleMinutes;
 		return this;
 	}
+	public String getRewardResetMode() {
+		return rewardResetMode;
+	}
+	public void setRewardResetMode(String rewardResetMode) {
+		this.rewardResetMode = rewardResetMode;
+	}
+	public UpdateCategoryModelMasterRequest withRewardResetMode(String rewardResetMode) {
+		this.rewardResetMode = rewardResetMode;
+		return this;
+	}
 	public List<AcquireActionList> getAcquireActions() {
 		return acquireActions;
 	}
@@ -141,6 +152,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withRewardIntervalMinutes(data.get("rewardIntervalMinutes") == null || data.get("rewardIntervalMinutes").isNull() ? null : data.get("rewardIntervalMinutes").intValue())
             .withDefaultMaximumIdleMinutes(data.get("defaultMaximumIdleMinutes") == null || data.get("defaultMaximumIdleMinutes").isNull() ? null : data.get("defaultMaximumIdleMinutes").intValue())
+            .withRewardResetMode(data.get("rewardResetMode") == null || data.get("rewardResetMode").isNull() ? null : data.get("rewardResetMode").asText())
             .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -160,6 +172,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                 put("metadata", getMetadata());
                 put("rewardIntervalMinutes", getRewardIntervalMinutes());
                 put("defaultMaximumIdleMinutes", getDefaultMaximumIdleMinutes());
+                put("rewardResetMode", getRewardResetMode());
                 put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
