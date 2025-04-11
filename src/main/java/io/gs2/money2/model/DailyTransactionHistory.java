@@ -36,6 +36,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
 	private String currency;
 	private Double depositAmount;
 	private Double withdrawAmount;
+	private Long issueCount;
+	private Long consumeCount;
 	private Long updatedAt;
 	private Long revision;
 	public String getDailyTransactionHistoryId() {
@@ -108,6 +110,26 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
 		this.withdrawAmount = withdrawAmount;
 		return this;
 	}
+	public Long getIssueCount() {
+		return issueCount;
+	}
+	public void setIssueCount(Long issueCount) {
+		this.issueCount = issueCount;
+	}
+	public DailyTransactionHistory withIssueCount(Long issueCount) {
+		this.issueCount = issueCount;
+		return this;
+	}
+	public Long getConsumeCount() {
+		return consumeCount;
+	}
+	public void setConsumeCount(Long consumeCount) {
+		this.consumeCount = consumeCount;
+	}
+	public DailyTransactionHistory withConsumeCount(Long consumeCount) {
+		this.consumeCount = consumeCount;
+		return this;
+	}
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
@@ -141,6 +163,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
             .withDepositAmount(data.get("depositAmount") == null || data.get("depositAmount").isNull() ? null : data.get("depositAmount").doubleValue())
             .withWithdrawAmount(data.get("withdrawAmount") == null || data.get("withdrawAmount").isNull() ? null : data.get("withdrawAmount").doubleValue())
+            .withIssueCount(data.get("issueCount") == null || data.get("issueCount").isNull() ? null : data.get("issueCount").longValue())
+            .withConsumeCount(data.get("consumeCount") == null || data.get("consumeCount").isNull() ? null : data.get("consumeCount").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -155,6 +179,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
                 put("currency", getCurrency());
                 put("depositAmount", getDepositAmount());
                 put("withdrawAmount", getWithdrawAmount());
+                put("issueCount", getIssueCount());
+                put("consumeCount", getConsumeCount());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
             }}
@@ -177,6 +203,8 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
         result = prime * result + ((this.currency == null) ? 0 : this.currency.hashCode());
         result = prime * result + ((this.depositAmount == null) ? 0 : this.depositAmount.hashCode());
         result = prime * result + ((this.withdrawAmount == null) ? 0 : this.withdrawAmount.hashCode());
+        result = prime * result + ((this.issueCount == null) ? 0 : this.issueCount.hashCode());
+        result = prime * result + ((this.consumeCount == null) ? 0 : this.consumeCount.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -224,6 +252,16 @@ public class DailyTransactionHistory implements IModel, Serializable, Comparable
 		if (withdrawAmount == null) {
 			return other.withdrawAmount == null;
 		} else if (!withdrawAmount.equals(other.withdrawAmount)) {
+			return false;
+		}
+		if (issueCount == null) {
+			return other.issueCount == null;
+		} else if (!issueCount.equals(other.issueCount)) {
+			return false;
+		}
+		if (consumeCount == null) {
+			return other.consumeCount == null;
+		} else if (!consumeCount.equals(other.consumeCount)) {
 			return false;
 		}
 		if (updatedAt == null) {
