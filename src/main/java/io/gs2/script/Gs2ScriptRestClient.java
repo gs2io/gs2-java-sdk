@@ -1233,6 +1233,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("script", request.getScript());
                     put("args", request.getArgs());
+                    put("userId", request.getUserId());
                     put("randomStatus", request.getRandomStatus() != null ? request.getRandomStatus().toJson() : null);
                     put("disableStringNumberToNumber", request.getDisableStringNumberToNumber());
                     put("contextStack", request.getContextStack());
@@ -1247,6 +1248,12 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder

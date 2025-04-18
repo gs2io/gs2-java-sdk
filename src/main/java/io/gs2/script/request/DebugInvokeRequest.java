@@ -32,8 +32,11 @@ import io.gs2.script.model.RandomStatus;
 public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
     private String script;
     private String args;
+    private String userId;
     private RandomStatus randomStatus;
     private Boolean disableStringNumberToNumber;
+    private String timeOffsetToken;
+    private String duplicationAvoider;
 	public String getScript() {
 		return script;
 	}
@@ -52,6 +55,16 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
 	}
 	public DebugInvokeRequest withArgs(String args) {
 		this.args = args;
+		return this;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public DebugInvokeRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 	public RandomStatus getRandomStatus() {
@@ -74,6 +87,29 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
 		this.disableStringNumberToNumber = disableStringNumberToNumber;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DebugInvokeRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DebugInvokeRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+		return this;
+	}
 
     public static DebugInvokeRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -82,8 +118,10 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
         return new DebugInvokeRequest()
             .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
-            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue());
+            .withDisableStringNumberToNumber(data.get("disableStringNumberToNumber") == null || data.get("disableStringNumberToNumber").isNull() ? null : data.get("disableStringNumberToNumber").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,8 +129,10 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
             new HashMap<String, Object>() {{
                 put("script", getScript());
                 put("args", getArgs());
+                put("userId", getUserId());
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
                 put("disableStringNumberToNumber", getDisableStringNumberToNumber());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }
