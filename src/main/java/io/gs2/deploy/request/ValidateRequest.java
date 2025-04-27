@@ -28,7 +28,19 @@ import io.gs2.core.control.Gs2BasicRequest;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidateRequest extends Gs2BasicRequest<ValidateRequest> {
+    private String mode;
     private String template;
+    private String uploadToken;
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	public ValidateRequest withMode(String mode) {
+		this.mode = mode;
+		return this;
+	}
 	public String getTemplate() {
 		return template;
 	}
@@ -39,19 +51,33 @@ public class ValidateRequest extends Gs2BasicRequest<ValidateRequest> {
 		this.template = template;
 		return this;
 	}
+	public String getUploadToken() {
+		return uploadToken;
+	}
+	public void setUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+	}
+	public ValidateRequest withUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+		return this;
+	}
 
     public static ValidateRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new ValidateRequest()
-            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText())
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("mode", getMode());
                 put("template", getTemplate());
+                put("uploadToken", getUploadToken());
             }}
         );
     }

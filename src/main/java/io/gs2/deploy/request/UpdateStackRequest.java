@@ -30,7 +30,9 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
     private String stackName;
     private String description;
+    private String mode;
     private String template;
+    private String uploadToken;
 	public String getStackName() {
 		return stackName;
 	}
@@ -51,6 +53,16 @@ public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
 		this.description = description;
 		return this;
 	}
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	public UpdateStackRequest withMode(String mode) {
+		this.mode = mode;
+		return this;
+	}
 	public String getTemplate() {
 		return template;
 	}
@@ -61,6 +73,16 @@ public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
 		this.template = template;
 		return this;
 	}
+	public String getUploadToken() {
+		return uploadToken;
+	}
+	public void setUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+	}
+	public UpdateStackRequest withUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+		return this;
+	}
 
     public static UpdateStackRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +91,9 @@ public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
         return new UpdateStackRequest()
             .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText())
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
     }
 
     public JsonNode toJson() {
@@ -77,7 +101,9 @@ public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
             new HashMap<String, Object>() {{
                 put("stackName", getStackName());
                 put("description", getDescription());
+                put("mode", getMode());
                 put("template", getTemplate());
+                put("uploadToken", getUploadToken());
             }}
         );
     }

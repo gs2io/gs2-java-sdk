@@ -29,7 +29,9 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentRankingMasterRequest extends Gs2BasicRequest<UpdateCurrentRankingMasterRequest> {
     private String namespaceName;
+    private String mode;
     private String settings;
+    private String uploadToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -38,6 +40,16 @@ public class UpdateCurrentRankingMasterRequest extends Gs2BasicRequest<UpdateCur
 	}
 	public UpdateCurrentRankingMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	public UpdateCurrentRankingMasterRequest withMode(String mode) {
+		this.mode = mode;
 		return this;
 	}
 	public String getSettings() {
@@ -50,6 +62,16 @@ public class UpdateCurrentRankingMasterRequest extends Gs2BasicRequest<UpdateCur
 		this.settings = settings;
 		return this;
 	}
+	public String getUploadToken() {
+		return uploadToken;
+	}
+	public void setUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+	}
+	public UpdateCurrentRankingMasterRequest withUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+		return this;
+	}
 
     public static UpdateCurrentRankingMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,14 +79,18 @@ public class UpdateCurrentRankingMasterRequest extends Gs2BasicRequest<UpdateCur
         }
         return new UpdateCurrentRankingMasterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText());
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText())
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
+                put("mode", getMode());
                 put("settings", getSettings());
+                put("uploadToken", getUploadToken());
             }}
         );
     }

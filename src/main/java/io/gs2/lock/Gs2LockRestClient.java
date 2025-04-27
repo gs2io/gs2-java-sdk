@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +36,9 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.lock.request.*;
 import io.gs2.lock.result.*;
-import io.gs2.lock.model.*;public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
+import io.gs2.lock.model.*;
+
+public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
 	public Gs2LockRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);

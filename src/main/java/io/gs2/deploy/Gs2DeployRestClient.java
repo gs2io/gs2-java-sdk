@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +36,9 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.deploy.request.*;
 import io.gs2.deploy.result.*;
-import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> {
+import io.gs2.deploy.model.*;
+
+public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> {
 
 	public Gs2DeployRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
@@ -125,6 +128,84 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class PreCreateStackTask extends Gs2RestSessionTask<PreCreateStackResult> {
+        private PreCreateStackRequest request;
+
+        public PreCreateStackTask(
+            PreCreateStackRequest request,
+            AsyncAction<AsyncResult<PreCreateStackResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreCreateStackResult parse(JsonNode data) {
+            return PreCreateStackResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "deploy")
+                .replace("{region}", session.getRegion().getName())
+                + "/stack/pre";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preCreateStackAsync(
+            PreCreateStackRequest request,
+            AsyncAction<AsyncResult<PreCreateStackResult>> callback
+    ) {
+        PreCreateStackTask task = new PreCreateStackTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreCreateStackResult preCreateStack(
+            PreCreateStackRequest request
+    ) {
+        final AsyncResult<PreCreateStackResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preCreateStackAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class CreateStackTask extends Gs2RestSessionTask<CreateStackResult> {
         private CreateStackRequest request;
 
@@ -146,6 +227,41 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
         @Override
         protected void executeImpl() {
+            if (request.getTemplate() != null) {
+                AtomicReference<AsyncResult<PreCreateStackResult>> resultAsyncResult = new AtomicReference<>();
+                PreCreateStackTask task = new PreCreateStackTask(
+                        new PreCreateStackRequest()
+                                .withContextStack(request.getContextStack()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getTemplate().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withTemplate(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "deploy")
@@ -156,7 +272,9 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("mode", request.getMode());
                     put("template", request.getTemplate());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -287,6 +405,84 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class PreValidateTask extends Gs2RestSessionTask<PreValidateResult> {
+        private PreValidateRequest request;
+
+        public PreValidateTask(
+            PreValidateRequest request,
+            AsyncAction<AsyncResult<PreValidateResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreValidateResult parse(JsonNode data) {
+            return PreValidateResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "deploy")
+                .replace("{region}", session.getRegion().getName())
+                + "/stack/validate/pre";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preValidateAsync(
+            PreValidateRequest request,
+            AsyncAction<AsyncResult<PreValidateResult>> callback
+    ) {
+        PreValidateTask task = new PreValidateTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreValidateResult preValidate(
+            PreValidateRequest request
+    ) {
+        final AsyncResult<PreValidateResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preValidateAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ValidateTask extends Gs2RestSessionTask<ValidateResult> {
         private ValidateRequest request;
 
@@ -308,6 +504,41 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
         @Override
         protected void executeImpl() {
+            if (request.getTemplate() != null) {
+                AtomicReference<AsyncResult<PreValidateResult>> resultAsyncResult = new AtomicReference<>();
+                PreValidateTask task = new PreValidateTask(
+                        new PreValidateRequest()
+                                .withContextStack(request.getContextStack()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getTemplate().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withTemplate(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "deploy")
@@ -316,7 +547,9 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("mode", request.getMode());
                     put("template", request.getTemplate());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -526,6 +759,86 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class PreUpdateStackTask extends Gs2RestSessionTask<PreUpdateStackResult> {
+        private PreUpdateStackRequest request;
+
+        public PreUpdateStackTask(
+            PreUpdateStackRequest request,
+            AsyncAction<AsyncResult<PreUpdateStackResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreUpdateStackResult parse(JsonNode data) {
+            return PreUpdateStackResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "deploy")
+                .replace("{region}", session.getRegion().getName())
+                + "/stack/{stackName}/pre";
+
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preUpdateStackAsync(
+            PreUpdateStackRequest request,
+            AsyncAction<AsyncResult<PreUpdateStackResult>> callback
+    ) {
+        PreUpdateStackTask task = new PreUpdateStackTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreUpdateStackResult preUpdateStack(
+            PreUpdateStackRequest request
+    ) {
+        final AsyncResult<PreUpdateStackResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preUpdateStackAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class UpdateStackTask extends Gs2RestSessionTask<UpdateStackResult> {
         private UpdateStackRequest request;
 
@@ -547,6 +860,42 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
         @Override
         protected void executeImpl() {
+            if (request.getTemplate() != null) {
+                AtomicReference<AsyncResult<PreUpdateStackResult>> resultAsyncResult = new AtomicReference<>();
+                PreUpdateStackTask task = new PreUpdateStackTask(
+                        new PreUpdateStackRequest()
+                                .withContextStack(request.getContextStack())
+                                .withStackName(request.getStackName()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getTemplate().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withTemplate(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "deploy")
@@ -558,7 +907,9 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("mode", request.getMode());
                     put("template", request.getTemplate());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -608,6 +959,86 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class PreChangeSetTask extends Gs2RestSessionTask<PreChangeSetResult> {
+        private PreChangeSetRequest request;
+
+        public PreChangeSetTask(
+            PreChangeSetRequest request,
+            AsyncAction<AsyncResult<PreChangeSetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreChangeSetResult parse(JsonNode data) {
+            return PreChangeSetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "deploy")
+                .replace("{region}", session.getRegion().getName())
+                + "/stack/{stackName}/pre";
+
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preChangeSetAsync(
+            PreChangeSetRequest request,
+            AsyncAction<AsyncResult<PreChangeSetResult>> callback
+    ) {
+        PreChangeSetTask task = new PreChangeSetTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreChangeSetResult preChangeSet(
+            PreChangeSetRequest request
+    ) {
+        final AsyncResult<PreChangeSetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preChangeSetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ChangeSetTask extends Gs2RestSessionTask<ChangeSetResult> {
         private ChangeSetRequest request;
 
@@ -629,6 +1060,42 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
         @Override
         protected void executeImpl() {
+            if (request.getTemplate() != null) {
+                AtomicReference<AsyncResult<PreChangeSetResult>> resultAsyncResult = new AtomicReference<>();
+                PreChangeSetTask task = new PreChangeSetTask(
+                        new PreChangeSetRequest()
+                                .withContextStack(request.getContextStack())
+                                .withStackName(request.getStackName()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getTemplate().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withTemplate(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "deploy")
@@ -639,7 +1106,9 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("mode", request.getMode());
                     put("template", request.getTemplate());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

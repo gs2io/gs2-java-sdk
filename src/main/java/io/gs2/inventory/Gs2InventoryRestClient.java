@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +36,9 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.inventory.request.*;
 import io.gs2.inventory.result.*;
-import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestClient> {
+import io.gs2.inventory.model.*;
+
+public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestClient> {
 
 	public Gs2InventoryRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
@@ -4768,6 +4771,86 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class PreUpdateCurrentItemModelMasterTask extends Gs2RestSessionTask<PreUpdateCurrentItemModelMasterResult> {
+        private PreUpdateCurrentItemModelMasterRequest request;
+
+        public PreUpdateCurrentItemModelMasterTask(
+            PreUpdateCurrentItemModelMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentItemModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreUpdateCurrentItemModelMasterResult parse(JsonNode data) {
+            return PreUpdateCurrentItemModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preUpdateCurrentItemModelMasterAsync(
+            PreUpdateCurrentItemModelMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentItemModelMasterResult>> callback
+    ) {
+        PreUpdateCurrentItemModelMasterTask task = new PreUpdateCurrentItemModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreUpdateCurrentItemModelMasterResult preUpdateCurrentItemModelMaster(
+            PreUpdateCurrentItemModelMasterRequest request
+    ) {
+        final AsyncResult<PreUpdateCurrentItemModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preUpdateCurrentItemModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class UpdateCurrentItemModelMasterTask extends Gs2RestSessionTask<UpdateCurrentItemModelMasterResult> {
         private UpdateCurrentItemModelMasterRequest request;
 
@@ -4789,6 +4872,42 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
         @Override
         protected void executeImpl() {
+            if (request.getSettings() != null) {
+                AtomicReference<AsyncResult<PreUpdateCurrentItemModelMasterResult>> resultAsyncResult = new AtomicReference<>();
+                PreUpdateCurrentItemModelMasterTask task = new PreUpdateCurrentItemModelMasterTask(
+                        new PreUpdateCurrentItemModelMasterRequest()
+                                .withContextStack(request.getContextStack())
+                                .withNamespaceName(request.getNamespaceName()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getSettings().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withSettings(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
@@ -4799,7 +4918,9 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("mode", request.getMode());
                     put("settings", request.getSettings());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

@@ -29,7 +29,9 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ChangeSetRequest extends Gs2BasicRequest<ChangeSetRequest> {
     private String stackName;
+    private String mode;
     private String template;
+    private String uploadToken;
 	public String getStackName() {
 		return stackName;
 	}
@@ -38,6 +40,16 @@ public class ChangeSetRequest extends Gs2BasicRequest<ChangeSetRequest> {
 	}
 	public ChangeSetRequest withStackName(String stackName) {
 		this.stackName = stackName;
+		return this;
+	}
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	public ChangeSetRequest withMode(String mode) {
+		this.mode = mode;
 		return this;
 	}
 	public String getTemplate() {
@@ -50,6 +62,16 @@ public class ChangeSetRequest extends Gs2BasicRequest<ChangeSetRequest> {
 		this.template = template;
 		return this;
 	}
+	public String getUploadToken() {
+		return uploadToken;
+	}
+	public void setUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+	}
+	public ChangeSetRequest withUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+		return this;
+	}
 
     public static ChangeSetRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,14 +79,18 @@ public class ChangeSetRequest extends Gs2BasicRequest<ChangeSetRequest> {
         }
         return new ChangeSetRequest()
             .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
-            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText())
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("stackName", getStackName());
+                put("mode", getMode());
                 put("template", getTemplate());
+                put("uploadToken", getUploadToken());
             }}
         );
     }

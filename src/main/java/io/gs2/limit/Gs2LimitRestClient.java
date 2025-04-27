@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +36,9 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.limit.request.*;
 import io.gs2.limit.result.*;
-import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
+import io.gs2.limit.model.*;
+
+public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
 	public Gs2LimitRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
@@ -2916,6 +2919,86 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class PreUpdateCurrentLimitMasterTask extends Gs2RestSessionTask<PreUpdateCurrentLimitMasterResult> {
+        private PreUpdateCurrentLimitMasterRequest request;
+
+        public PreUpdateCurrentLimitMasterTask(
+            PreUpdateCurrentLimitMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentLimitMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreUpdateCurrentLimitMasterResult parse(JsonNode data) {
+            return PreUpdateCurrentLimitMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preUpdateCurrentLimitMasterAsync(
+            PreUpdateCurrentLimitMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentLimitMasterResult>> callback
+    ) {
+        PreUpdateCurrentLimitMasterTask task = new PreUpdateCurrentLimitMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreUpdateCurrentLimitMasterResult preUpdateCurrentLimitMaster(
+            PreUpdateCurrentLimitMasterRequest request
+    ) {
+        final AsyncResult<PreUpdateCurrentLimitMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preUpdateCurrentLimitMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class UpdateCurrentLimitMasterTask extends Gs2RestSessionTask<UpdateCurrentLimitMasterResult> {
         private UpdateCurrentLimitMasterRequest request;
 
@@ -2937,6 +3020,42 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
 
         @Override
         protected void executeImpl() {
+            if (request.getSettings() != null) {
+                AtomicReference<AsyncResult<PreUpdateCurrentLimitMasterResult>> resultAsyncResult = new AtomicReference<>();
+                PreUpdateCurrentLimitMasterTask task = new PreUpdateCurrentLimitMasterTask(
+                        new PreUpdateCurrentLimitMasterRequest()
+                                .withContextStack(request.getContextStack())
+                                .withNamespaceName(request.getNamespaceName()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getSettings().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withSettings(null);
+            }
 
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
@@ -2947,7 +3066,9 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("mode", request.getMode());
                     put("settings", request.getSettings());
+                    put("uploadToken", request.getUploadToken());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
