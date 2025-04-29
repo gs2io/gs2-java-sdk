@@ -40,6 +40,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String awsAccessKeyId;
 	private String awsSecretAccessKey;
 	private String firehoseStreamName;
+	private String firehoseCompressData;
 	private String status;
 	private Long createdAt;
 	private Long updatedAt;
@@ -154,6 +155,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.firehoseStreamName = firehoseStreamName;
 		return this;
 	}
+	public String getFirehoseCompressData() {
+		return firehoseCompressData;
+	}
+	public void setFirehoseCompressData(String firehoseCompressData) {
+		this.firehoseCompressData = firehoseCompressData;
+	}
+	public Namespace withFirehoseCompressData(String firehoseCompressData) {
+		this.firehoseCompressData = firehoseCompressData;
+		return this;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -211,6 +222,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withAwsAccessKeyId(data.get("awsAccessKeyId") == null || data.get("awsAccessKeyId").isNull() ? null : data.get("awsAccessKeyId").asText())
             .withAwsSecretAccessKey(data.get("awsSecretAccessKey") == null || data.get("awsSecretAccessKey").isNull() ? null : data.get("awsSecretAccessKey").asText())
             .withFirehoseStreamName(data.get("firehoseStreamName") == null || data.get("firehoseStreamName").isNull() ? null : data.get("firehoseStreamName").asText())
+            .withFirehoseCompressData(data.get("firehoseCompressData") == null || data.get("firehoseCompressData").isNull() ? null : data.get("firehoseCompressData").asText())
             .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -231,6 +243,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("awsAccessKeyId", getAwsAccessKeyId());
                 put("awsSecretAccessKey", getAwsSecretAccessKey());
                 put("firehoseStreamName", getFirehoseStreamName());
+                put("firehoseCompressData", getFirehoseCompressData());
                 put("status", getStatus());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -259,6 +272,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.awsAccessKeyId == null) ? 0 : this.awsAccessKeyId.hashCode());
         result = prime * result + ((this.awsSecretAccessKey == null) ? 0 : this.awsSecretAccessKey.hashCode());
         result = prime * result + ((this.firehoseStreamName == null) ? 0 : this.firehoseStreamName.hashCode());
+        result = prime * result + ((this.firehoseCompressData == null) ? 0 : this.firehoseCompressData.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -328,6 +342,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (firehoseStreamName == null) {
 			return other.firehoseStreamName == null;
 		} else if (!firehoseStreamName.equals(other.firehoseStreamName)) {
+			return false;
+		}
+		if (firehoseCompressData == null) {
+			return other.firehoseCompressData == null;
+		} else if (!firehoseCompressData.equals(other.firehoseCompressData)) {
 			return false;
 		}
 		if (status == null) {

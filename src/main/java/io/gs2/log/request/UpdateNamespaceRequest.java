@@ -38,6 +38,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String awsAccessKeyId;
     private String awsSecretAccessKey;
     private String firehoseStreamName;
+    private String firehoseCompressData;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -138,6 +139,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.firehoseStreamName = firehoseStreamName;
 		return this;
 	}
+	public String getFirehoseCompressData() {
+		return firehoseCompressData;
+	}
+	public void setFirehoseCompressData(String firehoseCompressData) {
+		this.firehoseCompressData = firehoseCompressData;
+	}
+	public UpdateNamespaceRequest withFirehoseCompressData(String firehoseCompressData) {
+		this.firehoseCompressData = firehoseCompressData;
+		return this;
+	}
 
     public static UpdateNamespaceRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -153,7 +164,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withAwsRegion(data.get("awsRegion") == null || data.get("awsRegion").isNull() ? null : data.get("awsRegion").asText())
             .withAwsAccessKeyId(data.get("awsAccessKeyId") == null || data.get("awsAccessKeyId").isNull() ? null : data.get("awsAccessKeyId").asText())
             .withAwsSecretAccessKey(data.get("awsSecretAccessKey") == null || data.get("awsSecretAccessKey").isNull() ? null : data.get("awsSecretAccessKey").asText())
-            .withFirehoseStreamName(data.get("firehoseStreamName") == null || data.get("firehoseStreamName").isNull() ? null : data.get("firehoseStreamName").asText());
+            .withFirehoseStreamName(data.get("firehoseStreamName") == null || data.get("firehoseStreamName").isNull() ? null : data.get("firehoseStreamName").asText())
+            .withFirehoseCompressData(data.get("firehoseCompressData") == null || data.get("firehoseCompressData").isNull() ? null : data.get("firehoseCompressData").asText());
     }
 
     public JsonNode toJson() {
@@ -169,6 +181,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("awsAccessKeyId", getAwsAccessKeyId());
                 put("awsSecretAccessKey", getAwsSecretAccessKey());
                 put("firehoseStreamName", getFirehoseStreamName());
+                put("firehoseCompressData", getFirehoseCompressData());
             }}
         );
     }

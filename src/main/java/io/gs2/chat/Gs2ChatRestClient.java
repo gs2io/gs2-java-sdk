@@ -1889,6 +1889,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             if (this.request.getPassword() != null) {
                 queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
             }
+            if (this.request.getCategory() != null) {
+                queryStrings.add("category=" + String.valueOf(this.request.getCategory()));
+            }
             if (this.request.getStartAt() != null) {
                 queryStrings.add("startAt=" + String.valueOf(this.request.getStartAt()));
             }
@@ -1981,6 +1984,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             }
             if (this.request.getPassword() != null) {
                 queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
+            }
+            if (this.request.getCategory() != null) {
+                queryStrings.add("category=" + String.valueOf(this.request.getCategory()));
             }
             if (this.request.getUserId() != null) {
                 queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
@@ -2078,6 +2084,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             if (this.request.getPassword() != null) {
                 queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
             }
+            if (this.request.getCategory() != null) {
+                queryStrings.add("category=" + String.valueOf(this.request.getCategory()));
+            }
             if (this.request.getLimit() != null) {
                 queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
             }
@@ -2167,6 +2176,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             }
             if (this.request.getPassword() != null) {
                 queryStrings.add("password=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPassword()))));
+            }
+            if (this.request.getCategory() != null) {
+                queryStrings.add("category=" + String.valueOf(this.request.getCategory()));
             }
             if (this.request.getUserId() != null) {
                 queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));

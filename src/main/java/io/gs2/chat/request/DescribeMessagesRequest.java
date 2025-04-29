@@ -31,6 +31,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
     private String namespaceName;
     private String roomName;
     private String password;
+    private Integer category;
     private String accessToken;
     private Long startAt;
     private Integer limit;
@@ -62,6 +63,16 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
 	}
 	public DescribeMessagesRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+	public Integer getCategory() {
+		return category;
+	}
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
+	public DescribeMessagesRequest withCategory(Integer category) {
+		this.category = category;
 		return this;
 	}
 	public String getAccessToken() {
@@ -103,6 +114,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withStartAt(data.get("startAt") == null || data.get("startAt").isNull() ? null : data.get("startAt").longValue())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -114,6 +126,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
                 put("password", getPassword());
+                put("category", getCategory());
                 put("accessToken", getAccessToken());
                 put("startAt", getStartAt());
                 put("limit", getLimit());

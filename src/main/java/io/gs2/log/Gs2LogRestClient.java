@@ -167,6 +167,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                     put("awsAccessKeyId", request.getAwsAccessKeyId());
                     put("awsSecretAccessKey", request.getAwsSecretAccessKey());
                     put("firehoseStreamName", request.getFirehoseStreamName());
+                    put("firehoseCompressData", request.getFirehoseCompressData());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -416,6 +417,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                     put("awsAccessKeyId", request.getAwsAccessKeyId());
                     put("awsSecretAccessKey", request.getAwsSecretAccessKey());
                     put("firehoseStreamName", request.getFirehoseStreamName());
+                    put("firehoseCompressData", request.getFirehoseCompressData());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

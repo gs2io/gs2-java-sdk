@@ -31,6 +31,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
     private String namespaceName;
     private String roomName;
     private String password;
+    private Integer category;
     private String userId;
     private Integer limit;
     private String timeOffsetToken;
@@ -62,6 +63,16 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
 	}
 	public DescribeLatestMessagesByUserIdRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+	public Integer getCategory() {
+		return category;
+	}
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
+	public DescribeLatestMessagesByUserIdRequest withCategory(Integer category) {
+		this.category = category;
 		return this;
 	}
 	public String getUserId() {
@@ -103,6 +114,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
@@ -114,6 +126,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
                 put("password", getPassword());
+                put("category", getCategory());
                 put("userId", getUserId());
                 put("limit", getLimit());
                 put("timeOffsetToken", getTimeOffsetToken());
