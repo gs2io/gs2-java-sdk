@@ -4349,6 +4349,94 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class UpdateDataOwnerByUserIdTask extends Gs2RestSessionTask<UpdateDataOwnerByUserIdResult> {
+        private UpdateDataOwnerByUserIdRequest request;
+
+        public UpdateDataOwnerByUserIdTask(
+            UpdateDataOwnerByUserIdRequest request,
+            AsyncAction<AsyncResult<UpdateDataOwnerByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateDataOwnerByUserIdResult parse(JsonNode data) {
+            return UpdateDataOwnerByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/dataOwner";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataOwnerName", request.getDataOwnerName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateDataOwnerByUserIdAsync(
+            UpdateDataOwnerByUserIdRequest request,
+            AsyncAction<AsyncResult<UpdateDataOwnerByUserIdResult>> callback
+    ) {
+        UpdateDataOwnerByUserIdTask task = new UpdateDataOwnerByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateDataOwnerByUserIdResult updateDataOwnerByUserId(
+            UpdateDataOwnerByUserIdRequest request
+    ) {
+        final AsyncResult<UpdateDataOwnerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateDataOwnerByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteDataOwnerByUserIdTask extends Gs2RestSessionTask<DeleteDataOwnerByUserIdResult> {
         private DeleteDataOwnerByUserIdRequest request;
 
