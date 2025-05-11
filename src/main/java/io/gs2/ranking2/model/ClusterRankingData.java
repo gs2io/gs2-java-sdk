@@ -38,7 +38,7 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
 	private Integer rank;
 	private Long score;
 	private String metadata;
-	private Long invertCreatedAt;
+	private Long invertUpdatedAt;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -132,14 +132,14 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
 		this.metadata = metadata;
 		return this;
 	}
-	public Long getInvertCreatedAt() {
-		return invertCreatedAt;
+	public Long getInvertUpdatedAt() {
+		return invertUpdatedAt;
 	}
-	public void setInvertCreatedAt(Long invertCreatedAt) {
-		this.invertCreatedAt = invertCreatedAt;
+	public void setInvertUpdatedAt(Long invertUpdatedAt) {
+		this.invertUpdatedAt = invertUpdatedAt;
 	}
-	public ClusterRankingData withInvertCreatedAt(Long invertCreatedAt) {
-		this.invertCreatedAt = invertCreatedAt;
+	public ClusterRankingData withInvertUpdatedAt(Long invertUpdatedAt) {
+		this.invertUpdatedAt = invertUpdatedAt;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -187,7 +187,7 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
             .withRank(data.get("rank") == null || data.get("rank").isNull() ? null : data.get("rank").intValue())
             .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withInvertCreatedAt(data.get("invertCreatedAt") == null || data.get("invertCreatedAt").isNull() ? null : data.get("invertCreatedAt").longValue())
+            .withInvertUpdatedAt(data.get("invertUpdatedAt") == null || data.get("invertUpdatedAt").isNull() ? null : data.get("invertUpdatedAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -205,7 +205,7 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
                 put("rank", getRank());
                 put("score", getScore());
                 put("metadata", getMetadata());
-                put("invertCreatedAt", getInvertCreatedAt());
+                put("invertUpdatedAt", getInvertUpdatedAt());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -231,7 +231,7 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
         result = prime * result + ((this.rank == null) ? 0 : this.rank.hashCode());
         result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
-        result = prime * result + ((this.invertCreatedAt == null) ? 0 : this.invertCreatedAt.hashCode());
+        result = prime * result + ((this.invertUpdatedAt == null) ? 0 : this.invertUpdatedAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -292,9 +292,9 @@ public class ClusterRankingData implements IModel, Serializable, Comparable<Clus
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
-		if (invertCreatedAt == null) {
-			return other.invertCreatedAt == null;
-		} else if (!invertCreatedAt.equals(other.invertCreatedAt)) {
+		if (invertUpdatedAt == null) {
+			return other.invertUpdatedAt == null;
+		} else if (!invertUpdatedAt.equals(other.invertUpdatedAt)) {
 			return false;
 		}
 		if (createdAt == null) {
