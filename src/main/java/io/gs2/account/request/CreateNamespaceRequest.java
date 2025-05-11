@@ -39,6 +39,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting createTakeOverScript;
     private ScriptSetting doTakeOverScript;
     private ScriptSetting banScript;
+    private ScriptSetting unBanScript;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -130,6 +131,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.banScript = banScript;
 		return this;
 	}
+	public ScriptSetting getUnBanScript() {
+		return unBanScript;
+	}
+	public void setUnBanScript(ScriptSetting unBanScript) {
+		this.unBanScript = unBanScript;
+	}
+	public CreateNamespaceRequest withUnBanScript(ScriptSetting unBanScript) {
+		this.unBanScript = unBanScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -155,6 +166,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withCreateTakeOverScript(data.get("createTakeOverScript") == null || data.get("createTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("createTakeOverScript")))
             .withDoTakeOverScript(data.get("doTakeOverScript") == null || data.get("doTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("doTakeOverScript")))
             .withBanScript(data.get("banScript") == null || data.get("banScript").isNull() ? null : ScriptSetting.fromJson(data.get("banScript")))
+            .withUnBanScript(data.get("unBanScript") == null || data.get("unBanScript").isNull() ? null : ScriptSetting.fromJson(data.get("unBanScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -170,6 +182,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("createTakeOverScript", getCreateTakeOverScript() != null ? getCreateTakeOverScript().toJson() : null);
                 put("doTakeOverScript", getDoTakeOverScript() != null ? getDoTakeOverScript().toJson() : null);
                 put("banScript", getBanScript() != null ? getBanScript().toJson() : null);
+                put("unBanScript", getUnBanScript() != null ? getUnBanScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

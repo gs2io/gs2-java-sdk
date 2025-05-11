@@ -166,6 +166,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                     put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
+                    put("unBanScript", request.getUnBanScript() != null ? request.getUnBanScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -414,6 +415,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                     put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
+                    put("unBanScript", request.getUnBanScript() != null ? request.getUnBanScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
