@@ -531,6 +531,84 @@ public class Gs2MegaFieldRestClient extends AbstractGs2Client<Gs2MegaFieldRestCl
         return resultAsyncResult[0].getResult();
     }
 
+    class GetServiceVersionTask extends Gs2RestSessionTask<GetServiceVersionResult> {
+        private GetServiceVersionRequest request;
+
+        public GetServiceVersionTask(
+            GetServiceVersionRequest request,
+            AsyncAction<AsyncResult<GetServiceVersionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetServiceVersionResult parse(JsonNode data) {
+            return GetServiceVersionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mega-field")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/version";
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getServiceVersionAsync(
+            GetServiceVersionRequest request,
+            AsyncAction<AsyncResult<GetServiceVersionResult>> callback
+    ) {
+        GetServiceVersionTask task = new GetServiceVersionTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetServiceVersionResult getServiceVersion(
+            GetServiceVersionRequest request
+    ) {
+        final AsyncResult<GetServiceVersionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getServiceVersionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeAreaModelsTask extends Gs2RestSessionTask<DescribeAreaModelsResult> {
         private DescribeAreaModelsRequest request;
 
