@@ -3332,6 +3332,181 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         return resultAsyncResult[0].getResult();
     }
 
+    class AddFriendTask extends Gs2RestSessionTask<AddFriendResult> {
+        private AddFriendRequest request;
+
+        public AddFriendTask(
+            AddFriendRequest request,
+            AsyncAction<AsyncResult<AddFriendResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddFriendResult parse(JsonNode data) {
+            return AddFriendResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/friend/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addFriendAsync(
+            AddFriendRequest request,
+            AsyncAction<AsyncResult<AddFriendResult>> callback
+    ) {
+        AddFriendTask task = new AddFriendTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddFriendResult addFriend(
+            AddFriendRequest request
+    ) {
+        final AsyncResult<AddFriendResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addFriendAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AddFriendByUserIdTask extends Gs2RestSessionTask<AddFriendByUserIdResult> {
+        private AddFriendByUserIdRequest request;
+
+        public AddFriendByUserIdTask(
+            AddFriendByUserIdRequest request,
+            AsyncAction<AsyncResult<AddFriendByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddFriendByUserIdResult parse(JsonNode data) {
+            return AddFriendByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/friend/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addFriendByUserIdAsync(
+            AddFriendByUserIdRequest request,
+            AsyncAction<AsyncResult<AddFriendByUserIdResult>> callback
+    ) {
+        AddFriendByUserIdTask task = new AddFriendByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddFriendByUserIdResult addFriendByUserId(
+            AddFriendByUserIdRequest request
+    ) {
+        final AsyncResult<AddFriendByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addFriendByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteFriendTask extends Gs2RestSessionTask<DeleteFriendResult> {
         private DeleteFriendRequest request;
 
