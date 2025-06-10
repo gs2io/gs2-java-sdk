@@ -44,6 +44,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting joinGuildScript;
     private ScriptSetting leaveGuildScript;
     private ScriptSetting changeRoleScript;
+    private ScriptSetting deleteGuildScript;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -175,6 +176,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.changeRoleScript = changeRoleScript;
 		return this;
 	}
+	public ScriptSetting getDeleteGuildScript() {
+		return deleteGuildScript;
+	}
+	public void setDeleteGuildScript(ScriptSetting deleteGuildScript) {
+		this.deleteGuildScript = deleteGuildScript;
+	}
+	public CreateNamespaceRequest withDeleteGuildScript(ScriptSetting deleteGuildScript) {
+		this.deleteGuildScript = deleteGuildScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -204,6 +215,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
+            .withDeleteGuildScript(data.get("deleteGuildScript") == null || data.get("deleteGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteGuildScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -223,6 +235,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);
+                put("deleteGuildScript", getDeleteGuildScript() != null ? getDeleteGuildScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

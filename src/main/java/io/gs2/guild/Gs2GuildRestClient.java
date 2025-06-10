@@ -170,6 +170,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
+                    put("deleteGuildScript", request.getDeleteGuildScript() != null ? request.getDeleteGuildScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -423,6 +424,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
+                    put("deleteGuildScript", request.getDeleteGuildScript() != null ? request.getDeleteGuildScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

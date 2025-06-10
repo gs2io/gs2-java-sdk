@@ -43,6 +43,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting joinGuildScript;
 	private ScriptSetting leaveGuildScript;
 	private ScriptSetting changeRoleScript;
+	private ScriptSetting deleteGuildScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -187,6 +188,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.changeRoleScript = changeRoleScript;
 		return this;
 	}
+	public ScriptSetting getDeleteGuildScript() {
+		return deleteGuildScript;
+	}
+	public void setDeleteGuildScript(ScriptSetting deleteGuildScript) {
+		this.deleteGuildScript = deleteGuildScript;
+	}
+	public Namespace withDeleteGuildScript(ScriptSetting deleteGuildScript) {
+		this.deleteGuildScript = deleteGuildScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -247,6 +258,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
+            .withDeleteGuildScript(data.get("deleteGuildScript") == null || data.get("deleteGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteGuildScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -270,6 +282,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);
+                put("deleteGuildScript", getDeleteGuildScript() != null ? getDeleteGuildScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -301,6 +314,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.joinGuildScript == null) ? 0 : this.joinGuildScript.hashCode());
         result = prime * result + ((this.leaveGuildScript == null) ? 0 : this.leaveGuildScript.hashCode());
         result = prime * result + ((this.changeRoleScript == null) ? 0 : this.changeRoleScript.hashCode());
+        result = prime * result + ((this.deleteGuildScript == null) ? 0 : this.deleteGuildScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -385,6 +399,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (changeRoleScript == null) {
 			return other.changeRoleScript == null;
 		} else if (!changeRoleScript.equals(other.changeRoleScript)) {
+			return false;
+		}
+		if (deleteGuildScript == null) {
+			return other.deleteGuildScript == null;
+		} else if (!deleteGuildScript.equals(other.deleteGuildScript)) {
 			return false;
 		}
 		if (logSetting == null) {
