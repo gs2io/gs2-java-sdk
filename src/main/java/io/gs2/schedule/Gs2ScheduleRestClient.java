@@ -2069,6 +2069,95 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         return resultAsyncResult[0].getResult();
     }
 
+    class ExtendTriggerByUserIdTask extends Gs2RestSessionTask<ExtendTriggerByUserIdResult> {
+        private ExtendTriggerByUserIdRequest request;
+
+        public ExtendTriggerByUserIdTask(
+            ExtendTriggerByUserIdRequest request,
+            AsyncAction<AsyncResult<ExtendTriggerByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExtendTriggerByUserIdResult parse(JsonNode data) {
+            return ExtendTriggerByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/trigger/{triggerName}/extend";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("extendSeconds", request.getExtendSeconds());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void extendTriggerByUserIdAsync(
+            ExtendTriggerByUserIdRequest request,
+            AsyncAction<AsyncResult<ExtendTriggerByUserIdResult>> callback
+    ) {
+        ExtendTriggerByUserIdTask task = new ExtendTriggerByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExtendTriggerByUserIdResult extendTriggerByUserId(
+            ExtendTriggerByUserIdRequest request
+    ) {
+        final AsyncResult<ExtendTriggerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        extendTriggerByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class TriggerByStampSheetTask extends Gs2RestSessionTask<TriggerByStampSheetResult> {
         private TriggerByStampSheetRequest request;
 
@@ -2133,6 +2222,86 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
     ) {
         final AsyncResult<TriggerByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         triggerByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ExtendTriggerByStampSheetTask extends Gs2RestSessionTask<ExtendTriggerByStampSheetResult> {
+        private ExtendTriggerByStampSheetRequest request;
+
+        public ExtendTriggerByStampSheetTask(
+            ExtendTriggerByStampSheetRequest request,
+            AsyncAction<AsyncResult<ExtendTriggerByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExtendTriggerByStampSheetResult parse(JsonNode data) {
+            return ExtendTriggerByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/trigger/extend";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void extendTriggerByStampSheetAsync(
+            ExtendTriggerByStampSheetRequest request,
+            AsyncAction<AsyncResult<ExtendTriggerByStampSheetResult>> callback
+    ) {
+        ExtendTriggerByStampSheetTask task = new ExtendTriggerByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExtendTriggerByStampSheetResult extendTriggerByStampSheet(
+            ExtendTriggerByStampSheetRequest request
+    ) {
+        final AsyncResult<ExtendTriggerByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        extendTriggerByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
