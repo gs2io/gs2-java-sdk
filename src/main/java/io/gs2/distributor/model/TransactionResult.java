@@ -35,6 +35,7 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
 	private List<VerifyActionResult> verifyResults;
 	private List<ConsumeActionResult> consumeResults;
 	private List<AcquireActionResult> acquireResults;
+	private Boolean hasError;
 	private Long createdAt;
 	private Long revision;
 	public String getTransactionResultId() {
@@ -97,6 +98,16 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
 		this.acquireResults = acquireResults;
 		return this;
 	}
+	public Boolean getHasError() {
+		return hasError;
+	}
+	public void setHasError(Boolean hasError) {
+		this.hasError = hasError;
+	}
+	public TransactionResult withHasError(Boolean hasError) {
+		this.hasError = hasError;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -144,6 +155,7 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
                     return AcquireActionResult.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withHasError(data.get("hasError") == null || data.get("hasError").isNull() ? null : data.get("hasError").booleanValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -172,6 +184,7 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("hasError", getHasError());
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -193,6 +206,7 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
         result = prime * result + ((this.verifyResults == null) ? 0 : this.verifyResults.hashCode());
         result = prime * result + ((this.consumeResults == null) ? 0 : this.consumeResults.hashCode());
         result = prime * result + ((this.acquireResults == null) ? 0 : this.acquireResults.hashCode());
+        result = prime * result + ((this.hasError == null) ? 0 : this.hasError.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -235,6 +249,11 @@ public class TransactionResult implements IModel, Serializable, Comparable<Trans
 		if (acquireResults == null) {
 			return other.acquireResults == null;
 		} else if (!acquireResults.equals(other.acquireResults)) {
+			return false;
+		}
+		if (hasError == null) {
+			return other.hasError == null;
+		} else if (!hasError.equals(other.hasError)) {
 			return false;
 		}
 		if (createdAt == null) {
