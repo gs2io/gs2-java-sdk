@@ -33,6 +33,7 @@ public class DescribeLatestMessagesRequest extends Gs2BasicRequest<DescribeLates
     private String password;
     private Integer category;
     private String accessToken;
+    private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class DescribeLatestMessagesRequest extends Gs2BasicRequest<DescribeLates
 		this.accessToken = accessToken;
 		return this;
 	}
+	public String getPageToken() {
+		return pageToken;
+	}
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+	public DescribeLatestMessagesRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
 	public Integer getLimit() {
 		return limit;
 	}
@@ -105,6 +116,7 @@ public class DescribeLatestMessagesRequest extends Gs2BasicRequest<DescribeLates
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
@@ -116,6 +128,7 @@ public class DescribeLatestMessagesRequest extends Gs2BasicRequest<DescribeLates
                 put("password", getPassword());
                 put("category", getCategory());
                 put("accessToken", getAccessToken());
+                put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}
         );

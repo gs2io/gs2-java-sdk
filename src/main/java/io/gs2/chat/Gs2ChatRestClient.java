@@ -2165,6 +2165,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             if (this.request.getCategory() != null) {
                 queryStrings.add("category=" + String.valueOf(this.request.getCategory()));
             }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
             if (this.request.getLimit() != null) {
                 queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
             }
@@ -2260,6 +2263,9 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             }
             if (this.request.getUserId() != null) {
                 queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
             if (this.request.getLimit() != null) {
                 queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));

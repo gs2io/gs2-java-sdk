@@ -31,6 +31,7 @@ import io.gs2.chat.model.Message;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeLatestMessagesResult implements IResult, Serializable {
     private List<Message> items;
+    private String nextPageToken;
 
 	public List<Message> getItems() {
 		return items;
@@ -45,6 +46,19 @@ public class DescribeLatestMessagesResult implements IResult, Serializable {
 		return this;
 	}
 
+	public String getNextPageToken() {
+		return nextPageToken;
+	}
+
+	public void setNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+	}
+
+	public DescribeLatestMessagesResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
     public static DescribeLatestMessagesResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -55,7 +69,8 @@ public class DescribeLatestMessagesResult implements IResult, Serializable {
                     //noinspection Convert2MethodRef
                     return Message.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
     }
 
     public JsonNode toJson() {
@@ -67,6 +82,7 @@ public class DescribeLatestMessagesResult implements IResult, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
             }}
         );
     }

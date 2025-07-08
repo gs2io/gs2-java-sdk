@@ -33,6 +33,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
     private String password;
     private Integer category;
     private String userId;
+    private String pageToken;
     private Integer limit;
     private String timeOffsetToken;
 	public String getNamespaceName() {
@@ -85,6 +86,16 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
 		this.userId = userId;
 		return this;
 	}
+	public String getPageToken() {
+		return pageToken;
+	}
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+	public DescribeLatestMessagesByUserIdRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
 	public Integer getLimit() {
 		return limit;
 	}
@@ -116,6 +127,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
@@ -128,6 +140,7 @@ public class DescribeLatestMessagesByUserIdRequest extends Gs2BasicRequest<Descr
                 put("password", getPassword());
                 put("category", getCategory());
                 put("userId", getUserId());
+                put("pageToken", getPageToken());
                 put("limit", getLimit());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
