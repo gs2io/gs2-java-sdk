@@ -41,6 +41,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting createGuildScript;
 	private ScriptSetting updateGuildScript;
 	private ScriptSetting joinGuildScript;
+	private ScriptSetting receiveJoinRequestScript;
 	private ScriptSetting leaveGuildScript;
 	private ScriptSetting changeRoleScript;
 	private ScriptSetting deleteGuildScript;
@@ -168,6 +169,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.joinGuildScript = joinGuildScript;
 		return this;
 	}
+	public ScriptSetting getReceiveJoinRequestScript() {
+		return receiveJoinRequestScript;
+	}
+	public void setReceiveJoinRequestScript(ScriptSetting receiveJoinRequestScript) {
+		this.receiveJoinRequestScript = receiveJoinRequestScript;
+	}
+	public Namespace withReceiveJoinRequestScript(ScriptSetting receiveJoinRequestScript) {
+		this.receiveJoinRequestScript = receiveJoinRequestScript;
+		return this;
+	}
 	public ScriptSetting getLeaveGuildScript() {
 		return leaveGuildScript;
 	}
@@ -256,6 +267,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
             .withUpdateGuildScript(data.get("updateGuildScript") == null || data.get("updateGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateGuildScript")))
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
+            .withReceiveJoinRequestScript(data.get("receiveJoinRequestScript") == null || data.get("receiveJoinRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveJoinRequestScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
             .withDeleteGuildScript(data.get("deleteGuildScript") == null || data.get("deleteGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteGuildScript")))
@@ -280,6 +292,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);
                 put("updateGuildScript", getUpdateGuildScript() != null ? getUpdateGuildScript().toJson() : null);
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
+                put("receiveJoinRequestScript", getReceiveJoinRequestScript() != null ? getReceiveJoinRequestScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);
                 put("deleteGuildScript", getDeleteGuildScript() != null ? getDeleteGuildScript().toJson() : null);
@@ -312,6 +325,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.createGuildScript == null) ? 0 : this.createGuildScript.hashCode());
         result = prime * result + ((this.updateGuildScript == null) ? 0 : this.updateGuildScript.hashCode());
         result = prime * result + ((this.joinGuildScript == null) ? 0 : this.joinGuildScript.hashCode());
+        result = prime * result + ((this.receiveJoinRequestScript == null) ? 0 : this.receiveJoinRequestScript.hashCode());
         result = prime * result + ((this.leaveGuildScript == null) ? 0 : this.leaveGuildScript.hashCode());
         result = prime * result + ((this.changeRoleScript == null) ? 0 : this.changeRoleScript.hashCode());
         result = prime * result + ((this.deleteGuildScript == null) ? 0 : this.deleteGuildScript.hashCode());
@@ -389,6 +403,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (joinGuildScript == null) {
 			return other.joinGuildScript == null;
 		} else if (!joinGuildScript.equals(other.joinGuildScript)) {
+			return false;
+		}
+		if (receiveJoinRequestScript == null) {
+			return other.receiveJoinRequestScript == null;
+		} else if (!receiveJoinRequestScript.equals(other.receiveJoinRequestScript)) {
 			return false;
 		}
 		if (leaveGuildScript == null) {

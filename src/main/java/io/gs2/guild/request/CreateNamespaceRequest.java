@@ -42,6 +42,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting createGuildScript;
     private ScriptSetting updateGuildScript;
     private ScriptSetting joinGuildScript;
+    private ScriptSetting receiveJoinRequestScript;
     private ScriptSetting leaveGuildScript;
     private ScriptSetting changeRoleScript;
     private ScriptSetting deleteGuildScript;
@@ -156,6 +157,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.joinGuildScript = joinGuildScript;
 		return this;
 	}
+	public ScriptSetting getReceiveJoinRequestScript() {
+		return receiveJoinRequestScript;
+	}
+	public void setReceiveJoinRequestScript(ScriptSetting receiveJoinRequestScript) {
+		this.receiveJoinRequestScript = receiveJoinRequestScript;
+	}
+	public CreateNamespaceRequest withReceiveJoinRequestScript(ScriptSetting receiveJoinRequestScript) {
+		this.receiveJoinRequestScript = receiveJoinRequestScript;
+		return this;
+	}
 	public ScriptSetting getLeaveGuildScript() {
 		return leaveGuildScript;
 	}
@@ -213,6 +224,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
             .withUpdateGuildScript(data.get("updateGuildScript") == null || data.get("updateGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateGuildScript")))
             .withJoinGuildScript(data.get("joinGuildScript") == null || data.get("joinGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("joinGuildScript")))
+            .withReceiveJoinRequestScript(data.get("receiveJoinRequestScript") == null || data.get("receiveJoinRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveJoinRequestScript")))
             .withLeaveGuildScript(data.get("leaveGuildScript") == null || data.get("leaveGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("leaveGuildScript")))
             .withChangeRoleScript(data.get("changeRoleScript") == null || data.get("changeRoleScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRoleScript")))
             .withDeleteGuildScript(data.get("deleteGuildScript") == null || data.get("deleteGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteGuildScript")))
@@ -233,6 +245,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);
                 put("updateGuildScript", getUpdateGuildScript() != null ? getUpdateGuildScript().toJson() : null);
                 put("joinGuildScript", getJoinGuildScript() != null ? getJoinGuildScript().toJson() : null);
+                put("receiveJoinRequestScript", getReceiveJoinRequestScript() != null ? getReceiveJoinRequestScript().toJson() : null);
                 put("leaveGuildScript", getLeaveGuildScript() != null ? getLeaveGuildScript().toJson() : null);
                 put("changeRoleScript", getChangeRoleScript() != null ? getChangeRoleScript().toJson() : null);
                 put("deleteGuildScript", getDeleteGuildScript() != null ? getDeleteGuildScript().toJson() : null);

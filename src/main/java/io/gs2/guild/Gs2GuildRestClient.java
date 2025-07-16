@@ -168,6 +168,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
                     put("updateGuildScript", request.getUpdateGuildScript() != null ? request.getUpdateGuildScript().toJson() : null);
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
+                    put("receiveJoinRequestScript", request.getReceiveJoinRequestScript() != null ? request.getReceiveJoinRequestScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
                     put("deleteGuildScript", request.getDeleteGuildScript() != null ? request.getDeleteGuildScript().toJson() : null);
@@ -422,6 +423,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
                     put("updateGuildScript", request.getUpdateGuildScript() != null ? request.getUpdateGuildScript().toJson() : null);
                     put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
+                    put("receiveJoinRequestScript", request.getReceiveJoinRequestScript() != null ? request.getReceiveJoinRequestScript().toJson() : null);
                     put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
                     put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
                     put("deleteGuildScript", request.getDeleteGuildScript() != null ? request.getDeleteGuildScript().toJson() : null);
