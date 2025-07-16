@@ -32,6 +32,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 	private String userId;
 	private String targetGuildName;
 	private String metadata;
+	private Long createdAt;
 	public String getUserId() {
 		return userId;
 	}
@@ -62,6 +63,16 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 		this.metadata = metadata;
 		return this;
 	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public SendMemberRequest withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+		return this;
+	}
 
     public static SendMemberRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -70,7 +81,8 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         return new SendMemberRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
 
     public JsonNode toJson() {
@@ -79,6 +91,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
                 put("userId", getUserId());
                 put("targetGuildName", getTargetGuildName());
                 put("metadata", getMetadata());
+                put("createdAt", getCreatedAt());
             }}
         );
     }
@@ -95,6 +108,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.targetGuildName == null) ? 0 : this.targetGuildName.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
 		return result;
 	}
 
@@ -120,6 +134,11 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
 			return false;
 		}
 		return true;
