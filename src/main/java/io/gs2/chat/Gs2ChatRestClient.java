@@ -3754,4 +3754,1019 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribeCategoryModelsTask extends Gs2RestSessionTask<DescribeCategoryModelsResult> {
+        private DescribeCategoryModelsRequest request;
+
+        public DescribeCategoryModelsTask(
+            DescribeCategoryModelsRequest request,
+            AsyncAction<AsyncResult<DescribeCategoryModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeCategoryModelsResult parse(JsonNode data) {
+            return DescribeCategoryModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeCategoryModelsAsync(
+            DescribeCategoryModelsRequest request,
+            AsyncAction<AsyncResult<DescribeCategoryModelsResult>> callback
+    ) {
+        DescribeCategoryModelsTask task = new DescribeCategoryModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeCategoryModelsResult describeCategoryModels(
+            DescribeCategoryModelsRequest request
+    ) {
+        final AsyncResult<DescribeCategoryModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeCategoryModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCategoryModelTask extends Gs2RestSessionTask<GetCategoryModelResult> {
+        private GetCategoryModelRequest request;
+
+        public GetCategoryModelTask(
+            GetCategoryModelRequest request,
+            AsyncAction<AsyncResult<GetCategoryModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetCategoryModelResult parse(JsonNode data) {
+            return GetCategoryModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/{category}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{category}", this.request.getCategory() == null  ? "null" : String.valueOf(this.request.getCategory()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getCategoryModelAsync(
+            GetCategoryModelRequest request,
+            AsyncAction<AsyncResult<GetCategoryModelResult>> callback
+    ) {
+        GetCategoryModelTask task = new GetCategoryModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetCategoryModelResult getCategoryModel(
+            GetCategoryModelRequest request
+    ) {
+        final AsyncResult<GetCategoryModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCategoryModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeCategoryModelMastersTask extends Gs2RestSessionTask<DescribeCategoryModelMastersResult> {
+        private DescribeCategoryModelMastersRequest request;
+
+        public DescribeCategoryModelMastersTask(
+            DescribeCategoryModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeCategoryModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeCategoryModelMastersResult parse(JsonNode data) {
+            return DescribeCategoryModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeCategoryModelMastersAsync(
+            DescribeCategoryModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeCategoryModelMastersResult>> callback
+    ) {
+        DescribeCategoryModelMastersTask task = new DescribeCategoryModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeCategoryModelMastersResult describeCategoryModelMasters(
+            DescribeCategoryModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeCategoryModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeCategoryModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateCategoryModelMasterTask extends Gs2RestSessionTask<CreateCategoryModelMasterResult> {
+        private CreateCategoryModelMasterRequest request;
+
+        public CreateCategoryModelMasterTask(
+            CreateCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateCategoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateCategoryModelMasterResult parse(JsonNode data) {
+            return CreateCategoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("category", request.getCategory());
+                    put("description", request.getDescription());
+                    put("rejectAccessTokenPost", request.getRejectAccessTokenPost());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createCategoryModelMasterAsync(
+            CreateCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateCategoryModelMasterResult>> callback
+    ) {
+        CreateCategoryModelMasterTask task = new CreateCategoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateCategoryModelMasterResult createCategoryModelMaster(
+            CreateCategoryModelMasterRequest request
+    ) {
+        final AsyncResult<CreateCategoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createCategoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCategoryModelMasterTask extends Gs2RestSessionTask<GetCategoryModelMasterResult> {
+        private GetCategoryModelMasterRequest request;
+
+        public GetCategoryModelMasterTask(
+            GetCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCategoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetCategoryModelMasterResult parse(JsonNode data) {
+            return GetCategoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{category}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{category}", this.request.getCategory() == null  ? "null" : String.valueOf(this.request.getCategory()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getCategoryModelMasterAsync(
+            GetCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCategoryModelMasterResult>> callback
+    ) {
+        GetCategoryModelMasterTask task = new GetCategoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetCategoryModelMasterResult getCategoryModelMaster(
+            GetCategoryModelMasterRequest request
+    ) {
+        final AsyncResult<GetCategoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCategoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCategoryModelMasterTask extends Gs2RestSessionTask<UpdateCategoryModelMasterResult> {
+        private UpdateCategoryModelMasterRequest request;
+
+        public UpdateCategoryModelMasterTask(
+            UpdateCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCategoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCategoryModelMasterResult parse(JsonNode data) {
+            return UpdateCategoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{category}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{category}", this.request.getCategory() == null  ? "null" : String.valueOf(this.request.getCategory()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("rejectAccessTokenPost", request.getRejectAccessTokenPost());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCategoryModelMasterAsync(
+            UpdateCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCategoryModelMasterResult>> callback
+    ) {
+        UpdateCategoryModelMasterTask task = new UpdateCategoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCategoryModelMasterResult updateCategoryModelMaster(
+            UpdateCategoryModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateCategoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCategoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteCategoryModelMasterTask extends Gs2RestSessionTask<DeleteCategoryModelMasterResult> {
+        private DeleteCategoryModelMasterRequest request;
+
+        public DeleteCategoryModelMasterTask(
+            DeleteCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteCategoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteCategoryModelMasterResult parse(JsonNode data) {
+            return DeleteCategoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{category}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{category}", this.request.getCategory() == null  ? "null" : String.valueOf(this.request.getCategory()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteCategoryModelMasterAsync(
+            DeleteCategoryModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteCategoryModelMasterResult>> callback
+    ) {
+        DeleteCategoryModelMasterTask task = new DeleteCategoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteCategoryModelMasterResult deleteCategoryModelMaster(
+            DeleteCategoryModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteCategoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteCategoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
+        private ExportMasterRequest request;
+
+        public ExportMasterTask(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/export";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void exportMasterAsync(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> callback
+    ) {
+        ExportMasterTask task = new ExportMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExportMasterResult exportMaster(
+            ExportMasterRequest request
+    ) {
+        final AsyncResult<ExportMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        exportMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCurrentModelMasterTask extends Gs2RestSessionTask<GetCurrentModelMasterResult> {
+        private GetCurrentModelMasterRequest request;
+
+        public GetCurrentModelMasterTask(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetCurrentModelMasterResult parse(JsonNode data) {
+            return GetCurrentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getCurrentModelMasterAsync(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> callback
+    ) {
+        GetCurrentModelMasterTask task = new GetCurrentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetCurrentModelMasterResult getCurrentModelMaster(
+            GetCurrentModelMasterRequest request
+    ) {
+        final AsyncResult<GetCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PreUpdateCurrentModelMasterTask extends Gs2RestSessionTask<PreUpdateCurrentModelMasterResult> {
+        private PreUpdateCurrentModelMasterRequest request;
+
+        public PreUpdateCurrentModelMasterTask(
+            PreUpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreUpdateCurrentModelMasterResult parse(JsonNode data) {
+            return PreUpdateCurrentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void preUpdateCurrentModelMasterAsync(
+            PreUpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<PreUpdateCurrentModelMasterResult>> callback
+    ) {
+        PreUpdateCurrentModelMasterTask task = new PreUpdateCurrentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreUpdateCurrentModelMasterResult preUpdateCurrentModelMaster(
+            PreUpdateCurrentModelMasterRequest request
+    ) {
+        final AsyncResult<PreUpdateCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        preUpdateCurrentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentModelMasterTask extends Gs2RestSessionTask<UpdateCurrentModelMasterResult> {
+        private UpdateCurrentModelMasterRequest request;
+
+        public UpdateCurrentModelMasterTask(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+            if (request.getSettings() != null) {
+                AtomicReference<AsyncResult<PreUpdateCurrentModelMasterResult>> resultAsyncResult = new AtomicReference<>();
+                PreUpdateCurrentModelMasterTask task = new PreUpdateCurrentModelMasterTask(
+                        new PreUpdateCurrentModelMasterRequest()
+                                .withContextStack(request.getContextStack())
+                                .withNamespaceName(request.getNamespaceName()),
+                        result -> resultAsyncResult.set(result)
+                );
+                session.execute(task);
+                while (resultAsyncResult.get() == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                }
+                if (resultAsyncResult.get().getError() != null) {
+                    throw resultAsyncResult.get().getError();
+                }
+                {
+                    byte[] b = request.getSettings().getBytes();
+                    try (org.apache.http.impl.client.CloseableHttpClient client = org.apache.http.impl.client.HttpClients.createDefault()) {
+                        org.apache.http.client.methods.HttpPut request = new org.apache.http.client.methods.HttpPut(resultAsyncResult.get().getResult().getUploadUrl());
+                        request.addHeader("Content-Type", "application/json");
+                        org.apache.http.entity.BasicHttpEntity entity = new org.apache.http.entity.BasicHttpEntity();
+                        entity.setContent(new java.io.ByteArrayInputStream(b));
+                        entity.setContentLength(b.length);
+                        request.setEntity(entity);
+                        org.apache.http.HttpResponse result = client.execute(request);
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                request = request
+                        .withMode("preUpload")
+                        .withUploadToken(resultAsyncResult.get().getResult().getUploadToken())
+                        .withSettings(null);
+            }
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("mode", request.getMode());
+                    put("settings", request.getSettings());
+                    put("uploadToken", request.getUploadToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentModelMasterAsync(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> callback
+    ) {
+        UpdateCurrentModelMasterTask task = new UpdateCurrentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentModelMasterResult updateCurrentModelMaster(
+            UpdateCurrentModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentModelMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentModelMasterFromGitHubResult> {
+        private UpdateCurrentModelMasterFromGitHubRequest request;
+
+        public UpdateCurrentModelMasterFromGitHubTask(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterFromGitHubResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "chat")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/from_git_hub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentModelMasterFromGitHubAsync(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> callback
+    ) {
+        UpdateCurrentModelMasterFromGitHubTask task = new UpdateCurrentModelMasterFromGitHubTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentModelMasterFromGitHubResult updateCurrentModelMasterFromGitHub(
+            UpdateCurrentModelMasterFromGitHubRequest request
+    ) {
+        final AsyncResult<UpdateCurrentModelMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterFromGitHubAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }
