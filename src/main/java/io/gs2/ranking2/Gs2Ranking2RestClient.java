@@ -4238,7 +4238,6 @@ public class Gs2Ranking2RestClient extends AbstractGs2Client<Gs2Ranking2RestClie
                     put("minimumValue", request.getMinimumValue());
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
-                    put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
                     put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
@@ -4417,7 +4416,6 @@ public class Gs2Ranking2RestClient extends AbstractGs2Client<Gs2Ranking2RestClie
                     put("minimumValue", request.getMinimumValue());
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
-                    put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
                     put("rankingRewards", request.getRankingRewards() == null ? null :
                         request.getRankingRewards().stream().map(item -> {
@@ -7036,7 +7034,6 @@ public class Gs2Ranking2RestClient extends AbstractGs2Client<Gs2Ranking2RestClie
                     put("minimumValue", request.getMinimumValue());
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
-                    put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
@@ -7207,7 +7204,6 @@ public class Gs2Ranking2RestClient extends AbstractGs2Client<Gs2Ranking2RestClie
                     put("minimumValue", request.getMinimumValue());
                     put("maximumValue", request.getMaximumValue());
                     put("sum", request.getSum());
-                    put("scoreTtlDays", request.getScoreTtlDays());
                     put("orderDirection", request.getOrderDirection());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());

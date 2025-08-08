@@ -31,6 +31,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
     private String namespaceName;
     private String accessToken;
     private Boolean allowConcurrentAccess;
+    private Boolean force;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
 		this.allowConcurrentAccess = allowConcurrentAccess;
 		return this;
 	}
+	public Boolean getForce() {
+		return force;
+	}
+	public void setForce(Boolean force) {
+		this.force = force;
+	}
+	public SetUserIdRequest withForce(Boolean force) {
+		this.force = force;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
         return new SetUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue());
+            .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue())
+            .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("allowConcurrentAccess", getAllowConcurrentAccess());
+                put("force", getForce());
             }}
         );
     }

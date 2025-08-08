@@ -38,7 +38,6 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
     private Long minimumValue;
     private Long maximumValue;
     private Boolean sum;
-    private Integer scoreTtlDays;
     private String orderDirection;
     private List<RankingReward> rankingRewards;
     private String rewardCalculationIndex;
@@ -124,16 +123,6 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
 		this.sum = sum;
 		return this;
 	}
-	public Integer getScoreTtlDays() {
-		return scoreTtlDays;
-	}
-	public void setScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-	}
-	public CreateClusterRankingModelMasterRequest withScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-		return this;
-	}
 	public String getOrderDirection() {
 		return orderDirection;
 	}
@@ -198,7 +187,6 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
             .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
             .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
-            .withScoreTtlDays(data.get("scoreTtlDays") == null || data.get("scoreTtlDays").isNull() ? null : data.get("scoreTtlDays").intValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withRankingRewards(data.get("rankingRewards") == null || data.get("rankingRewards").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rankingRewards").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -222,7 +210,6 @@ public class CreateClusterRankingModelMasterRequest extends Gs2BasicRequest<Crea
                 put("minimumValue", getMinimumValue());
                 put("maximumValue", getMaximumValue());
                 put("sum", getSum());
-                put("scoreTtlDays", getScoreTtlDays());
                 put("orderDirection", getOrderDirection());
                 put("rankingRewards", getRankingRewards() == null ? null :
                     getRankingRewards().stream().map(item -> {

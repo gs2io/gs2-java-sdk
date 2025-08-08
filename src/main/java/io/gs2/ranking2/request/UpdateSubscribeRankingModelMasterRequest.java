@@ -35,7 +35,6 @@ public class UpdateSubscribeRankingModelMasterRequest extends Gs2BasicRequest<Up
     private Long minimumValue;
     private Long maximumValue;
     private Boolean sum;
-    private Integer scoreTtlDays;
     private String orderDirection;
     private String entryPeriodEventId;
     private String accessPeriodEventId;
@@ -109,16 +108,6 @@ public class UpdateSubscribeRankingModelMasterRequest extends Gs2BasicRequest<Up
 		this.sum = sum;
 		return this;
 	}
-	public Integer getScoreTtlDays() {
-		return scoreTtlDays;
-	}
-	public void setScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-	}
-	public UpdateSubscribeRankingModelMasterRequest withScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-		return this;
-	}
 	public String getOrderDirection() {
 		return orderDirection;
 	}
@@ -162,7 +151,6 @@ public class UpdateSubscribeRankingModelMasterRequest extends Gs2BasicRequest<Up
             .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
             .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
-            .withScoreTtlDays(data.get("scoreTtlDays") == null || data.get("scoreTtlDays").isNull() ? null : data.get("scoreTtlDays").intValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText());
@@ -178,7 +166,6 @@ public class UpdateSubscribeRankingModelMasterRequest extends Gs2BasicRequest<Up
                 put("minimumValue", getMinimumValue());
                 put("maximumValue", getMaximumValue());
                 put("sum", getSum());
-                put("scoreTtlDays", getScoreTtlDays());
                 put("orderDirection", getOrderDirection());
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());

@@ -36,7 +36,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
 	private Long minimumValue;
 	private Long maximumValue;
 	private Boolean sum;
-	private Integer scoreTtlDays;
 	private String orderDirection;
 	private String entryPeriodEventId;
 	private String accessPeriodEventId;
@@ -113,16 +112,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
 		this.sum = sum;
 		return this;
 	}
-	public Integer getScoreTtlDays() {
-		return scoreTtlDays;
-	}
-	public void setScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-	}
-	public SubscribeRankingModelMaster withScoreTtlDays(Integer scoreTtlDays) {
-		this.scoreTtlDays = scoreTtlDays;
-		return this;
-	}
 	public String getOrderDirection() {
 		return orderDirection;
 	}
@@ -196,7 +185,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
             .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
             .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
-            .withScoreTtlDays(data.get("scoreTtlDays") == null || data.get("scoreTtlDays").isNull() ? null : data.get("scoreTtlDays").intValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
@@ -215,7 +203,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
                 put("minimumValue", getMinimumValue());
                 put("maximumValue", getMaximumValue());
                 put("sum", getSum());
-                put("scoreTtlDays", getScoreTtlDays());
                 put("orderDirection", getOrderDirection());
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
@@ -242,7 +229,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
         result = prime * result + ((this.minimumValue == null) ? 0 : this.minimumValue.hashCode());
         result = prime * result + ((this.maximumValue == null) ? 0 : this.maximumValue.hashCode());
         result = prime * result + ((this.sum == null) ? 0 : this.sum.hashCode());
-        result = prime * result + ((this.scoreTtlDays == null) ? 0 : this.scoreTtlDays.hashCode());
         result = prime * result + ((this.orderDirection == null) ? 0 : this.orderDirection.hashCode());
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
@@ -294,11 +280,6 @@ public class SubscribeRankingModelMaster implements IModel, Serializable, Compar
 		if (sum == null) {
 			return other.sum == null;
 		} else if (!sum.equals(other.sum)) {
-			return false;
-		}
-		if (scoreTtlDays == null) {
-			return other.scoreTtlDays == null;
-		} else if (!scoreTtlDays.equals(other.scoreTtlDays)) {
 			return false;
 		}
 		if (orderDirection == null) {
