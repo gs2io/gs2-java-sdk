@@ -31,6 +31,7 @@ public class GetReceiveRequestRequest extends Gs2BasicRequest<GetReceiveRequestR
     private String namespaceName;
     private String accessToken;
     private String fromUserId;
+    private Boolean withProfile;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetReceiveRequestRequest extends Gs2BasicRequest<GetReceiveRequestR
 		this.fromUserId = fromUserId;
 		return this;
 	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public GetReceiveRequestRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+		return this;
+	}
 
     public static GetReceiveRequestRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetReceiveRequestRequest extends Gs2BasicRequest<GetReceiveRequestR
         return new GetReceiveRequestRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withFromUserId(data.get("fromUserId") == null || data.get("fromUserId").isNull() ? null : data.get("fromUserId").asText());
+            .withFromUserId(data.get("fromUserId") == null || data.get("fromUserId").isNull() ? null : data.get("fromUserId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetReceiveRequestRequest extends Gs2BasicRequest<GetReceiveRequestR
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("fromUserId", getFromUserId());
+                put("withProfile", getWithProfile());
             }}
         );
     }

@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<DescribeReceiveRequestsByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private Boolean withProfile;
     private String pageToken;
     private Integer limit;
     private String timeOffsetToken;
@@ -51,6 +52,16 @@ public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<Desc
 	}
 	public DescribeReceiveRequestsByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public DescribeReceiveRequestsByUserIdRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
 		return this;
 	}
 	public String getPageToken() {
@@ -91,6 +102,7 @@ public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<Desc
         return new DescribeReceiveRequestsByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
@@ -101,6 +113,7 @@ public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<Desc
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("withProfile", getWithProfile());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
                 put("timeOffsetToken", getTimeOffsetToken());

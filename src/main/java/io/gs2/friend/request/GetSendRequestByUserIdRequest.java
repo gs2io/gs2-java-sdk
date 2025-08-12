@@ -31,6 +31,7 @@ public class GetSendRequestByUserIdRequest extends Gs2BasicRequest<GetSendReques
     private String namespaceName;
     private String userId;
     private String targetUserId;
+    private Boolean withProfile;
     private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class GetSendRequestByUserIdRequest extends Gs2BasicRequest<GetSendReques
 		this.targetUserId = targetUserId;
 		return this;
 	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public GetSendRequestByUserIdRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -81,6 +92,7 @@ public class GetSendRequestByUserIdRequest extends Gs2BasicRequest<GetSendReques
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -90,6 +102,7 @@ public class GetSendRequestByUserIdRequest extends Gs2BasicRequest<GetSendReques
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("targetUserId", getTargetUserId());
+                put("withProfile", getWithProfile());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

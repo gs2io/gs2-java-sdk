@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class FriendRequest implements IModel, Serializable, Comparable<FriendRequest> {
 	private String userId;
 	private String targetUserId;
+	private String publicProfile;
 	public String getUserId() {
 		return userId;
 	}
@@ -51,6 +52,16 @@ public class FriendRequest implements IModel, Serializable, Comparable<FriendReq
 		this.targetUserId = targetUserId;
 		return this;
 	}
+	public String getPublicProfile() {
+		return publicProfile;
+	}
+	public void setPublicProfile(String publicProfile) {
+		this.publicProfile = publicProfile;
+	}
+	public FriendRequest withPublicProfile(String publicProfile) {
+		this.publicProfile = publicProfile;
+		return this;
+	}
 
     public static FriendRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -58,7 +69,8 @@ public class FriendRequest implements IModel, Serializable, Comparable<FriendReq
         }
         return new FriendRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withPublicProfile(data.get("publicProfile") == null || data.get("publicProfile").isNull() ? null : data.get("publicProfile").asText());
     }
 
     public JsonNode toJson() {
@@ -66,6 +78,7 @@ public class FriendRequest implements IModel, Serializable, Comparable<FriendReq
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("targetUserId", getTargetUserId());
+                put("publicProfile", getPublicProfile());
             }}
         );
     }
@@ -81,6 +94,7 @@ public class FriendRequest implements IModel, Serializable, Comparable<FriendReq
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.targetUserId == null) ? 0 : this.targetUserId.hashCode());
+        result = prime * result + ((this.publicProfile == null) ? 0 : this.publicProfile.hashCode());
 		return result;
 	}
 
@@ -101,6 +115,11 @@ public class FriendRequest implements IModel, Serializable, Comparable<FriendReq
 		if (targetUserId == null) {
 			return other.targetUserId == null;
 		} else if (!targetUserId.equals(other.targetUserId)) {
+			return false;
+		}
+		if (publicProfile == null) {
+			return other.publicProfile == null;
+		} else if (!publicProfile.equals(other.publicProfile)) {
 			return false;
 		}
 		return true;

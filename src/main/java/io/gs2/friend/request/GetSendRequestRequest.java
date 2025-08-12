@@ -31,6 +31,7 @@ public class GetSendRequestRequest extends Gs2BasicRequest<GetSendRequestRequest
     private String namespaceName;
     private String accessToken;
     private String targetUserId;
+    private Boolean withProfile;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetSendRequestRequest extends Gs2BasicRequest<GetSendRequestRequest
 		this.targetUserId = targetUserId;
 		return this;
 	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public GetSendRequestRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+		return this;
+	}
 
     public static GetSendRequestRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetSendRequestRequest extends Gs2BasicRequest<GetSendRequestRequest
         return new GetSendRequestRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetSendRequestRequest extends Gs2BasicRequest<GetSendRequestRequest
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("targetUserId", getTargetUserId());
+                put("withProfile", getWithProfile());
             }}
         );
     }

@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendRequestsRequest> {
     private String namespaceName;
     private String accessToken;
+    private Boolean withProfile;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -50,6 +51,16 @@ public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendReq
 	}
 	public DescribeSendRequestsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public DescribeSendRequestsRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
 		return this;
 	}
 	public String getPageToken() {
@@ -80,6 +91,7 @@ public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendReq
         return new DescribeSendRequestsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -89,6 +101,7 @@ public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
+                put("withProfile", getWithProfile());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

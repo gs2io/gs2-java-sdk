@@ -3715,6 +3715,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -3804,6 +3807,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -3895,6 +3901,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder
@@ -3979,6 +3988,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
             }
             url += "?" + String.join("&", queryStrings);
 
@@ -4413,6 +4425,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -4502,6 +4517,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -4593,6 +4611,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder
@@ -4677,6 +4698,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
             }
             url += "?" + String.join("&", queryStrings);
 
