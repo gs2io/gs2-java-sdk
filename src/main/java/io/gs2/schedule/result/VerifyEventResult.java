@@ -25,21 +25,120 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
+import io.gs2.schedule.model.RepeatSetting;
+import io.gs2.schedule.model.Event;
+import io.gs2.schedule.model.RepeatSchedule;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyEventResult implements IResult, Serializable {
+    private Event item;
+    private Boolean inSchedule;
+    private Long scheduleStartAt;
+    private Long scheduleEndAt;
+    private RepeatSchedule repeatSchedule;
+    private Boolean isGlobalSchedule;
+
+	public Event getItem() {
+		return item;
+	}
+
+	public void setItem(Event item) {
+		this.item = item;
+	}
+
+	public VerifyEventResult withItem(Event item) {
+		this.item = item;
+		return this;
+	}
+
+	public Boolean getInSchedule() {
+		return inSchedule;
+	}
+
+	public void setInSchedule(Boolean inSchedule) {
+		this.inSchedule = inSchedule;
+	}
+
+	public VerifyEventResult withInSchedule(Boolean inSchedule) {
+		this.inSchedule = inSchedule;
+		return this;
+	}
+
+	public Long getScheduleStartAt() {
+		return scheduleStartAt;
+	}
+
+	public void setScheduleStartAt(Long scheduleStartAt) {
+		this.scheduleStartAt = scheduleStartAt;
+	}
+
+	public VerifyEventResult withScheduleStartAt(Long scheduleStartAt) {
+		this.scheduleStartAt = scheduleStartAt;
+		return this;
+	}
+
+	public Long getScheduleEndAt() {
+		return scheduleEndAt;
+	}
+
+	public void setScheduleEndAt(Long scheduleEndAt) {
+		this.scheduleEndAt = scheduleEndAt;
+	}
+
+	public VerifyEventResult withScheduleEndAt(Long scheduleEndAt) {
+		this.scheduleEndAt = scheduleEndAt;
+		return this;
+	}
+
+	public RepeatSchedule getRepeatSchedule() {
+		return repeatSchedule;
+	}
+
+	public void setRepeatSchedule(RepeatSchedule repeatSchedule) {
+		this.repeatSchedule = repeatSchedule;
+	}
+
+	public VerifyEventResult withRepeatSchedule(RepeatSchedule repeatSchedule) {
+		this.repeatSchedule = repeatSchedule;
+		return this;
+	}
+
+	public Boolean getIsGlobalSchedule() {
+		return isGlobalSchedule;
+	}
+
+	public void setIsGlobalSchedule(Boolean isGlobalSchedule) {
+		this.isGlobalSchedule = isGlobalSchedule;
+	}
+
+	public VerifyEventResult withIsGlobalSchedule(Boolean isGlobalSchedule) {
+		this.isGlobalSchedule = isGlobalSchedule;
+		return this;
+	}
 
     public static VerifyEventResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyEventResult();
+        return new VerifyEventResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")))
+            .withInSchedule(data.get("inSchedule") == null || data.get("inSchedule").isNull() ? null : data.get("inSchedule").booleanValue())
+            .withScheduleStartAt(data.get("scheduleStartAt") == null || data.get("scheduleStartAt").isNull() ? null : data.get("scheduleStartAt").longValue())
+            .withScheduleEndAt(data.get("scheduleEndAt") == null || data.get("scheduleEndAt").isNull() ? null : data.get("scheduleEndAt").longValue())
+            .withRepeatSchedule(data.get("repeatSchedule") == null || data.get("repeatSchedule").isNull() ? null : RepeatSchedule.fromJson(data.get("repeatSchedule")))
+            .withIsGlobalSchedule(data.get("isGlobalSchedule") == null || data.get("isGlobalSchedule").isNull() ? null : data.get("isGlobalSchedule").booleanValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("inSchedule", getInSchedule());
+                put("scheduleStartAt", getScheduleStartAt());
+                put("scheduleEndAt", getScheduleEndAt());
+                put("repeatSchedule", getRepeatSchedule() != null ? getRepeatSchedule().toJson() : null);
+                put("isGlobalSchedule", getIsGlobalSchedule());
             }}
         );
     }

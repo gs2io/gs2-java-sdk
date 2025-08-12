@@ -37,6 +37,7 @@ public class GetEventByUserIdResult implements IResult, Serializable {
     private Long scheduleStartAt;
     private Long scheduleEndAt;
     private RepeatSchedule repeatSchedule;
+    private Boolean isGlobalSchedule;
 
 	public Event getItem() {
 		return item;
@@ -103,6 +104,19 @@ public class GetEventByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getIsGlobalSchedule() {
+		return isGlobalSchedule;
+	}
+
+	public void setIsGlobalSchedule(Boolean isGlobalSchedule) {
+		this.isGlobalSchedule = isGlobalSchedule;
+	}
+
+	public GetEventByUserIdResult withIsGlobalSchedule(Boolean isGlobalSchedule) {
+		this.isGlobalSchedule = isGlobalSchedule;
+		return this;
+	}
+
     public static GetEventByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -112,7 +126,8 @@ public class GetEventByUserIdResult implements IResult, Serializable {
             .withInSchedule(data.get("inSchedule") == null || data.get("inSchedule").isNull() ? null : data.get("inSchedule").booleanValue())
             .withScheduleStartAt(data.get("scheduleStartAt") == null || data.get("scheduleStartAt").isNull() ? null : data.get("scheduleStartAt").longValue())
             .withScheduleEndAt(data.get("scheduleEndAt") == null || data.get("scheduleEndAt").isNull() ? null : data.get("scheduleEndAt").longValue())
-            .withRepeatSchedule(data.get("repeatSchedule") == null || data.get("repeatSchedule").isNull() ? null : RepeatSchedule.fromJson(data.get("repeatSchedule")));
+            .withRepeatSchedule(data.get("repeatSchedule") == null || data.get("repeatSchedule").isNull() ? null : RepeatSchedule.fromJson(data.get("repeatSchedule")))
+            .withIsGlobalSchedule(data.get("isGlobalSchedule") == null || data.get("isGlobalSchedule").isNull() ? null : data.get("isGlobalSchedule").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -123,6 +138,7 @@ public class GetEventByUserIdResult implements IResult, Serializable {
                 put("scheduleStartAt", getScheduleStartAt());
                 put("scheduleEndAt", getScheduleEndAt());
                 put("repeatSchedule", getRepeatSchedule() != null ? getRepeatSchedule().toJson() : null);
+                put("isGlobalSchedule", getIsGlobalSchedule());
             }}
         );
     }
