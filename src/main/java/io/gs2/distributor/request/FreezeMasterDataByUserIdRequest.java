@@ -31,7 +31,6 @@ public class FreezeMasterDataByUserIdRequest extends Gs2BasicRequest<FreezeMaste
     private String namespaceName;
     private String userId;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -60,19 +59,6 @@ public class FreezeMasterDataByUserIdRequest extends Gs2BasicRequest<FreezeMaste
 	}
 	public FreezeMasterDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FreezeMasterDataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

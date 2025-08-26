@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class ApplyBuffRequest extends Gs2BasicRequest<ApplyBuffRequest> {
     private String namespaceName;
     private String accessToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -49,19 +48,6 @@ public class ApplyBuffRequest extends Gs2BasicRequest<ApplyBuffRequest> {
 	}
 	public ApplyBuffRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public ApplyBuffRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

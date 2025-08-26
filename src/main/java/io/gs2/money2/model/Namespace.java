@@ -37,6 +37,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private PlatformSetting platformSetting;
 	private ScriptSetting depositBalanceScript;
 	private ScriptSetting withdrawBalanceScript;
+	private ScriptSetting verifyReceiptScript;
 	private String subscribeScript;
 	private String renewScript;
 	private String unsubscribeScript;
@@ -124,6 +125,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
 		this.withdrawBalanceScript = withdrawBalanceScript;
+		return this;
+	}
+	public ScriptSetting getVerifyReceiptScript() {
+		return verifyReceiptScript;
+	}
+	public void setVerifyReceiptScript(ScriptSetting verifyReceiptScript) {
+		this.verifyReceiptScript = verifyReceiptScript;
+	}
+	public Namespace withVerifyReceiptScript(ScriptSetting verifyReceiptScript) {
+		this.verifyReceiptScript = verifyReceiptScript;
 		return this;
 	}
 	public String getSubscribeScript() {
@@ -230,6 +241,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
             .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
             .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
+            .withVerifyReceiptScript(data.get("verifyReceiptScript") == null || data.get("verifyReceiptScript").isNull() ? null : ScriptSetting.fromJson(data.get("verifyReceiptScript")))
             .withSubscribeScript(data.get("subscribeScript") == null || data.get("subscribeScript").isNull() ? null : data.get("subscribeScript").asText())
             .withRenewScript(data.get("renewScript") == null || data.get("renewScript").isNull() ? null : data.get("renewScript").asText())
             .withUnsubscribeScript(data.get("unsubscribeScript") == null || data.get("unsubscribeScript").isNull() ? null : data.get("unsubscribeScript").asText())
@@ -252,6 +264,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
                 put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
                 put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
+                put("verifyReceiptScript", getVerifyReceiptScript() != null ? getVerifyReceiptScript().toJson() : null);
                 put("subscribeScript", getSubscribeScript());
                 put("renewScript", getRenewScript());
                 put("unsubscribeScript", getUnsubscribeScript());
@@ -282,6 +295,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.platformSetting == null) ? 0 : this.platformSetting.hashCode());
         result = prime * result + ((this.depositBalanceScript == null) ? 0 : this.depositBalanceScript.hashCode());
         result = prime * result + ((this.withdrawBalanceScript == null) ? 0 : this.withdrawBalanceScript.hashCode());
+        result = prime * result + ((this.verifyReceiptScript == null) ? 0 : this.verifyReceiptScript.hashCode());
         result = prime * result + ((this.subscribeScript == null) ? 0 : this.subscribeScript.hashCode());
         result = prime * result + ((this.renewScript == null) ? 0 : this.renewScript.hashCode());
         result = prime * result + ((this.unsubscribeScript == null) ? 0 : this.unsubscribeScript.hashCode());
@@ -341,6 +355,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (withdrawBalanceScript == null) {
 			return other.withdrawBalanceScript == null;
 		} else if (!withdrawBalanceScript.equals(other.withdrawBalanceScript)) {
+			return false;
+		}
+		if (verifyReceiptScript == null) {
+			return other.verifyReceiptScript == null;
+		} else if (!verifyReceiptScript.equals(other.verifyReceiptScript)) {
 			return false;
 		}
 		if (subscribeScript == null) {

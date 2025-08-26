@@ -161,7 +161,6 @@ public class Gs2LotteryRestClient extends AbstractGs2Client<Gs2LotteryRestClient
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("lotteryTriggerScriptId", request.getLotteryTriggerScriptId());
-                    put("choicePrizeTableScriptId", request.getChoicePrizeTableScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
@@ -408,7 +407,6 @@ public class Gs2LotteryRestClient extends AbstractGs2Client<Gs2LotteryRestClient
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("lotteryTriggerScriptId", request.getLotteryTriggerScriptId());
-                    put("choicePrizeTableScriptId", request.getChoicePrizeTableScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());

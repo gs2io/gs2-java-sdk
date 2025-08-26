@@ -41,6 +41,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private PlatformSetting platformSetting;
     private ScriptSetting depositBalanceScript;
     private ScriptSetting withdrawBalanceScript;
+    private ScriptSetting verifyReceiptScript;
     private String subscribeScript;
     private String renewScript;
     private String unsubscribeScript;
@@ -105,6 +106,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
 		this.withdrawBalanceScript = withdrawBalanceScript;
+		return this;
+	}
+	public ScriptSetting getVerifyReceiptScript() {
+		return verifyReceiptScript;
+	}
+	public void setVerifyReceiptScript(ScriptSetting verifyReceiptScript) {
+		this.verifyReceiptScript = verifyReceiptScript;
+	}
+	public UpdateNamespaceRequest withVerifyReceiptScript(ScriptSetting verifyReceiptScript) {
+		this.verifyReceiptScript = verifyReceiptScript;
 		return this;
 	}
 	public String getSubscribeScript() {
@@ -179,6 +190,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
             .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
             .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
+            .withVerifyReceiptScript(data.get("verifyReceiptScript") == null || data.get("verifyReceiptScript").isNull() ? null : ScriptSetting.fromJson(data.get("verifyReceiptScript")))
             .withSubscribeScript(data.get("subscribeScript") == null || data.get("subscribeScript").isNull() ? null : data.get("subscribeScript").asText())
             .withRenewScript(data.get("renewScript") == null || data.get("renewScript").isNull() ? null : data.get("renewScript").asText())
             .withUnsubscribeScript(data.get("unsubscribeScript") == null || data.get("unsubscribeScript").isNull() ? null : data.get("unsubscribeScript").asText())
@@ -196,6 +208,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
                 put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
                 put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
+                put("verifyReceiptScript", getVerifyReceiptScript() != null ? getVerifyReceiptScript().toJson() : null);
                 put("subscribeScript", getSubscribeScript());
                 put("renewScript", getRenewScript());
                 put("unsubscribeScript", getUnsubscribeScript());

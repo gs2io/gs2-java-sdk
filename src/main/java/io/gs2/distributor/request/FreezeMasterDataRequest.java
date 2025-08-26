@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class FreezeMasterDataRequest extends Gs2BasicRequest<FreezeMasterDataRequest> {
     private String namespaceName;
     private String accessToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -49,19 +48,6 @@ public class FreezeMasterDataRequest extends Gs2BasicRequest<FreezeMasterDataReq
 	}
 	public FreezeMasterDataRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FreezeMasterDataRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

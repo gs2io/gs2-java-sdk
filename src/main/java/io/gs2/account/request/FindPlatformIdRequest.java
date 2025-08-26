@@ -32,7 +32,6 @@ public class FindPlatformIdRequest extends Gs2BasicRequest<FindPlatformIdRequest
     private String accessToken;
     private Integer type;
     private String userIdentifier;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -71,19 +70,6 @@ public class FindPlatformIdRequest extends Gs2BasicRequest<FindPlatformIdRequest
 	}
 	public FindPlatformIdRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FindPlatformIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

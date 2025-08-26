@@ -33,7 +33,6 @@ public class FreezeMasterDataBySignedTimestampRequest extends Gs2BasicRequest<Fr
     private String body;
     private String signature;
     private String keyId;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -82,19 +81,6 @@ public class FreezeMasterDataBySignedTimestampRequest extends Gs2BasicRequest<Fr
 	}
 	public FreezeMasterDataBySignedTimestampRequest withKeyId(String keyId) {
 		this.keyId = keyId;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FreezeMasterDataBySignedTimestampRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

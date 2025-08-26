@@ -31,7 +31,6 @@ public class FreezeMasterDataByTimestampRequest extends Gs2BasicRequest<FreezeMa
     private String namespaceName;
     private String accessToken;
     private Long timestamp;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -60,19 +59,6 @@ public class FreezeMasterDataByTimestampRequest extends Gs2BasicRequest<FreezeMa
 	}
 	public FreezeMasterDataByTimestampRequest withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FreezeMasterDataByTimestampRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

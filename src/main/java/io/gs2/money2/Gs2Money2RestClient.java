@@ -164,6 +164,7 @@ public class Gs2Money2RestClient extends AbstractGs2Client<Gs2Money2RestClient> 
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
                     put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
+                    put("verifyReceiptScript", request.getVerifyReceiptScript() != null ? request.getVerifyReceiptScript().toJson() : null);
                     put("subscribeScript", request.getSubscribeScript());
                     put("renewScript", request.getRenewScript());
                     put("unsubscribeScript", request.getUnsubscribeScript());
@@ -415,6 +416,7 @@ public class Gs2Money2RestClient extends AbstractGs2Client<Gs2Money2RestClient> 
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
                     put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
+                    put("verifyReceiptScript", request.getVerifyReceiptScript() != null ? request.getVerifyReceiptScript().toJson() : null);
                     put("subscribeScript", request.getSubscribeScript());
                     put("renewScript", request.getRenewScript());
                     put("unsubscribeScript", request.getUnsubscribeScript());

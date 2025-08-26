@@ -2191,9 +2191,6 @@ public class Gs2IdleRestClient extends AbstractGs2Client<Gs2IdleRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2275,9 +2272,6 @@ public class Gs2IdleRestClient extends AbstractGs2Client<Gs2IdleRestClient> {
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());

@@ -31,7 +31,6 @@ public class ApplyBuffByUserIdRequest extends Gs2BasicRequest<ApplyBuffByUserIdR
     private String namespaceName;
     private String userId;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -60,19 +59,6 @@ public class ApplyBuffByUserIdRequest extends Gs2BasicRequest<ApplyBuffByUserIdR
 	}
 	public ApplyBuffByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public ApplyBuffByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

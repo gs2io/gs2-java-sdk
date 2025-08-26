@@ -34,7 +34,6 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String description;
     private TransactionSetting transactionSetting;
     private String lotteryTriggerScriptId;
-    private String choicePrizeTableScriptId;
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
@@ -76,16 +75,6 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withLotteryTriggerScriptId(String lotteryTriggerScriptId) {
 		this.lotteryTriggerScriptId = lotteryTriggerScriptId;
-		return this;
-	}
-	public String getChoicePrizeTableScriptId() {
-		return choicePrizeTableScriptId;
-	}
-	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
-	}
-	public UpdateNamespaceRequest withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -134,7 +123,6 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withLotteryTriggerScriptId(data.get("lotteryTriggerScriptId") == null || data.get("lotteryTriggerScriptId").isNull() ? null : data.get("lotteryTriggerScriptId").asText())
-            .withChoicePrizeTableScriptId(data.get("choicePrizeTableScriptId") == null || data.get("choicePrizeTableScriptId").isNull() ? null : data.get("choicePrizeTableScriptId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
@@ -147,7 +135,6 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("lotteryTriggerScriptId", getLotteryTriggerScriptId());
-                put("choicePrizeTableScriptId", getChoicePrizeTableScriptId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());

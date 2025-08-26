@@ -34,7 +34,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private TransactionSetting transactionSetting;
 	private String lotteryTriggerScriptId;
-	private String choicePrizeTableScriptId;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -89,16 +88,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withLotteryTriggerScriptId(String lotteryTriggerScriptId) {
 		this.lotteryTriggerScriptId = lotteryTriggerScriptId;
-		return this;
-	}
-	public String getChoicePrizeTableScriptId() {
-		return choicePrizeTableScriptId;
-	}
-	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
-	}
-	public Namespace withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -178,7 +167,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withLotteryTriggerScriptId(data.get("lotteryTriggerScriptId") == null || data.get("lotteryTriggerScriptId").isNull() ? null : data.get("lotteryTriggerScriptId").asText())
-            .withChoicePrizeTableScriptId(data.get("choicePrizeTableScriptId") == null || data.get("choicePrizeTableScriptId").isNull() ? null : data.get("choicePrizeTableScriptId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -195,7 +183,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("lotteryTriggerScriptId", getLotteryTriggerScriptId());
-                put("choicePrizeTableScriptId", getChoicePrizeTableScriptId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -220,7 +207,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.lotteryTriggerScriptId == null) ? 0 : this.lotteryTriggerScriptId.hashCode());
-        result = prime * result + ((this.choicePrizeTableScriptId == null) ? 0 : this.choicePrizeTableScriptId.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -262,11 +248,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (lotteryTriggerScriptId == null) {
 			return other.lotteryTriggerScriptId == null;
 		} else if (!lotteryTriggerScriptId.equals(other.lotteryTriggerScriptId)) {
-			return false;
-		}
-		if (choicePrizeTableScriptId == null) {
-			return other.choicePrizeTableScriptId == null;
-		} else if (!choicePrizeTableScriptId.equals(other.choicePrizeTableScriptId)) {
 			return false;
 		}
 		if (logSetting == null) {

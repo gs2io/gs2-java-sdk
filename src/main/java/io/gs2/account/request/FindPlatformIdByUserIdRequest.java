@@ -33,7 +33,6 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
     private Integer type;
     private String userIdentifier;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -82,19 +81,6 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
 	}
 	public FindPlatformIdByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public FindPlatformIdByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

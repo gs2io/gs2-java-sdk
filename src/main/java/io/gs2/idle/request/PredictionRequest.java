@@ -31,7 +31,6 @@ public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
     private String namespaceName;
     private String accessToken;
     private String categoryName;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -60,19 +59,6 @@ public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
 	}
 	public PredictionRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public PredictionRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

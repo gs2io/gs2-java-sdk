@@ -32,7 +32,6 @@ public class PredictionByUserIdRequest extends Gs2BasicRequest<PredictionByUserI
     private String userId;
     private String categoryName;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -71,19 +70,6 @@ public class PredictionByUserIdRequest extends Gs2BasicRequest<PredictionByUserI
 	}
 	public PredictionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public PredictionByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
