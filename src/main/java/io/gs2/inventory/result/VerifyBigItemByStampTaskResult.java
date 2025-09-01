@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.BigItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyBigItemByStampTaskResult implements IResult, Serializable {
+    private BigItem item;
     private String newContextStack;
+
+	public BigItem getItem() {
+		return item;
+	}
+
+	public void setItem(BigItem item) {
+		this.item = item;
+	}
+
+	public VerifyBigItemByStampTaskResult withItem(BigItem item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,14 @@ public class VerifyBigItemByStampTaskResult implements IResult, Serializable {
             return null;
         }
         return new VerifyBigItemByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BigItem.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

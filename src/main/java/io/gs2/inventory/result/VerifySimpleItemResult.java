@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.SimpleItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifySimpleItemResult implements IResult, Serializable {
+    private SimpleItem item;
+
+	public SimpleItem getItem() {
+		return item;
+	}
+
+	public void setItem(SimpleItem item) {
+		this.item = item;
+	}
+
+	public VerifySimpleItemResult withItem(SimpleItem item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifySimpleItemResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifySimpleItemResult();
+        return new VerifySimpleItemResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SimpleItem.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

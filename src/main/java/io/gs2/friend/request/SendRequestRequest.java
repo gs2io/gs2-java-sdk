@@ -31,6 +31,7 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
     private String namespaceName;
     private String accessToken;
     private String targetUserId;
+    private Boolean withProfile;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
 		this.targetUserId = targetUserId;
 		return this;
 	}
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+	public SendRequestRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
         return new SendRequestRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class SendRequestRequest extends Gs2BasicRequest<SendRequestRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("targetUserId", getTargetUserId());
+                put("withProfile", getWithProfile());
             }}
         );
     }

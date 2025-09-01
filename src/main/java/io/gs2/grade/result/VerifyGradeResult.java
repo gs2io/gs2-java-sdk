@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.grade.model.*;
+import io.gs2.grade.model.Status;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyGradeResult implements IResult, Serializable {
+    private Status item;
+
+	public Status getItem() {
+		return item;
+	}
+
+	public void setItem(Status item) {
+		this.item = item;
+	}
+
+	public VerifyGradeResult withItem(Status item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyGradeResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyGradeResult();
+        return new VerifyGradeResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

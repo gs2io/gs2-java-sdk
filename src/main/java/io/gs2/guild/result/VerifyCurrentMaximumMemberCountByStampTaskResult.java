@@ -25,11 +25,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.guild.model.*;
+import io.gs2.guild.model.RoleModel;
+import io.gs2.guild.model.Member;
+import io.gs2.guild.model.Guild;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCurrentMaximumMemberCountByStampTaskResult implements IResult, Serializable {
+    private Guild item;
     private String newContextStack;
+
+	public Guild getItem() {
+		return item;
+	}
+
+	public void setItem(Guild item) {
+		this.item = item;
+	}
+
+	public VerifyCurrentMaximumMemberCountByStampTaskResult withItem(Guild item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +66,14 @@ public class VerifyCurrentMaximumMemberCountByStampTaskResult implements IResult
             return null;
         }
         return new VerifyCurrentMaximumMemberCountByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Guild.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

@@ -25,21 +25,48 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyItemSetByUserIdResult implements IResult, Serializable {
+    private List<ItemSet> items;
+
+	public List<ItemSet> getItems() {
+		return items;
+	}
+
+	public void setItems(List<ItemSet> items) {
+		this.items = items;
+	}
+
+	public VerifyItemSetByUserIdResult withItems(List<ItemSet> items) {
+		this.items = items;
+		return this;
+	}
 
     public static VerifyItemSetByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyItemSetByUserIdResult();
+        return new VerifyItemSetByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemSet.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("items", getItems() == null ? null :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

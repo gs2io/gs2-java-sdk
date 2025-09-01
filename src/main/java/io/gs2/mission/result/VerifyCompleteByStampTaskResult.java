@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.Complete;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCompleteByStampTaskResult implements IResult, Serializable {
+    private Complete item;
     private String newContextStack;
+
+	public Complete getItem() {
+		return item;
+	}
+
+	public void setItem(Complete item) {
+		this.item = item;
+	}
+
+	public VerifyCompleteByStampTaskResult withItem(Complete item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,14 @@ public class VerifyCompleteByStampTaskResult implements IResult, Serializable {
             return null;
         }
         return new VerifyCompleteByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Complete.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

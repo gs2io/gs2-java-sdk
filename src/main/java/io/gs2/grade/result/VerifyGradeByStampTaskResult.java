@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.grade.model.*;
+import io.gs2.grade.model.Status;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyGradeByStampTaskResult implements IResult, Serializable {
+    private Status item;
     private String newContextStack;
+
+	public Status getItem() {
+		return item;
+	}
+
+	public void setItem(Status item) {
+		this.item = item;
+	}
+
+	public VerifyGradeByStampTaskResult withItem(Status item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,14 @@ public class VerifyGradeByStampTaskResult implements IResult, Serializable {
             return null;
         }
         return new VerifyGradeByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.Inventory;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyInventoryCurrentMaxCapacityByUserIdResult implements IResult, Serializable {
+    private Inventory item;
+
+	public Inventory getItem() {
+		return item;
+	}
+
+	public void setItem(Inventory item) {
+		this.item = item;
+	}
+
+	public VerifyInventoryCurrentMaxCapacityByUserIdResult withItem(Inventory item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyInventoryCurrentMaxCapacityByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyInventoryCurrentMaxCapacityByUserIdResult();
+        return new VerifyInventoryCurrentMaxCapacityByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Inventory.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

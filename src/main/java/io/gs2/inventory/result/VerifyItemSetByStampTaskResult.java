@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyItemSetByStampTaskResult implements IResult, Serializable {
+    private List<ItemSet> items;
     private String newContextStack;
+
+	public List<ItemSet> getItems() {
+		return items;
+	}
+
+	public void setItems(List<ItemSet> items) {
+		this.items = items;
+	}
+
+	public VerifyItemSetByStampTaskResult withItems(List<ItemSet> items) {
+		this.items = items;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,24 @@ public class VerifyItemSetByStampTaskResult implements IResult, Serializable {
             return null;
         }
         return new VerifyItemSetByStampTaskResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemSet.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("items", getItems() == null ? null :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("newContextStack", getNewContextStack());
             }}
         );

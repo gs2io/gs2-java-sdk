@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.SeasonGathering;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyIncludeParticipantResult implements IResult, Serializable {
+    private SeasonGathering item;
+
+	public SeasonGathering getItem() {
+		return item;
+	}
+
+	public void setItem(SeasonGathering item) {
+		this.item = item;
+	}
+
+	public VerifyIncludeParticipantResult withItem(SeasonGathering item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyIncludeParticipantResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyIncludeParticipantResult();
+        return new VerifyIncludeParticipantResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SeasonGathering.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

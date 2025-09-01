@@ -4288,11 +4288,13 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
             url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
-            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getTier() != null) {
+                queryStrings.add("tier=" + String.valueOf(this.request.getTier()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));

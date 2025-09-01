@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
+import io.gs2.schedule.model.Trigger;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyTriggerResult implements IResult, Serializable {
+    private Trigger item;
+
+	public Trigger getItem() {
+		return item;
+	}
+
+	public void setItem(Trigger item) {
+		this.item = item;
+	}
+
+	public VerifyTriggerResult withItem(Trigger item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyTriggerResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyTriggerResult();
+        return new VerifyTriggerResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Trigger.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

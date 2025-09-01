@@ -25,21 +25,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.guild.model.*;
+import io.gs2.guild.model.RoleModel;
+import io.gs2.guild.model.Member;
+import io.gs2.guild.model.Guild;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCurrentMaximumMemberCountResult implements IResult, Serializable {
+    private Guild item;
+
+	public Guild getItem() {
+		return item;
+	}
+
+	public void setItem(Guild item) {
+		this.item = item;
+	}
+
+	public VerifyCurrentMaximumMemberCountResult withItem(Guild item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyCurrentMaximumMemberCountResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyCurrentMaximumMemberCountResult();
+        return new VerifyCurrentMaximumMemberCountResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Guild.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

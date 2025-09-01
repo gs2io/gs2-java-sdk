@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.limit.model.*;
+import io.gs2.limit.model.Counter;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCounterByStampTaskResult implements IResult, Serializable {
+    private Counter item;
     private String newContextStack;
+
+	public Counter getItem() {
+		return item;
+	}
+
+	public void setItem(Counter item) {
+		this.item = item;
+	}
+
+	public VerifyCounterByStampTaskResult withItem(Counter item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,14 @@ public class VerifyCounterByStampTaskResult implements IResult, Serializable {
             return null;
         }
         return new VerifyCounterByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

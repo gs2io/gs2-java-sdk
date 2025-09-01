@@ -25,11 +25,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.SeasonGathering;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyIncludeParticipantByStampTaskResult implements IResult, Serializable {
+    private SeasonGathering item;
     private String newContextStack;
+
+	public SeasonGathering getItem() {
+		return item;
+	}
+
+	public void setItem(SeasonGathering item) {
+		this.item = item;
+	}
+
+	public VerifyIncludeParticipantByStampTaskResult withItem(SeasonGathering item) {
+		this.item = item;
+		return this;
+	}
 
 	public String getNewContextStack() {
 		return newContextStack;
@@ -49,12 +64,14 @@ public class VerifyIncludeParticipantByStampTaskResult implements IResult, Seria
             return null;
         }
         return new VerifyIncludeParticipantByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SeasonGathering.fromJson(data.get("item")))
             .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
             }}
         );

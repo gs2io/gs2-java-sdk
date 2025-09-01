@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.Complete;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCompleteByUserIdResult implements IResult, Serializable {
+    private Complete item;
+
+	public Complete getItem() {
+		return item;
+	}
+
+	public void setItem(Complete item) {
+		this.item = item;
+	}
+
+	public VerifyCompleteByUserIdResult withItem(Complete item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyCompleteByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyCompleteByUserIdResult();
+        return new VerifyCompleteByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Complete.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

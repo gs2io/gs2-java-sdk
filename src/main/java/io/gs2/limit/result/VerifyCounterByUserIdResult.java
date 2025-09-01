@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.limit.model.*;
+import io.gs2.limit.model.Counter;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyCounterByUserIdResult implements IResult, Serializable {
+    private Counter item;
+
+	public Counter getItem() {
+		return item;
+	}
+
+	public void setItem(Counter item) {
+		this.item = item;
+	}
+
+	public VerifyCounterByUserIdResult withItem(Counter item) {
+		this.item = item;
+		return this;
+	}
 
     public static VerifyCounterByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new VerifyCounterByUserIdResult();
+        return new VerifyCounterByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }
