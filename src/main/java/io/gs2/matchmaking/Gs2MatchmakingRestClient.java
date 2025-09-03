@@ -159,6 +159,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("enableRating", request.getEnableRating());
                     put("enableDisconnectDetection", request.getEnableDisconnectDetection());
                     put("disconnectDetectionTimeoutSeconds", request.getDisconnectDetectionTimeoutSeconds());
@@ -418,6 +419,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("enableRating", request.getEnableRating());
                     put("enableDisconnectDetection", request.getEnableDisconnectDetection());
                     put("disconnectDetectionTimeoutSeconds", request.getDisconnectDetectionTimeoutSeconds());

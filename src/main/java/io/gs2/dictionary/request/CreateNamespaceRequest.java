@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.dictionary.model.TransactionSetting;
 import io.gs2.dictionary.model.ScriptSetting;
 import io.gs2.dictionary.model.LogSetting;
 
@@ -32,6 +33,7 @@ import io.gs2.dictionary.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private ScriptSetting entryScript;
     private String duplicateEntryScript;
     private LogSetting logSetting;
@@ -53,6 +55,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public ScriptSetting getEntryScript() {
@@ -93,6 +105,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEntryScript(data.get("entryScript") == null || data.get("entryScript").isNull() ? null : ScriptSetting.fromJson(data.get("entryScript")))
             .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : data.get("duplicateEntryScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
@@ -103,6 +116,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("entryScript", getEntryScript() != null ? getEntryScript().toJson() : null);
                 put("duplicateEntryScript", getDuplicateEntryScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);

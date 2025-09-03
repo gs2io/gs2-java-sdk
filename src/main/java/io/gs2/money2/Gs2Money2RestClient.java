@@ -160,6 +160,7 @@ public class Gs2Money2RestClient extends AbstractGs2Client<Gs2Money2RestClient> 
                     put("name", request.getName());
                     put("currencyUsagePriority", request.getCurrencyUsagePriority());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("sharedFreeCurrency", request.getSharedFreeCurrency());
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
@@ -413,6 +414,7 @@ public class Gs2Money2RestClient extends AbstractGs2Client<Gs2Money2RestClient> 
                 new HashMap<String, Object>() {{
                     put("currencyUsagePriority", request.getCurrencyUsagePriority());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
                     put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
                     put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);

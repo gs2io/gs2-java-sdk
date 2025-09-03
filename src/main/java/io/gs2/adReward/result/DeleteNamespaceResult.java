@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.adReward.model.*;
+import io.gs2.adReward.model.TransactionSetting;
 import io.gs2.adReward.model.AdMob;
 import io.gs2.adReward.model.UnityAd;
 import io.gs2.adReward.model.AppLovinMax;

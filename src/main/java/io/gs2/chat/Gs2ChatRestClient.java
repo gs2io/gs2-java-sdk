@@ -159,6 +159,7 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("allowCreateRoom", request.getAllowCreateRoom());
                     put("messageLifeTimeDays", request.getMessageLifeTimeDays());
                     put("postMessageScript", request.getPostMessageScript() != null ? request.getPostMessageScript().toJson() : null);
@@ -409,6 +410,7 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("allowCreateRoom", request.getAllowCreateRoom());
                     put("messageLifeTimeDays", request.getMessageLifeTimeDays());
                     put("postMessageScript", request.getPostMessageScript() != null ? request.getPostMessageScript().toJson() : null);

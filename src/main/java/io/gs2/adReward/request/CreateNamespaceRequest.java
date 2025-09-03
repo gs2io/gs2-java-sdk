@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.adReward.model.TransactionSetting;
 import io.gs2.adReward.model.AdMob;
 import io.gs2.adReward.model.UnityAd;
 import io.gs2.adReward.model.AppLovinMax;
@@ -35,10 +36,11 @@ import io.gs2.adReward.model.LogSetting;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
+    private String description;
+    private TransactionSetting transactionSetting;
     private AdMob admob;
     private UnityAd unityAd;
     private List<AppLovinMax> appLovinMaxes;
-    private String description;
     private ScriptSetting acquirePointScript;
     private ScriptSetting consumePointScript;
     private NotificationSetting changePointNotification;
@@ -51,6 +53,26 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
+		return this;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public AdMob getAdmob() {
@@ -81,16 +103,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
 		this.appLovinMaxes = appLovinMaxes;
-		return this;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public CreateNamespaceRequest withDescription(String description) {
-		this.description = description;
 		return this;
 	}
 	public ScriptSetting getAcquirePointScript() {
@@ -140,6 +152,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         }
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withAdmob(data.get("admob") == null || data.get("admob").isNull() ? null : AdMob.fromJson(data.get("admob")))
             .withUnityAd(data.get("unityAd") == null || data.get("unityAd").isNull() ? null : UnityAd.fromJson(data.get("unityAd")))
             .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? null :
@@ -148,7 +162,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                     return AppLovinMax.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAcquirePointScript(data.get("acquirePointScript") == null || data.get("acquirePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquirePointScript")))
             .withConsumePointScript(data.get("consumePointScript") == null || data.get("consumePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumePointScript")))
             .withChangePointNotification(data.get("changePointNotification") == null || data.get("changePointNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changePointNotification")))
@@ -159,6 +172,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("name", getName());
+                put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("admob", getAdmob() != null ? getAdmob().toJson() : null);
                 put("unityAd", getUnityAd() != null ? getUnityAd().toJson() : null);
                 put("appLovinMaxes", getAppLovinMaxes() == null ? null :
@@ -167,7 +182,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("description", getDescription());
                 put("acquirePointScript", getAcquirePointScript() != null ? getAcquirePointScript().toJson() : null);
                 put("consumePointScript", getConsumePointScript() != null ? getConsumePointScript().toJson() : null);
                 put("changePointNotification", getChangePointNotification() != null ? getChangePointNotification().toJson() : null);

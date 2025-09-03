@@ -159,6 +159,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("followScript", request.getFollowScript() != null ? request.getFollowScript().toJson() : null);
                     put("unfollowScript", request.getUnfollowScript() != null ? request.getUnfollowScript().toJson() : null);
                     put("sendRequestScript", request.getSendRequestScript() != null ? request.getSendRequestScript().toJson() : null);
@@ -415,6 +416,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("followScript", request.getFollowScript() != null ? request.getFollowScript().toJson() : null);
                     put("unfollowScript", request.getUnfollowScript() != null ? request.getUnfollowScript().toJson() : null);
                     put("sendRequestScript", request.getSendRequestScript() != null ? request.getSendRequestScript().toJson() : null);

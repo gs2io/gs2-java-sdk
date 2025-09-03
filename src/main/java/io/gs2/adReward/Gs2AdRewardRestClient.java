@@ -158,6 +158,8 @@ public class Gs2AdRewardRestClient extends AbstractGs2Client<Gs2AdRewardRestClie
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
                     put("appLovinMaxes", request.getAppLovinMaxes() == null ? null :
@@ -166,7 +168,6 @@ public class Gs2AdRewardRestClient extends AbstractGs2Client<Gs2AdRewardRestClie
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("description", request.getDescription());
                     put("acquirePointScript", request.getAcquirePointScript() != null ? request.getAcquirePointScript().toJson() : null);
                     put("consumePointScript", request.getConsumePointScript() != null ? request.getConsumePointScript().toJson() : null);
                     put("changePointNotification", request.getChangePointNotification() != null ? request.getChangePointNotification().toJson() : null);
@@ -412,6 +413,7 @@ public class Gs2AdRewardRestClient extends AbstractGs2Client<Gs2AdRewardRestClie
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
                     put("appLovinMaxes", request.getAppLovinMaxes() == null ? null :

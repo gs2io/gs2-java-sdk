@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.money.model.TransactionSetting;
 import io.gs2.money.model.ScriptSetting;
 import io.gs2.money.model.LogSetting;
 
@@ -32,6 +33,7 @@ import io.gs2.money.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private String priority;
     private Boolean shareFree;
     private String currency;
@@ -60,6 +62,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public String getPriority() {
@@ -170,6 +182,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withPriority(data.get("priority") == null || data.get("priority").isNull() ? null : data.get("priority").asText())
             .withShareFree(data.get("shareFree") == null || data.get("shareFree").isNull() ? null : data.get("shareFree").booleanValue())
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
@@ -187,6 +200,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("priority", getPriority());
                 put("shareFree", getShareFree());
                 put("currency", getCurrency());

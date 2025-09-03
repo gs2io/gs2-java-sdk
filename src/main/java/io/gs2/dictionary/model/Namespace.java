@@ -32,6 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private TransactionSetting transactionSetting;
 	private ScriptSetting entryScript;
 	private String duplicateEntryScript;
 	private LogSetting logSetting;
@@ -66,6 +67,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public ScriptSetting getEntryScript() {
@@ -137,6 +148,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEntryScript(data.get("entryScript") == null || data.get("entryScript").isNull() ? null : ScriptSetting.fromJson(data.get("entryScript")))
             .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : data.get("duplicateEntryScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
@@ -151,6 +163,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("entryScript", getEntryScript() != null ? getEntryScript().toJson() : null);
                 put("duplicateEntryScript", getDuplicateEntryScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
@@ -173,6 +186,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.entryScript == null) ? 0 : this.entryScript.hashCode());
         result = prime * result + ((this.duplicateEntryScript == null) ? 0 : this.duplicateEntryScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
@@ -204,6 +218,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (transactionSetting == null) {
+			return other.transactionSetting == null;
+		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
 		if (entryScript == null) {

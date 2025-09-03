@@ -159,6 +159,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("overflowTriggerScript", request.getOverflowTriggerScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -402,6 +403,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("overflowTriggerScript", request.getOverflowTriggerScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());

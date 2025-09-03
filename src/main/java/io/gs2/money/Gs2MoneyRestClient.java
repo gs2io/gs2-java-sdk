@@ -159,6 +159,7 @@ public class Gs2MoneyRestClient extends AbstractGs2Client<Gs2MoneyRestClient> {
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("priority", request.getPriority());
                     put("shareFree", request.getShareFree());
                     put("currency", request.getCurrency());
@@ -410,6 +411,7 @@ public class Gs2MoneyRestClient extends AbstractGs2Client<Gs2MoneyRestClient> {
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("priority", request.getPriority());
                     put("appleKey", request.getAppleKey());
                     put("googleKey", request.getGoogleKey());

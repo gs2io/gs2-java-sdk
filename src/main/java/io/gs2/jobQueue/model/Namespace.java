@@ -32,6 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private TransactionSetting transactionSetting;
 	private Boolean enableAutoRun;
 	private NotificationSetting runNotification;
 	private NotificationSetting pushNotification;
@@ -67,6 +68,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public Boolean getEnableAutoRun() {
@@ -148,6 +159,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnableAutoRun(data.get("enableAutoRun") == null || data.get("enableAutoRun").isNull() ? null : data.get("enableAutoRun").booleanValue())
             .withRunNotification(data.get("runNotification") == null || data.get("runNotification").isNull() ? null : NotificationSetting.fromJson(data.get("runNotification")))
             .withPushNotification(data.get("pushNotification") == null || data.get("pushNotification").isNull() ? null : NotificationSetting.fromJson(data.get("pushNotification")))
@@ -163,6 +175,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enableAutoRun", getEnableAutoRun());
                 put("runNotification", getRunNotification() != null ? getRunNotification().toJson() : null);
                 put("pushNotification", getPushNotification() != null ? getPushNotification().toJson() : null);
@@ -186,6 +199,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.enableAutoRun == null) ? 0 : this.enableAutoRun.hashCode());
         result = prime * result + ((this.runNotification == null) ? 0 : this.runNotification.hashCode());
         result = prime * result + ((this.pushNotification == null) ? 0 : this.pushNotification.hashCode());
@@ -218,6 +232,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (transactionSetting == null) {
+			return other.transactionSetting == null;
+		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
 		if (enableAutoRun == null) {

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.money2.model.*;
+import io.gs2.money2.model.TransactionSetting;
 import io.gs2.money2.model.AppleAppStoreSetting;
 import io.gs2.money2.model.GooglePlaySetting;
 import io.gs2.money2.model.FakeSetting;

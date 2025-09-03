@@ -159,6 +159,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("doneUploadScript", request.getDoneUploadScript() != null ? request.getDoneUploadScript().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -402,6 +403,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("doneUploadScript", request.getDoneUploadScript() != null ? request.getDoneUploadScript().toJson() : null);
                     put("contextStack", request.getContextStack());

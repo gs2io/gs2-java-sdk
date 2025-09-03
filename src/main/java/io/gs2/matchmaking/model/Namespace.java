@@ -32,6 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private TransactionSetting transactionSetting;
 	private Boolean enableRating;
 	private String enableDisconnectDetection;
 	private Integer disconnectDetectionTimeoutSeconds;
@@ -81,6 +82,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public Boolean getEnableRating() {
@@ -302,6 +313,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
             .withEnableDisconnectDetection(data.get("enableDisconnectDetection") == null || data.get("enableDisconnectDetection").isNull() ? null : data.get("enableDisconnectDetection").asText())
             .withDisconnectDetectionTimeoutSeconds(data.get("disconnectDetectionTimeoutSeconds") == null || data.get("disconnectDetectionTimeoutSeconds").isNull() ? null : data.get("disconnectDetectionTimeoutSeconds").intValue())
@@ -331,6 +343,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enableRating", getEnableRating());
                 put("enableDisconnectDetection", getEnableDisconnectDetection());
                 put("disconnectDetectionTimeoutSeconds", getDisconnectDetectionTimeoutSeconds());
@@ -368,6 +381,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.enableRating == null) ? 0 : this.enableRating.hashCode());
         result = prime * result + ((this.enableDisconnectDetection == null) ? 0 : this.enableDisconnectDetection.hashCode());
         result = prime * result + ((this.disconnectDetectionTimeoutSeconds == null) ? 0 : this.disconnectDetectionTimeoutSeconds.hashCode());
@@ -414,6 +428,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (transactionSetting == null) {
+			return other.transactionSetting == null;
+		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
 		if (enableRating == null) {

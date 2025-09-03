@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.money.model.TransactionSetting;
 import io.gs2.money.model.ScriptSetting;
 import io.gs2.money.model.LogSetting;
 
@@ -32,6 +33,7 @@ import io.gs2.money.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
+    private TransactionSetting transactionSetting;
     private String priority;
     private String appleKey;
     private String googleKey;
@@ -58,6 +60,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public String getPriority() {
@@ -148,6 +160,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withPriority(data.get("priority") == null || data.get("priority").isNull() ? null : data.get("priority").asText())
             .withAppleKey(data.get("appleKey") == null || data.get("appleKey").isNull() ? null : data.get("appleKey").asText())
             .withGoogleKey(data.get("googleKey") == null || data.get("googleKey").isNull() ? null : data.get("googleKey").asText())
@@ -163,6 +176,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("priority", getPriority());
                 put("appleKey", getAppleKey());
                 put("googleKey", getGoogleKey());

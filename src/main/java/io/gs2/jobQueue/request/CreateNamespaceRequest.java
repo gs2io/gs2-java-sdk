@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.jobQueue.model.TransactionSetting;
 import io.gs2.jobQueue.model.NotificationSetting;
 import io.gs2.jobQueue.model.LogSetting;
 
@@ -32,6 +33,7 @@ import io.gs2.jobQueue.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private Boolean enableAutoRun;
     private NotificationSetting pushNotification;
     private NotificationSetting runNotification;
@@ -54,6 +56,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public Boolean getEnableAutoRun() {
@@ -104,6 +116,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnableAutoRun(data.get("enableAutoRun") == null || data.get("enableAutoRun").isNull() ? null : data.get("enableAutoRun").booleanValue())
             .withPushNotification(data.get("pushNotification") == null || data.get("pushNotification").isNull() ? null : NotificationSetting.fromJson(data.get("pushNotification")))
             .withRunNotification(data.get("runNotification") == null || data.get("runNotification").isNull() ? null : NotificationSetting.fromJson(data.get("runNotification")))
@@ -115,6 +128,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enableAutoRun", getEnableAutoRun());
                 put("pushNotification", getPushNotification() != null ? getPushNotification().toJson() : null);
                 put("runNotification", getRunNotification() != null ? getRunNotification().toJson() : null);

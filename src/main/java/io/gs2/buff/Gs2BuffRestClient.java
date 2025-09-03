@@ -159,6 +159,7 @@ public class Gs2BuffRestClient extends AbstractGs2Client<Gs2BuffRestClient> {
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("applyBuffScript", request.getApplyBuffScript() != null ? request.getApplyBuffScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -402,6 +403,7 @@ public class Gs2BuffRestClient extends AbstractGs2Client<Gs2BuffRestClient> {
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("applyBuffScript", request.getApplyBuffScript() != null ? request.getApplyBuffScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());

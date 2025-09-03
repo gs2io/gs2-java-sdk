@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.friend.model.TransactionSetting;
 import io.gs2.friend.model.ScriptSetting;
 import io.gs2.friend.model.NotificationSetting;
 import io.gs2.friend.model.LogSetting;
@@ -33,6 +34,7 @@ import io.gs2.friend.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private ScriptSetting followScript;
     private ScriptSetting unfollowScript;
     private ScriptSetting sendRequestScript;
@@ -66,6 +68,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public ScriptSetting getFollowScript() {
@@ -226,6 +238,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withFollowScript(data.get("followScript") == null || data.get("followScript").isNull() ? null : ScriptSetting.fromJson(data.get("followScript")))
             .withUnfollowScript(data.get("unfollowScript") == null || data.get("unfollowScript").isNull() ? null : ScriptSetting.fromJson(data.get("unfollowScript")))
             .withSendRequestScript(data.get("sendRequestScript") == null || data.get("sendRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("sendRequestScript")))
@@ -248,6 +261,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("followScript", getFollowScript() != null ? getFollowScript().toJson() : null);
                 put("unfollowScript", getUnfollowScript() != null ? getUnfollowScript().toJson() : null);
                 put("sendRequestScript", getSendRequestScript() != null ? getSendRequestScript().toJson() : null);
