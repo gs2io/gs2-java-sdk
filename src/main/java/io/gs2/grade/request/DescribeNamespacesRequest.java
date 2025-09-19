@@ -28,8 +28,19 @@ import io.gs2.core.control.Gs2BasicRequest;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeNamespacesRequest extends Gs2BasicRequest<DescribeNamespacesRequest> {
+    private String namePrefix;
     private String pageToken;
     private Integer limit;
+	public String getNamePrefix() {
+		return namePrefix;
+	}
+	public void setNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
+	}
+	public DescribeNamespacesRequest withNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
+		return this;
+	}
 	public String getPageToken() {
 		return pageToken;
 	}
@@ -56,6 +67,7 @@ public class DescribeNamespacesRequest extends Gs2BasicRequest<DescribeNamespace
             return null;
         }
         return new DescribeNamespacesRequest()
+            .withNamePrefix(data.get("namePrefix") == null || data.get("namePrefix").isNull() ? null : data.get("namePrefix").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -63,6 +75,7 @@ public class DescribeNamespacesRequest extends Gs2BasicRequest<DescribeNamespace
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namePrefix", getNamePrefix());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

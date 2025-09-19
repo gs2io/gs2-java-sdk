@@ -29,7 +29,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetAuthorizationUrlRequest extends Gs2BasicRequest<GetAuthorizationUrlRequest> {
     private String namespaceName;
-    private String accessToken;
     private Integer type;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -39,16 +38,6 @@ public class GetAuthorizationUrlRequest extends Gs2BasicRequest<GetAuthorization
 	}
 	public GetAuthorizationUrlRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getAccessToken() {
-		return accessToken;
-	}
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-	public GetAuthorizationUrlRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
 		return this;
 	}
 	public Integer getType() {
@@ -68,7 +57,6 @@ public class GetAuthorizationUrlRequest extends Gs2BasicRequest<GetAuthorization
         }
         return new GetAuthorizationUrlRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue());
     }
 
@@ -76,7 +64,6 @@ public class GetAuthorizationUrlRequest extends Gs2BasicRequest<GetAuthorization
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("accessToken", getAccessToken());
                 put("type", getType());
             }}
         );

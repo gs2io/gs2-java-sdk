@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeQuestModelMastersRequest extends Gs2BasicRequest<DescribeQuestModelMastersRequest> {
     private String namespaceName;
     private String questGroupName;
+    private String namePrefix;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -50,6 +51,16 @@ public class DescribeQuestModelMastersRequest extends Gs2BasicRequest<DescribeQu
 	}
 	public DescribeQuestModelMastersRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
+		return this;
+	}
+	public String getNamePrefix() {
+		return namePrefix;
+	}
+	public void setNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
+	}
+	public DescribeQuestModelMastersRequest withNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
 		return this;
 	}
 	public String getPageToken() {
@@ -80,6 +91,7 @@ public class DescribeQuestModelMastersRequest extends Gs2BasicRequest<DescribeQu
         return new DescribeQuestModelMastersRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText())
+            .withNamePrefix(data.get("namePrefix") == null || data.get("namePrefix").isNull() ? null : data.get("namePrefix").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -89,6 +101,7 @@ public class DescribeQuestModelMastersRequest extends Gs2BasicRequest<DescribeQu
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("questGroupName", getQuestGroupName());
+                put("namePrefix", getNamePrefix());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

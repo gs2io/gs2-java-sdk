@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeInventoryModelMastersRequest extends Gs2BasicRequest<DescribeInventoryModelMastersRequest> {
     private String namespaceName;
+    private String namePrefix;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -39,6 +40,16 @@ public class DescribeInventoryModelMastersRequest extends Gs2BasicRequest<Descri
 	}
 	public DescribeInventoryModelMastersRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getNamePrefix() {
+		return namePrefix;
+	}
+	public void setNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
+	}
+	public DescribeInventoryModelMastersRequest withNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
 		return this;
 	}
 	public String getPageToken() {
@@ -68,6 +79,7 @@ public class DescribeInventoryModelMastersRequest extends Gs2BasicRequest<Descri
         }
         return new DescribeInventoryModelMastersRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withNamePrefix(data.get("namePrefix") == null || data.get("namePrefix").isNull() ? null : data.get("namePrefix").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -76,6 +88,7 @@ public class DescribeInventoryModelMastersRequest extends Gs2BasicRequest<Descri
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
+                put("namePrefix", getNamePrefix());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

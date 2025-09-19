@@ -75,6 +75,9 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -641,6 +644,9 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));

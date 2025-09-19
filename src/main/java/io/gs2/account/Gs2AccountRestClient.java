@@ -75,6 +75,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -3342,9 +3345,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
 
             builder

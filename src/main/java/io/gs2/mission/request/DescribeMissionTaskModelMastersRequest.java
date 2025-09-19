@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMissionTaskModelMastersRequest extends Gs2BasicRequest<DescribeMissionTaskModelMastersRequest> {
     private String namespaceName;
+    private String namePrefix;
     private String missionGroupName;
     private String pageToken;
     private Integer limit;
@@ -40,6 +41,16 @@ public class DescribeMissionTaskModelMastersRequest extends Gs2BasicRequest<Desc
 	}
 	public DescribeMissionTaskModelMastersRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getNamePrefix() {
+		return namePrefix;
+	}
+	public void setNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
+	}
+	public DescribeMissionTaskModelMastersRequest withNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
 		return this;
 	}
 	public String getMissionGroupName() {
@@ -79,6 +90,7 @@ public class DescribeMissionTaskModelMastersRequest extends Gs2BasicRequest<Desc
         }
         return new DescribeMissionTaskModelMastersRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withNamePrefix(data.get("namePrefix") == null || data.get("namePrefix").isNull() ? null : data.get("namePrefix").asText())
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -88,6 +100,7 @@ public class DescribeMissionTaskModelMastersRequest extends Gs2BasicRequest<Desc
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
+                put("namePrefix", getNamePrefix());
                 put("missionGroupName", getMissionGroupName());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
