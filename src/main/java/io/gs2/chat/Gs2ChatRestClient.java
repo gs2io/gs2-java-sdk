@@ -2812,8 +2812,8 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
-            if (this.request.getNamePrefix() != null) {
-                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            if (this.request.getRoomNamePrefix() != null) {
+                queryStrings.add("roomNamePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getRoomNamePrefix()))));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -2905,8 +2905,8 @@ public class Gs2ChatRestClient extends AbstractGs2Client<Gs2ChatRestClient> {
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
-            if (this.request.getNamePrefix() != null) {
-                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            if (this.request.getRoomNamePrefix() != null) {
+                queryStrings.add("roomNamePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getRoomNamePrefix()))));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));

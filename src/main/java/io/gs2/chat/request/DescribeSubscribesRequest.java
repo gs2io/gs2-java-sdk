@@ -29,7 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeSubscribesRequest extends Gs2BasicRequest<DescribeSubscribesRequest> {
     private String namespaceName;
-    private String namePrefix;
+    private String roomNamePrefix;
     private String accessToken;
     private String pageToken;
     private Integer limit;
@@ -43,14 +43,14 @@ public class DescribeSubscribesRequest extends Gs2BasicRequest<DescribeSubscribe
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getNamePrefix() {
-		return namePrefix;
+	public String getRoomNamePrefix() {
+		return roomNamePrefix;
 	}
-	public void setNamePrefix(String namePrefix) {
-		this.namePrefix = namePrefix;
+	public void setRoomNamePrefix(String roomNamePrefix) {
+		this.roomNamePrefix = roomNamePrefix;
 	}
-	public DescribeSubscribesRequest withNamePrefix(String namePrefix) {
-		this.namePrefix = namePrefix;
+	public DescribeSubscribesRequest withRoomNamePrefix(String roomNamePrefix) {
+		this.roomNamePrefix = roomNamePrefix;
 		return this;
 	}
 	public String getAccessToken() {
@@ -90,7 +90,7 @@ public class DescribeSubscribesRequest extends Gs2BasicRequest<DescribeSubscribe
         }
         return new DescribeSubscribesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withNamePrefix(data.get("namePrefix") == null || data.get("namePrefix").isNull() ? null : data.get("namePrefix").asText())
+            .withRoomNamePrefix(data.get("roomNamePrefix") == null || data.get("roomNamePrefix").isNull() ? null : data.get("roomNamePrefix").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -100,7 +100,7 @@ public class DescribeSubscribesRequest extends Gs2BasicRequest<DescribeSubscribe
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("namePrefix", getNamePrefix());
+                put("roomNamePrefix", getRoomNamePrefix());
                 put("accessToken", getAccessToken());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
