@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 package io.gs2.distributor.request;
@@ -24,6 +26,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.core.model.VerifyActionResult;
+import io.gs2.core.model.ConsumeActionResult;
+import io.gs2.core.model.AcquireActionResult;
+import io.gs2.core.model.TransactionResult;
+import io.gs2.core.model.ResultMetadata;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)

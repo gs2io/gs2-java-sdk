@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class TransactionSetting implements IModel, Serializable {
 	private Boolean enableAtomicCommit;
 	private Boolean transactionUseDistributor;
+	private Boolean commitScriptResultInUseDistributor;
 	private Boolean acquireActionUseJobQueue;
 	private String distributorNamespaceId;
 	private String queueNamespaceId;
@@ -52,6 +53,16 @@ public class TransactionSetting implements IModel, Serializable {
 	}
 	public TransactionSetting withTransactionUseDistributor(Boolean transactionUseDistributor) {
 		this.transactionUseDistributor = transactionUseDistributor;
+		return this;
+	}
+	public Boolean getCommitScriptResultInUseDistributor() {
+		return commitScriptResultInUseDistributor;
+	}
+	public void setCommitScriptResultInUseDistributor(Boolean commitScriptResultInUseDistributor) {
+		this.commitScriptResultInUseDistributor = commitScriptResultInUseDistributor;
+	}
+	public TransactionSetting withCommitScriptResultInUseDistributor(Boolean commitScriptResultInUseDistributor) {
+		this.commitScriptResultInUseDistributor = commitScriptResultInUseDistributor;
 		return this;
 	}
 	public Boolean getAcquireActionUseJobQueue() {
@@ -92,6 +103,7 @@ public class TransactionSetting implements IModel, Serializable {
         return new TransactionSetting()
             .withEnableAtomicCommit(data.get("enableAtomicCommit") == null || data.get("enableAtomicCommit").isNull() ? null : data.get("enableAtomicCommit").booleanValue())
             .withTransactionUseDistributor(data.get("transactionUseDistributor") == null || data.get("transactionUseDistributor").isNull() ? null : data.get("transactionUseDistributor").booleanValue())
+            .withCommitScriptResultInUseDistributor(data.get("commitScriptResultInUseDistributor") == null || data.get("commitScriptResultInUseDistributor").isNull() ? null : data.get("commitScriptResultInUseDistributor").booleanValue())
             .withAcquireActionUseJobQueue(data.get("acquireActionUseJobQueue") == null || data.get("acquireActionUseJobQueue").isNull() ? null : data.get("acquireActionUseJobQueue").booleanValue())
             .withDistributorNamespaceId(data.get("distributorNamespaceId") == null || data.get("distributorNamespaceId").isNull() ? null : data.get("distributorNamespaceId").asText())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText());
@@ -102,6 +114,7 @@ public class TransactionSetting implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("enableAtomicCommit", getEnableAtomicCommit());
                 put("transactionUseDistributor", getTransactionUseDistributor());
+                put("commitScriptResultInUseDistributor", getCommitScriptResultInUseDistributor());
                 put("acquireActionUseJobQueue", getAcquireActionUseJobQueue());
                 put("distributorNamespaceId", getDistributorNamespaceId());
                 put("queueNamespaceId", getQueueNamespaceId());
@@ -115,6 +128,7 @@ public class TransactionSetting implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.enableAtomicCommit == null) ? 0 : this.enableAtomicCommit.hashCode());
         result = prime * result + ((this.transactionUseDistributor == null) ? 0 : this.transactionUseDistributor.hashCode());
+        result = prime * result + ((this.commitScriptResultInUseDistributor == null) ? 0 : this.commitScriptResultInUseDistributor.hashCode());
         result = prime * result + ((this.acquireActionUseJobQueue == null) ? 0 : this.acquireActionUseJobQueue.hashCode());
         result = prime * result + ((this.distributorNamespaceId == null) ? 0 : this.distributorNamespaceId.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
@@ -138,6 +152,11 @@ public class TransactionSetting implements IModel, Serializable {
 		if (transactionUseDistributor == null) {
 			return other.transactionUseDistributor == null;
 		} else if (!transactionUseDistributor.equals(other.transactionUseDistributor)) {
+			return false;
+		}
+		if (commitScriptResultInUseDistributor == null) {
+			return other.commitScriptResultInUseDistributor == null;
+		} else if (!commitScriptResultInUseDistributor.equals(other.commitScriptResultInUseDistributor)) {
 			return false;
 		}
 		if (acquireActionUseJobQueue == null) {
