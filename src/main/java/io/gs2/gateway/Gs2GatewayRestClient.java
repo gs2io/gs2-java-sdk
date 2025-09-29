@@ -1410,6 +1410,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("allowConcurrentAccess", request.getAllowConcurrentAccess());
+                    put("sessionId", request.getSessionId());
                     put("force", request.getForce());
                     put("contextStack", request.getContextStack());
                 }}
@@ -1499,6 +1500,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("allowConcurrentAccess", request.getAllowConcurrentAccess());
+                    put("sessionId", request.getSessionId());
                     put("force", request.getForce());
                     put("contextStack", request.getContextStack());
                 }}

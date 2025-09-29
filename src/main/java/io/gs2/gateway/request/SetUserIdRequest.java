@@ -31,6 +31,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
     private String namespaceName;
     private String accessToken;
     private Boolean allowConcurrentAccess;
+    private String sessionId;
     private Boolean force;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -61,6 +62,16 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
 	}
 	public SetUserIdRequest withAllowConcurrentAccess(Boolean allowConcurrentAccess) {
 		this.allowConcurrentAccess = allowConcurrentAccess;
+		return this;
+	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public SetUserIdRequest withSessionId(String sessionId) {
+		this.sessionId = sessionId;
 		return this;
 	}
 	public Boolean getForce() {
@@ -95,6 +106,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue())
+            .withSessionId(data.get("sessionId") == null || data.get("sessionId").isNull() ? null : data.get("sessionId").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue());
     }
 
@@ -104,6 +116,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("allowConcurrentAccess", getAllowConcurrentAccess());
+                put("sessionId", getSessionId());
                 put("force", getForce());
             }}
         );

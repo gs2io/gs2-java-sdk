@@ -33,6 +33,7 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
 	private String connectionId;
 	private String namespaceName;
 	private String userId;
+	private String sessionId;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -76,6 +77,16 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
 		this.userId = userId;
 		return this;
 	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public WebSocketSession withSessionId(String sessionId) {
+		this.sessionId = sessionId;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -116,6 +127,7 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
             .withConnectionId(data.get("connectionId") == null || data.get("connectionId").isNull() ? null : data.get("connectionId").asText())
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSessionId(data.get("sessionId") == null || data.get("sessionId").isNull() ? null : data.get("sessionId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -128,6 +140,7 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
                 put("connectionId", getConnectionId());
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("sessionId", getSessionId());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -148,6 +161,7 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
         result = prime * result + ((this.connectionId == null) ? 0 : this.connectionId.hashCode());
         result = prime * result + ((this.namespaceName == null) ? 0 : this.namespaceName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.sessionId == null) ? 0 : this.sessionId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -181,6 +195,11 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
+			return false;
+		}
+		if (sessionId == null) {
+			return other.sessionId == null;
+		} else if (!sessionId.equals(other.sessionId)) {
 			return false;
 		}
 		if (createdAt == null) {

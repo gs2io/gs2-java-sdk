@@ -31,6 +31,7 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
     private String namespaceName;
     private String userId;
     private Boolean allowConcurrentAccess;
+    private String sessionId;
     private Boolean force;
     private String timeOffsetToken;
     private String duplicationAvoider;
@@ -62,6 +63,16 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
 	}
 	public SetUserIdByUserIdRequest withAllowConcurrentAccess(Boolean allowConcurrentAccess) {
 		this.allowConcurrentAccess = allowConcurrentAccess;
+		return this;
+	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public SetUserIdByUserIdRequest withSessionId(String sessionId) {
+		this.sessionId = sessionId;
 		return this;
 	}
 	public Boolean getForce() {
@@ -106,6 +117,7 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue())
+            .withSessionId(data.get("sessionId") == null || data.get("sessionId").isNull() ? null : data.get("sessionId").asText())
             .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
@@ -116,6 +128,7 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("allowConcurrentAccess", getAllowConcurrentAccess());
+                put("sessionId", getSessionId());
                 put("force", getForce());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
