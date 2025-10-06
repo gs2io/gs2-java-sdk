@@ -167,6 +167,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
+                    put("changeMemberNotificationIgnoreChangeMetadata", request.getChangeMemberNotificationIgnoreChangeMetadata());
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
@@ -423,6 +424,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
+                    put("changeMemberNotificationIgnoreChangeMetadata", request.getChangeMemberNotificationIgnoreChangeMetadata());
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
                     put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);

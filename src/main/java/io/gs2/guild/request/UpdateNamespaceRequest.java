@@ -39,6 +39,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private NotificationSetting joinNotification;
     private NotificationSetting leaveNotification;
     private NotificationSetting changeMemberNotification;
+    private Boolean changeMemberNotificationIgnoreChangeMetadata;
     private NotificationSetting receiveRequestNotification;
     private NotificationSetting removeRequestNotification;
     private ScriptSetting createGuildScript;
@@ -117,6 +118,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withChangeMemberNotification(NotificationSetting changeMemberNotification) {
 		this.changeMemberNotification = changeMemberNotification;
+		return this;
+	}
+	public Boolean getChangeMemberNotificationIgnoreChangeMetadata() {
+		return changeMemberNotificationIgnoreChangeMetadata;
+	}
+	public void setChangeMemberNotificationIgnoreChangeMetadata(Boolean changeMemberNotificationIgnoreChangeMetadata) {
+		this.changeMemberNotificationIgnoreChangeMetadata = changeMemberNotificationIgnoreChangeMetadata;
+	}
+	public UpdateNamespaceRequest withChangeMemberNotificationIgnoreChangeMetadata(Boolean changeMemberNotificationIgnoreChangeMetadata) {
+		this.changeMemberNotificationIgnoreChangeMetadata = changeMemberNotificationIgnoreChangeMetadata;
 		return this;
 	}
 	public NotificationSetting getReceiveRequestNotification() {
@@ -232,6 +243,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withChangeMemberNotification(data.get("changeMemberNotification") == null || data.get("changeMemberNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeMemberNotification")))
+            .withChangeMemberNotificationIgnoreChangeMetadata(data.get("changeMemberNotificationIgnoreChangeMetadata") == null || data.get("changeMemberNotificationIgnoreChangeMetadata").isNull() ? null : data.get("changeMemberNotificationIgnoreChangeMetadata").booleanValue())
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
             .withRemoveRequestNotification(data.get("removeRequestNotification") == null || data.get("removeRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("removeRequestNotification")))
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
@@ -254,6 +266,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("changeMemberNotification", getChangeMemberNotification() != null ? getChangeMemberNotification().toJson() : null);
+                put("changeMemberNotificationIgnoreChangeMetadata", getChangeMemberNotificationIgnoreChangeMetadata());
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
                 put("removeRequestNotification", getRemoveRequestNotification() != null ? getRemoveRequestNotification().toJson() : null);
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);

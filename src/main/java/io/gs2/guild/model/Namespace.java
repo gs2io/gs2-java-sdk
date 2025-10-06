@@ -37,6 +37,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private NotificationSetting joinNotification;
 	private NotificationSetting leaveNotification;
 	private NotificationSetting changeMemberNotification;
+	private Boolean changeMemberNotificationIgnoreChangeMetadata;
 	private NotificationSetting receiveRequestNotification;
 	private NotificationSetting removeRequestNotification;
 	private ScriptSetting createGuildScript;
@@ -128,6 +129,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withChangeMemberNotification(NotificationSetting changeMemberNotification) {
 		this.changeMemberNotification = changeMemberNotification;
+		return this;
+	}
+	public Boolean getChangeMemberNotificationIgnoreChangeMetadata() {
+		return changeMemberNotificationIgnoreChangeMetadata;
+	}
+	public void setChangeMemberNotificationIgnoreChangeMetadata(Boolean changeMemberNotificationIgnoreChangeMetadata) {
+		this.changeMemberNotificationIgnoreChangeMetadata = changeMemberNotificationIgnoreChangeMetadata;
+	}
+	public Namespace withChangeMemberNotificationIgnoreChangeMetadata(Boolean changeMemberNotificationIgnoreChangeMetadata) {
+		this.changeMemberNotificationIgnoreChangeMetadata = changeMemberNotificationIgnoreChangeMetadata;
 		return this;
 	}
 	public NotificationSetting getReceiveRequestNotification() {
@@ -274,6 +285,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withChangeMemberNotification(data.get("changeMemberNotification") == null || data.get("changeMemberNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeMemberNotification")))
+            .withChangeMemberNotificationIgnoreChangeMetadata(data.get("changeMemberNotificationIgnoreChangeMetadata") == null || data.get("changeMemberNotificationIgnoreChangeMetadata").isNull() ? null : data.get("changeMemberNotificationIgnoreChangeMetadata").booleanValue())
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
             .withRemoveRequestNotification(data.get("removeRequestNotification") == null || data.get("removeRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("removeRequestNotification")))
             .withCreateGuildScript(data.get("createGuildScript") == null || data.get("createGuildScript").isNull() ? null : ScriptSetting.fromJson(data.get("createGuildScript")))
@@ -300,6 +312,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("changeMemberNotification", getChangeMemberNotification() != null ? getChangeMemberNotification().toJson() : null);
+                put("changeMemberNotificationIgnoreChangeMetadata", getChangeMemberNotificationIgnoreChangeMetadata());
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
                 put("removeRequestNotification", getRemoveRequestNotification() != null ? getRemoveRequestNotification().toJson() : null);
                 put("createGuildScript", getCreateGuildScript() != null ? getCreateGuildScript().toJson() : null);
@@ -334,6 +347,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.joinNotification == null) ? 0 : this.joinNotification.hashCode());
         result = prime * result + ((this.leaveNotification == null) ? 0 : this.leaveNotification.hashCode());
         result = prime * result + ((this.changeMemberNotification == null) ? 0 : this.changeMemberNotification.hashCode());
+        result = prime * result + ((this.changeMemberNotificationIgnoreChangeMetadata == null) ? 0 : this.changeMemberNotificationIgnoreChangeMetadata.hashCode());
         result = prime * result + ((this.receiveRequestNotification == null) ? 0 : this.receiveRequestNotification.hashCode());
         result = prime * result + ((this.removeRequestNotification == null) ? 0 : this.removeRequestNotification.hashCode());
         result = prime * result + ((this.createGuildScript == null) ? 0 : this.createGuildScript.hashCode());
@@ -397,6 +411,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (changeMemberNotification == null) {
 			return other.changeMemberNotification == null;
 		} else if (!changeMemberNotification.equals(other.changeMemberNotification)) {
+			return false;
+		}
+		if (changeMemberNotificationIgnoreChangeMetadata == null) {
+			return other.changeMemberNotificationIgnoreChangeMetadata == null;
+		} else if (!changeMemberNotificationIgnoreChangeMetadata.equals(other.changeMemberNotificationIgnoreChangeMetadata)) {
 			return false;
 		}
 		if (receiveRequestNotification == null) {
