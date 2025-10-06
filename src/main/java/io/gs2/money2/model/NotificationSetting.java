@@ -32,6 +32,7 @@ public class NotificationSetting implements IModel, Serializable {
 	private String gatewayNamespaceId;
 	private Boolean enableTransferMobileNotification;
 	private String sound;
+	private String enable;
 	public String getGatewayNamespaceId() {
 		return gatewayNamespaceId;
 	}
@@ -62,6 +63,16 @@ public class NotificationSetting implements IModel, Serializable {
 		this.sound = sound;
 		return this;
 	}
+	public String getEnable() {
+		return enable;
+	}
+	public void setEnable(String enable) {
+		this.enable = enable;
+	}
+	public NotificationSetting withEnable(String enable) {
+		this.enable = enable;
+		return this;
+	}
 
     public static NotificationSetting fromJson(JsonNode data) {
         if (data == null) {
@@ -70,7 +81,8 @@ public class NotificationSetting implements IModel, Serializable {
         return new NotificationSetting()
             .withGatewayNamespaceId(data.get("gatewayNamespaceId") == null || data.get("gatewayNamespaceId").isNull() ? null : data.get("gatewayNamespaceId").asText())
             .withEnableTransferMobileNotification(data.get("enableTransferMobileNotification") == null || data.get("enableTransferMobileNotification").isNull() ? null : data.get("enableTransferMobileNotification").booleanValue())
-            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText());
+            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText())
+            .withEnable(data.get("enable") == null || data.get("enable").isNull() ? null : data.get("enable").asText());
     }
 
     public JsonNode toJson() {
@@ -79,6 +91,7 @@ public class NotificationSetting implements IModel, Serializable {
                 put("gatewayNamespaceId", getGatewayNamespaceId());
                 put("enableTransferMobileNotification", getEnableTransferMobileNotification());
                 put("sound", getSound());
+                put("enable", getEnable());
             }}
         );
     }
@@ -90,6 +103,7 @@ public class NotificationSetting implements IModel, Serializable {
         result = prime * result + ((this.gatewayNamespaceId == null) ? 0 : this.gatewayNamespaceId.hashCode());
         result = prime * result + ((this.enableTransferMobileNotification == null) ? 0 : this.enableTransferMobileNotification.hashCode());
         result = prime * result + ((this.sound == null) ? 0 : this.sound.hashCode());
+        result = prime * result + ((this.enable == null) ? 0 : this.enable.hashCode());
 		return result;
 	}
 
@@ -115,6 +129,11 @@ public class NotificationSetting implements IModel, Serializable {
 		if (sound == null) {
 			return other.sound == null;
 		} else if (!sound.equals(other.sound)) {
+			return false;
+		}
+		if (enable == null) {
+			return other.enable == null;
+		} else if (!enable.equals(other.enable)) {
 			return false;
 		}
 		return true;
