@@ -25,21 +25,57 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.VerifyActionResult;
+import io.gs2.distributor.model.ConsumeActionResult;
+import io.gs2.distributor.model.AcquireActionResult;
+import io.gs2.distributor.model.TransactionResult;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IfExpressionByUserIdResult implements IResult, Serializable {
+    private TransactionResult item;
+    private Boolean expressionResult;
+
+	public TransactionResult getItem() {
+		return item;
+	}
+
+	public void setItem(TransactionResult item) {
+		this.item = item;
+	}
+
+	public IfExpressionByUserIdResult withItem(TransactionResult item) {
+		this.item = item;
+		return this;
+	}
+
+	public Boolean getExpressionResult() {
+		return expressionResult;
+	}
+
+	public void setExpressionResult(Boolean expressionResult) {
+		this.expressionResult = expressionResult;
+	}
+
+	public IfExpressionByUserIdResult withExpressionResult(Boolean expressionResult) {
+		this.expressionResult = expressionResult;
+		return this;
+	}
 
     public static IfExpressionByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new IfExpressionByUserIdResult();
+        return new IfExpressionByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : TransactionResult.fromJson(data.get("item")))
+            .withExpressionResult(data.get("expressionResult") == null || data.get("expressionResult").isNull() ? null : data.get("expressionResult").booleanValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("expressionResult", getExpressionResult());
             }}
         );
     }
