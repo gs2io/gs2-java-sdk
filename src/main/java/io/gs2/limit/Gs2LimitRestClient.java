@@ -163,6 +163,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("countUpScript", request.getCountUpScript() != null ? request.getCountUpScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -406,6 +407,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("countUpScript", request.getCountUpScript() != null ? request.getCountUpScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
