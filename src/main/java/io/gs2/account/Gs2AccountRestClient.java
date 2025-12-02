@@ -4028,6 +4028,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getDontResolveDataOwner() != null) {
+                queryStrings.add("dontResolveDataOwner=" + String.valueOf(this.request.getDontResolveDataOwner()));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder

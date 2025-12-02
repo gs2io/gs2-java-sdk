@@ -32,6 +32,7 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
     private String userId;
     private Integer type;
     private String userIdentifier;
+    private Boolean dontResolveDataOwner;
     private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
 		this.userIdentifier = userIdentifier;
 		return this;
 	}
+	public Boolean getDontResolveDataOwner() {
+		return dontResolveDataOwner;
+	}
+	public void setDontResolveDataOwner(Boolean dontResolveDataOwner) {
+		this.dontResolveDataOwner = dontResolveDataOwner;
+	}
+	public FindPlatformIdByUserIdRequest withDontResolveDataOwner(Boolean dontResolveDataOwner) {
+		this.dontResolveDataOwner = dontResolveDataOwner;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -93,6 +104,7 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText())
+            .withDontResolveDataOwner(data.get("dontResolveDataOwner") == null || data.get("dontResolveDataOwner").isNull() ? null : data.get("dontResolveDataOwner").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -103,6 +115,7 @@ public class FindPlatformIdByUserIdRequest extends Gs2BasicRequest<FindPlatformI
                 put("userId", getUserId());
                 put("type", getType());
                 put("userIdentifier", getUserIdentifier());
+                put("dontResolveDataOwner", getDontResolveDataOwner());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
