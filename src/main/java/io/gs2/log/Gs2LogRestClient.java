@@ -2212,4 +2212,1633 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribeFacetModelsTask extends Gs2RestSessionTask<DescribeFacetModelsResult> {
+        private DescribeFacetModelsRequest request;
+
+        public DescribeFacetModelsTask(
+            DescribeFacetModelsRequest request,
+            AsyncAction<AsyncResult<DescribeFacetModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeFacetModelsResult parse(JsonNode data) {
+            return DescribeFacetModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/facet";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeFacetModelsAsync(
+            DescribeFacetModelsRequest request,
+            AsyncAction<AsyncResult<DescribeFacetModelsResult>> callback
+    ) {
+        DescribeFacetModelsTask task = new DescribeFacetModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeFacetModelsResult describeFacetModels(
+            DescribeFacetModelsRequest request
+    ) {
+        final AsyncResult<DescribeFacetModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeFacetModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateFacetModelTask extends Gs2RestSessionTask<CreateFacetModelResult> {
+        private CreateFacetModelRequest request;
+
+        public CreateFacetModelTask(
+            CreateFacetModelRequest request,
+            AsyncAction<AsyncResult<CreateFacetModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateFacetModelResult parse(JsonNode data) {
+            return CreateFacetModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/facet";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("field", request.getField());
+                    put("type", request.getType());
+                    put("displayName", request.getDisplayName());
+                    put("order", request.getOrder());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createFacetModelAsync(
+            CreateFacetModelRequest request,
+            AsyncAction<AsyncResult<CreateFacetModelResult>> callback
+    ) {
+        CreateFacetModelTask task = new CreateFacetModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateFacetModelResult createFacetModel(
+            CreateFacetModelRequest request
+    ) {
+        final AsyncResult<CreateFacetModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createFacetModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetFacetModelTask extends Gs2RestSessionTask<GetFacetModelResult> {
+        private GetFacetModelRequest request;
+
+        public GetFacetModelTask(
+            GetFacetModelRequest request,
+            AsyncAction<AsyncResult<GetFacetModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetFacetModelResult parse(JsonNode data) {
+            return GetFacetModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/facet/{field}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{field}", this.request.getField() == null || this.request.getField().length() == 0 ? "null" : String.valueOf(this.request.getField()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getFacetModelAsync(
+            GetFacetModelRequest request,
+            AsyncAction<AsyncResult<GetFacetModelResult>> callback
+    ) {
+        GetFacetModelTask task = new GetFacetModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetFacetModelResult getFacetModel(
+            GetFacetModelRequest request
+    ) {
+        final AsyncResult<GetFacetModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getFacetModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateFacetModelTask extends Gs2RestSessionTask<UpdateFacetModelResult> {
+        private UpdateFacetModelRequest request;
+
+        public UpdateFacetModelTask(
+            UpdateFacetModelRequest request,
+            AsyncAction<AsyncResult<UpdateFacetModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateFacetModelResult parse(JsonNode data) {
+            return UpdateFacetModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/facet/{field}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{field}", this.request.getField() == null || this.request.getField().length() == 0 ? "null" : String.valueOf(this.request.getField()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("displayName", request.getDisplayName());
+                    put("order", request.getOrder());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateFacetModelAsync(
+            UpdateFacetModelRequest request,
+            AsyncAction<AsyncResult<UpdateFacetModelResult>> callback
+    ) {
+        UpdateFacetModelTask task = new UpdateFacetModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateFacetModelResult updateFacetModel(
+            UpdateFacetModelRequest request
+    ) {
+        final AsyncResult<UpdateFacetModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateFacetModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteFacetModelTask extends Gs2RestSessionTask<DeleteFacetModelResult> {
+        private DeleteFacetModelRequest request;
+
+        public DeleteFacetModelTask(
+            DeleteFacetModelRequest request,
+            AsyncAction<AsyncResult<DeleteFacetModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteFacetModelResult parse(JsonNode data) {
+            return DeleteFacetModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/facet/{field}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{field}", this.request.getField() == null || this.request.getField().length() == 0 ? "null" : String.valueOf(this.request.getField()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteFacetModelAsync(
+            DeleteFacetModelRequest request,
+            AsyncAction<AsyncResult<DeleteFacetModelResult>> callback
+    ) {
+        DeleteFacetModelTask task = new DeleteFacetModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteFacetModelResult deleteFacetModel(
+            DeleteFacetModelRequest request
+    ) {
+        final AsyncResult<DeleteFacetModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteFacetModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeDashboardsTask extends Gs2RestSessionTask<DescribeDashboardsResult> {
+        private DescribeDashboardsRequest request;
+
+        public DescribeDashboardsTask(
+            DescribeDashboardsRequest request,
+            AsyncAction<AsyncResult<DescribeDashboardsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeDashboardsResult parse(JsonNode data) {
+            return DescribeDashboardsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeDashboardsAsync(
+            DescribeDashboardsRequest request,
+            AsyncAction<AsyncResult<DescribeDashboardsResult>> callback
+    ) {
+        DescribeDashboardsTask task = new DescribeDashboardsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeDashboardsResult describeDashboards(
+            DescribeDashboardsRequest request
+    ) {
+        final AsyncResult<DescribeDashboardsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeDashboardsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateDashboardTask extends Gs2RestSessionTask<CreateDashboardResult> {
+        private CreateDashboardRequest request;
+
+        public CreateDashboardTask(
+            CreateDashboardRequest request,
+            AsyncAction<AsyncResult<CreateDashboardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateDashboardResult parse(JsonNode data) {
+            return CreateDashboardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("displayName", request.getDisplayName());
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createDashboardAsync(
+            CreateDashboardRequest request,
+            AsyncAction<AsyncResult<CreateDashboardResult>> callback
+    ) {
+        CreateDashboardTask task = new CreateDashboardTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateDashboardResult createDashboard(
+            CreateDashboardRequest request
+    ) {
+        final AsyncResult<CreateDashboardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createDashboardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetDashboardTask extends Gs2RestSessionTask<GetDashboardResult> {
+        private GetDashboardRequest request;
+
+        public GetDashboardTask(
+            GetDashboardRequest request,
+            AsyncAction<AsyncResult<GetDashboardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetDashboardResult parse(JsonNode data) {
+            return GetDashboardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard/{dashboardName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dashboardName}", this.request.getDashboardName() == null || this.request.getDashboardName().length() == 0 ? "null" : String.valueOf(this.request.getDashboardName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getDashboardAsync(
+            GetDashboardRequest request,
+            AsyncAction<AsyncResult<GetDashboardResult>> callback
+    ) {
+        GetDashboardTask task = new GetDashboardTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetDashboardResult getDashboard(
+            GetDashboardRequest request
+    ) {
+        final AsyncResult<GetDashboardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getDashboardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateDashboardTask extends Gs2RestSessionTask<UpdateDashboardResult> {
+        private UpdateDashboardRequest request;
+
+        public UpdateDashboardTask(
+            UpdateDashboardRequest request,
+            AsyncAction<AsyncResult<UpdateDashboardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateDashboardResult parse(JsonNode data) {
+            return UpdateDashboardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard/{dashboardName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dashboardName}", this.request.getDashboardName() == null || this.request.getDashboardName().length() == 0 ? "null" : String.valueOf(this.request.getDashboardName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("displayName", request.getDisplayName());
+                    put("description", request.getDescription());
+                    put("payload", request.getPayload());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateDashboardAsync(
+            UpdateDashboardRequest request,
+            AsyncAction<AsyncResult<UpdateDashboardResult>> callback
+    ) {
+        UpdateDashboardTask task = new UpdateDashboardTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateDashboardResult updateDashboard(
+            UpdateDashboardRequest request
+    ) {
+        final AsyncResult<UpdateDashboardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateDashboardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DuplicateDashboardTask extends Gs2RestSessionTask<DuplicateDashboardResult> {
+        private DuplicateDashboardRequest request;
+
+        public DuplicateDashboardTask(
+            DuplicateDashboardRequest request,
+            AsyncAction<AsyncResult<DuplicateDashboardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DuplicateDashboardResult parse(JsonNode data) {
+            return DuplicateDashboardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard/{dashboardName}/copy";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dashboardName}", this.request.getDashboardName() == null || this.request.getDashboardName().length() == 0 ? "null" : String.valueOf(this.request.getDashboardName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void duplicateDashboardAsync(
+            DuplicateDashboardRequest request,
+            AsyncAction<AsyncResult<DuplicateDashboardResult>> callback
+    ) {
+        DuplicateDashboardTask task = new DuplicateDashboardTask(request, callback);
+        session.execute(task);
+    }
+
+    public DuplicateDashboardResult duplicateDashboard(
+            DuplicateDashboardRequest request
+    ) {
+        final AsyncResult<DuplicateDashboardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        duplicateDashboardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteDashboardTask extends Gs2RestSessionTask<DeleteDashboardResult> {
+        private DeleteDashboardRequest request;
+
+        public DeleteDashboardTask(
+            DeleteDashboardRequest request,
+            AsyncAction<AsyncResult<DeleteDashboardResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteDashboardResult parse(JsonNode data) {
+            return DeleteDashboardResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/dashboard/{dashboardName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dashboardName}", this.request.getDashboardName() == null || this.request.getDashboardName().length() == 0 ? "null" : String.valueOf(this.request.getDashboardName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteDashboardAsync(
+            DeleteDashboardRequest request,
+            AsyncAction<AsyncResult<DeleteDashboardResult>> callback
+    ) {
+        DeleteDashboardTask task = new DeleteDashboardTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteDashboardResult deleteDashboard(
+            DeleteDashboardRequest request
+    ) {
+        final AsyncResult<DeleteDashboardResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteDashboardAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class QueryLogTask extends Gs2RestSessionTask<QueryLogResult> {
+        private QueryLogRequest request;
+
+        public QueryLogTask(
+            QueryLogRequest request,
+            AsyncAction<AsyncResult<QueryLogResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryLogResult parse(JsonNode data) {
+            return QueryLogResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/v2/query";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("begin", request.getBegin());
+                    put("end", request.getEnd());
+                    put("query", request.getQuery());
+                    put("pageToken", request.getPageToken());
+                    put("limit", request.getLimit());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryLogAsync(
+            QueryLogRequest request,
+            AsyncAction<AsyncResult<QueryLogResult>> callback
+    ) {
+        QueryLogTask task = new QueryLogTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryLogResult queryLog(
+            QueryLogRequest request
+    ) {
+        final AsyncResult<QueryLogResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryLogAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetLogTask extends Gs2RestSessionTask<GetLogResult> {
+        private GetLogRequest request;
+
+        public GetLogTask(
+            GetLogRequest request,
+            AsyncAction<AsyncResult<GetLogResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetLogResult parse(JsonNode data) {
+            return GetLogResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/v2/query/{logRequestId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{logRequestId}", this.request.getLogRequestId() == null || this.request.getLogRequestId().length() == 0 ? "null" : String.valueOf(this.request.getLogRequestId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getLogAsync(
+            GetLogRequest request,
+            AsyncAction<AsyncResult<GetLogResult>> callback
+    ) {
+        GetLogTask task = new GetLogTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetLogResult getLog(
+            GetLogRequest request
+    ) {
+        final AsyncResult<GetLogResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getLogAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class QueryFacetsTask extends Gs2RestSessionTask<QueryFacetsResult> {
+        private QueryFacetsRequest request;
+
+        public QueryFacetsTask(
+            QueryFacetsRequest request,
+            AsyncAction<AsyncResult<QueryFacetsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryFacetsResult parse(JsonNode data) {
+            return QueryFacetsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/v2/query/facet";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("begin", request.getBegin());
+                    put("end", request.getEnd());
+                    put("query", request.getQuery());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryFacetsAsync(
+            QueryFacetsRequest request,
+            AsyncAction<AsyncResult<QueryFacetsResult>> callback
+    ) {
+        QueryFacetsTask task = new QueryFacetsTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryFacetsResult queryFacets(
+            QueryFacetsRequest request
+    ) {
+        final AsyncResult<QueryFacetsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryFacetsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class QueryTimeseriesTask extends Gs2RestSessionTask<QueryTimeseriesResult> {
+        private QueryTimeseriesRequest request;
+
+        public QueryTimeseriesTask(
+            QueryTimeseriesRequest request,
+            AsyncAction<AsyncResult<QueryTimeseriesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryTimeseriesResult parse(JsonNode data) {
+            return QueryTimeseriesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/v2/timeseries";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("begin", request.getBegin());
+                    put("end", request.getEnd());
+                    put("query", request.getQuery());
+                    put("groupBy", request.getGroupBy() == null ? null :
+                        request.getGroupBy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("aggregation", request.getAggregation() != null ? request.getAggregation().toJson() : null);
+                    put("interval", request.getInterval());
+                    put("seriesLimit", request.getSeriesLimit());
+                    put("pageToken", request.getPageToken());
+                    put("limit", request.getLimit());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryTimeseriesAsync(
+            QueryTimeseriesRequest request,
+            AsyncAction<AsyncResult<QueryTimeseriesResult>> callback
+    ) {
+        QueryTimeseriesTask task = new QueryTimeseriesTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryTimeseriesResult queryTimeseries(
+            QueryTimeseriesRequest request
+    ) {
+        final AsyncResult<QueryTimeseriesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryTimeseriesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetTraceTask extends Gs2RestSessionTask<GetTraceResult> {
+        private GetTraceRequest request;
+
+        public GetTraceTask(
+            GetTraceRequest request,
+            AsyncAction<AsyncResult<GetTraceResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetTraceResult parse(JsonNode data) {
+            return GetTraceResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/v2/trace/{traceId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{traceId}", this.request.getTraceId() == null || this.request.getTraceId().length() == 0 ? "null" : String.valueOf(this.request.getTraceId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getTraceAsync(
+            GetTraceRequest request,
+            AsyncAction<AsyncResult<GetTraceResult>> callback
+    ) {
+        GetTraceTask task = new GetTraceTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetTraceResult getTrace(
+            GetTraceRequest request
+    ) {
+        final AsyncResult<GetTraceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getTraceAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class QueryMetricsTimeseriesTask extends Gs2RestSessionTask<QueryMetricsTimeseriesResult> {
+        private QueryMetricsTimeseriesRequest request;
+
+        public QueryMetricsTimeseriesTask(
+            QueryMetricsTimeseriesRequest request,
+            AsyncAction<AsyncResult<QueryMetricsTimeseriesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryMetricsTimeseriesResult parse(JsonNode data) {
+            return QueryMetricsTimeseriesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/metrics/timeseries";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("begin", request.getBegin());
+                    put("end", request.getEnd());
+                    put("query", request.getQuery());
+                    put("groupBy", request.getGroupBy() == null ? null :
+                        request.getGroupBy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("aggregations", request.getAggregations() == null ? null :
+                        request.getAggregations().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("interval", request.getInterval());
+                    put("seriesLimit", request.getSeriesLimit());
+                    put("orderKey", request.getOrderKey());
+                    put("orderBy", request.getOrderBy());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryMetricsTimeseriesAsync(
+            QueryMetricsTimeseriesRequest request,
+            AsyncAction<AsyncResult<QueryMetricsTimeseriesResult>> callback
+    ) {
+        QueryMetricsTimeseriesTask task = new QueryMetricsTimeseriesTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryMetricsTimeseriesResult queryMetricsTimeseries(
+            QueryMetricsTimeseriesRequest request
+    ) {
+        final AsyncResult<QueryMetricsTimeseriesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryMetricsTimeseriesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeMetricsTask extends Gs2RestSessionTask<DescribeMetricsResult> {
+        private DescribeMetricsRequest request;
+
+        public DescribeMetricsTask(
+            DescribeMetricsRequest request,
+            AsyncAction<AsyncResult<DescribeMetricsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeMetricsResult parse(JsonNode data) {
+            return DescribeMetricsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/metrics";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getNamePrefix() != null) {
+                queryStrings.add("namePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getNamePrefix()))));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeMetricsAsync(
+            DescribeMetricsRequest request,
+            AsyncAction<AsyncResult<DescribeMetricsResult>> callback
+    ) {
+        DescribeMetricsTask task = new DescribeMetricsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeMetricsResult describeMetrics(
+            DescribeMetricsRequest request
+    ) {
+        final AsyncResult<DescribeMetricsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMetricsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeLabelValuesTask extends Gs2RestSessionTask<DescribeLabelValuesResult> {
+        private DescribeLabelValuesRequest request;
+
+        public DescribeLabelValuesTask(
+            DescribeLabelValuesRequest request,
+            AsyncAction<AsyncResult<DescribeLabelValuesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeLabelValuesResult parse(JsonNode data) {
+            return DescribeLabelValuesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/metrics/{metricName}/label";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{metricName}", this.request.getMetricName() == null || this.request.getMetricName().length() == 0 ? "null" : String.valueOf(this.request.getMetricName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getLabelNamePrefix() != null) {
+                queryStrings.add("labelNamePrefix=" + EncodingUtil.urlEncode((String.valueOf(this.request.getLabelNamePrefix()))));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeLabelValuesAsync(
+            DescribeLabelValuesRequest request,
+            AsyncAction<AsyncResult<DescribeLabelValuesResult>> callback
+    ) {
+        DescribeLabelValuesTask task = new DescribeLabelValuesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeLabelValuesResult describeLabelValues(
+            DescribeLabelValuesRequest request
+    ) {
+        final AsyncResult<DescribeLabelValuesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeLabelValuesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }

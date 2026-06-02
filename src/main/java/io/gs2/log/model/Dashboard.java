@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.key.model;
+package io.gs2.log.model;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,23 +28,22 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiKey> {
-	private String apiKeyId;
+public class Dashboard implements IModel, Serializable, Comparable<Dashboard> {
+	private String dashboardId;
 	private String name;
+	private String displayName;
 	private String description;
-	private String apiKey;
-	private String encryptionKeyName;
+	private String payload;
 	private Long createdAt;
 	private Long updatedAt;
-	private Long revision;
-	public String getApiKeyId() {
-		return apiKeyId;
+	public String getDashboardId() {
+		return dashboardId;
 	}
-	public void setApiKeyId(String apiKeyId) {
-		this.apiKeyId = apiKeyId;
+	public void setDashboardId(String dashboardId) {
+		this.dashboardId = dashboardId;
 	}
-	public GitHubApiKey withApiKeyId(String apiKeyId) {
-		this.apiKeyId = apiKeyId;
+	public Dashboard withDashboardId(String dashboardId) {
+		this.dashboardId = dashboardId;
 		return this;
 	}
 	public String getName() {
@@ -53,8 +52,18 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 	public void setName(String name) {
 		this.name = name;
 	}
-	public GitHubApiKey withName(String name) {
+	public Dashboard withName(String name) {
 		this.name = name;
+		return this;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+	public Dashboard withDisplayName(String displayName) {
+		this.displayName = displayName;
 		return this;
 	}
 	public String getDescription() {
@@ -63,28 +72,18 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public GitHubApiKey withDescription(String description) {
+	public Dashboard withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	public String getApiKey() {
-		return apiKey;
+	public String getPayload() {
+		return payload;
 	}
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
+	public void setPayload(String payload) {
+		this.payload = payload;
 	}
-	public GitHubApiKey withApiKey(String apiKey) {
-		this.apiKey = apiKey;
-		return this;
-	}
-	public String getEncryptionKeyName() {
-		return encryptionKeyName;
-	}
-	public void setEncryptionKeyName(String encryptionKeyName) {
-		this.encryptionKeyName = encryptionKeyName;
-	}
-	public GitHubApiKey withEncryptionKeyName(String encryptionKeyName) {
-		this.encryptionKeyName = encryptionKeyName;
+	public Dashboard withPayload(String payload) {
+		this.payload = payload;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -93,7 +92,7 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-	public GitHubApiKey withCreatedAt(Long createdAt) {
+	public Dashboard withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
@@ -103,68 +102,55 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public GitHubApiKey withUpdatedAt(Long updatedAt) {
+	public Dashboard withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
-	public Long getRevision() {
-		return revision;
-	}
-	public void setRevision(Long revision) {
-		this.revision = revision;
-	}
-	public GitHubApiKey withRevision(Long revision) {
-		this.revision = revision;
-		return this;
-	}
 
-    public static GitHubApiKey fromJson(JsonNode data) {
+    public static Dashboard fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GitHubApiKey()
-            .withApiKeyId(data.get("apiKeyId") == null || data.get("apiKeyId").isNull() ? null : data.get("apiKeyId").asText())
+        return new Dashboard()
+            .withDashboardId(data.get("dashboardId") == null || data.get("dashboardId").isNull() ? null : data.get("dashboardId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDisplayName(data.get("displayName") == null || data.get("displayName").isNull() ? null : data.get("displayName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withApiKey(data.get("apiKey") == null || data.get("apiKey").isNull() ? null : data.get("apiKey").asText())
-            .withEncryptionKeyName(data.get("encryptionKeyName") == null || data.get("encryptionKeyName").isNull() ? null : data.get("encryptionKeyName").asText())
+            .withPayload(data.get("payload") == null || data.get("payload").isNull() ? null : data.get("payload").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
-            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("apiKeyId", getApiKeyId());
+                put("dashboardId", getDashboardId());
                 put("name", getName());
+                put("displayName", getDisplayName());
                 put("description", getDescription());
-                put("apiKey", getApiKey());
-                put("encryptionKeyName", getEncryptionKeyName());
+                put("payload", getPayload());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
-                put("revision", getRevision());
             }}
         );
     }
 
 	@Override
-	public int compareTo(GitHubApiKey o) {
-		return apiKeyId.compareTo(o.apiKeyId);
+	public int compareTo(Dashboard o) {
+		return dashboardId.compareTo(o.dashboardId);
 	}
 
 	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.apiKeyId == null) ? 0 : this.apiKeyId.hashCode());
+        result = prime * result + ((this.dashboardId == null) ? 0 : this.dashboardId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + ((this.displayName == null) ? 0 : this.displayName.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.apiKey == null) ? 0 : this.apiKey.hashCode());
-        result = prime * result + ((this.encryptionKeyName == null) ? 0 : this.encryptionKeyName.hashCode());
+        result = prime * result + ((this.payload == null) ? 0 : this.payload.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -176,10 +162,10 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		GitHubApiKey other = (GitHubApiKey) o;
-		if (apiKeyId == null) {
-			return other.apiKeyId == null;
-		} else if (!apiKeyId.equals(other.apiKeyId)) {
+		Dashboard other = (Dashboard) o;
+		if (dashboardId == null) {
+			return other.dashboardId == null;
+		} else if (!dashboardId.equals(other.dashboardId)) {
 			return false;
 		}
 		if (name == null) {
@@ -187,19 +173,19 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
+		if (displayName == null) {
+			return other.displayName == null;
+		} else if (!displayName.equals(other.displayName)) {
+			return false;
+		}
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (apiKey == null) {
-			return other.apiKey == null;
-		} else if (!apiKey.equals(other.apiKey)) {
-			return false;
-		}
-		if (encryptionKeyName == null) {
-			return other.encryptionKeyName == null;
-		} else if (!encryptionKeyName.equals(other.encryptionKeyName)) {
+		if (payload == null) {
+			return other.payload == null;
+		} else if (!payload.equals(other.payload)) {
 			return false;
 		}
 		if (createdAt == null) {
@@ -210,11 +196,6 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
-			return false;
-		}
-		if (revision == null) {
-			return other.revision == null;
-		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;
