@@ -28,11 +28,21 @@ import io.gs2.core.control.Gs2BasicRequest;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataRequest> {
+    private String ownerId;
     private String transactionId;
     private String userId;
-    private String microserviceName;
     private String timeOffsetToken;
     private String duplicationAvoider;
+	public String getOwnerId() {
+		return ownerId;
+	}
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+	}
+	public WaitCleanUserDataRequest withOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+		return this;
+	}
 	public String getTransactionId() {
 		return transactionId;
 	}
@@ -51,16 +61,6 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
 	}
 	public WaitCleanUserDataRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getMicroserviceName() {
-		return microserviceName;
-	}
-	public void setMicroserviceName(String microserviceName) {
-		this.microserviceName = microserviceName;
-	}
-	public WaitCleanUserDataRequest withMicroserviceName(String microserviceName) {
-		this.microserviceName = microserviceName;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -92,18 +92,18 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
             return null;
         }
         return new WaitCleanUserDataRequest()
+            .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMicroserviceName(data.get("microserviceName") == null || data.get("microserviceName").isNull() ? null : data.get("microserviceName").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("ownerId", getOwnerId());
                 put("transactionId", getTransactionId());
                 put("userId", getUserId());
-                put("microserviceName", getMicroserviceName());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

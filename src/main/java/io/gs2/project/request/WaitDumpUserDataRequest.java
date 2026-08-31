@@ -31,7 +31,6 @@ public class WaitDumpUserDataRequest extends Gs2BasicRequest<WaitDumpUserDataReq
     private String ownerId;
     private String transactionId;
     private String userId;
-    private String microserviceName;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getOwnerId() {
@@ -62,16 +61,6 @@ public class WaitDumpUserDataRequest extends Gs2BasicRequest<WaitDumpUserDataReq
 	}
 	public WaitDumpUserDataRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getMicroserviceName() {
-		return microserviceName;
-	}
-	public void setMicroserviceName(String microserviceName) {
-		this.microserviceName = microserviceName;
-	}
-	public WaitDumpUserDataRequest withMicroserviceName(String microserviceName) {
-		this.microserviceName = microserviceName;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -106,7 +95,6 @@ public class WaitDumpUserDataRequest extends Gs2BasicRequest<WaitDumpUserDataReq
             .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMicroserviceName(data.get("microserviceName") == null || data.get("microserviceName").isNull() ? null : data.get("microserviceName").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -116,7 +104,6 @@ public class WaitDumpUserDataRequest extends Gs2BasicRequest<WaitDumpUserDataReq
                 put("ownerId", getOwnerId());
                 put("transactionId", getTransactionId());
                 put("userId", getUserId());
-                put("microserviceName", getMicroserviceName());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

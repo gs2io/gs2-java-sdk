@@ -850,6 +850,84 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class GetServiceVersionTask extends Gs2RestSessionTask<GetServiceVersionResult> {
+        private GetServiceVersionRequest request;
+
+        public GetServiceVersionTask(
+            GetServiceVersionRequest request,
+            AsyncAction<AsyncResult<GetServiceVersionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetServiceVersionResult parse(JsonNode data) {
+            return GetServiceVersionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "project")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/version";
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getServiceVersionAsync(
+            GetServiceVersionRequest request,
+            AsyncAction<AsyncResult<GetServiceVersionResult>> callback
+    ) {
+        GetServiceVersionTask task = new GetServiceVersionTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetServiceVersionResult getServiceVersion(
+            GetServiceVersionRequest request
+    ) {
+        final AsyncResult<GetServiceVersionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getServiceVersionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeProjectsTask extends Gs2RestSessionTask<DescribeProjectsResult> {
         private DescribeProjectsRequest request;
 
@@ -1467,8 +1545,9 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "project")
                 .replace("{region}", session.getRegion().getName())
-                + "/account/me/project/{projectName}/region/{regionName}/activate/wait";
+                + "/system/{ownerId}/project/region/{regionName}/activate/wait";
 
+            url = url.replace("{ownerId}", this.request.getOwnerId() == null || this.request.getOwnerId().length() == 0 ? "null" : String.valueOf(this.request.getOwnerId()));
             url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
             url = url.replace("{regionName}", this.request.getRegionName() == null || this.request.getRegionName().length() == 0 ? "null" : String.valueOf(this.request.getRegionName()));
 
@@ -2202,6 +2281,90 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class GetBillingsTask extends Gs2RestSessionTask<GetBillingsResult> {
+        private GetBillingsRequest request;
+
+        public GetBillingsTask(
+            GetBillingsRequest request,
+            AsyncAction<AsyncResult<GetBillingsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetBillingsResult parse(JsonNode data) {
+            return GetBillingsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "project")
+                .replace("{region}", session.getRegion().getName())
+                + "/billing/{year}/{month}";
+
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+            url = url.replace("{month}", this.request.getMonth() == null  ? "null" : String.valueOf(this.request.getMonth()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getService() != null) {
+                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getBillingsAsync(
+            GetBillingsRequest request,
+            AsyncAction<AsyncResult<GetBillingsResult>> callback
+    ) {
+        GetBillingsTask task = new GetBillingsTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetBillingsResult getBillings(
+            GetBillingsRequest request
+    ) {
+        final AsyncResult<GetBillingsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getBillingsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeDumpProgressesTask extends Gs2RestSessionTask<DescribeDumpProgressesResult> {
         private DescribeDumpProgressesRequest request;
 
@@ -2399,7 +2562,6 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("microserviceName", request.getMicroserviceName());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2891,14 +3053,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "project")
                 .replace("{region}", session.getRegion().getName())
-                + "/account/me/project/clean/progress/{transactionId}/wait";
+                + "/system/{ownerId}/project/clean/progress/{transactionId}/wait";
 
+            url = url.replace("{ownerId}", this.request.getOwnerId() == null || this.request.getOwnerId().length() == 0 ? "null" : String.valueOf(this.request.getOwnerId()));
             url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("microserviceName", request.getMicroserviceName());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3229,14 +3391,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "project")
                 .replace("{region}", session.getRegion().getName())
-                + "/account/me/project/import/progress/{transactionId}/wait";
+                + "/system/{ownerId}/project/import/progress/{transactionId}/wait";
 
+            url = url.replace("{ownerId}", this.request.getOwnerId() == null || this.request.getOwnerId().length() == 0 ? "null" : String.valueOf(this.request.getOwnerId()));
             url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
-                    put("microserviceName", request.getMicroserviceName());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

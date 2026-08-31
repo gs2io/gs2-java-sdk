@@ -34,6 +34,7 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
 	private String guildName;
 	private String userId;
 	private Long createdAt;
+	private Long revision;
 	public String getJoinedGuildId() {
 		return joinedGuildId;
 	}
@@ -84,6 +85,16 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public JoinedGuild withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static JoinedGuild fromJson(JsonNode data) {
         if (data == null) {
@@ -94,7 +105,8 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
             .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
             .withGuildName(data.get("guildName") == null || data.get("guildName").isNull() ? null : data.get("guildName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
                 put("guildName", getGuildName());
                 put("userId", getUserId());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -123,6 +136,7 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
         result = prime * result + ((this.guildName == null) ? 0 : this.guildName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -158,6 +172,11 @@ public class JoinedGuild implements IModel, Serializable, Comparable<JoinedGuild
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;
