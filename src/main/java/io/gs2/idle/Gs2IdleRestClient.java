@@ -163,6 +163,7 @@ public class Gs2IdleRestClient extends AbstractGs2Client<Gs2IdleRestClient> {
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("receiveScript", request.getReceiveScript() != null ? request.getReceiveScript().toJson() : null);
                     put("overrideAcquireActionsScriptId", request.getOverrideAcquireActionsScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -408,6 +409,7 @@ public class Gs2IdleRestClient extends AbstractGs2Client<Gs2IdleRestClient> {
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("receiveScript", request.getReceiveScript() != null ? request.getReceiveScript().toJson() : null);
                     put("overrideAcquireActionsScriptId", request.getOverrideAcquireActionsScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);

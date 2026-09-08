@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
 import io.gs2.schedule.model.TransactionSetting;
+import io.gs2.schedule.model.TransactionSettingV2;
 import io.gs2.schedule.model.LogSetting;
 import io.gs2.schedule.model.Namespace;
 

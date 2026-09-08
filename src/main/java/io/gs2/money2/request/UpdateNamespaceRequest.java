@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.money2.model.TransactionSetting;
+import io.gs2.money2.model.TransactionSettingV2;
 import io.gs2.money2.model.AppleAppStoreSetting;
 import io.gs2.money2.model.GooglePlaySetting;
 import io.gs2.money2.model.FakeSetting;
@@ -40,6 +41,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String currencyUsagePriority;
     private String description;
     private TransactionSetting transactionSetting;
+    private TransactionSettingV2 transactionSettingV2;
     private PlatformSetting platformSetting;
     private ScriptSetting depositBalanceScript;
     private ScriptSetting withdrawBalanceScript;
@@ -80,14 +82,27 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.description = description;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public UpdateNamespaceRequest withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public PlatformSetting getPlatformSetting() {
@@ -200,6 +215,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withCurrencyUsagePriority(data.get("currencyUsagePriority") == null || data.get("currencyUsagePriority").isNull() ? null : data.get("currencyUsagePriority").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
             .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
             .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
@@ -219,6 +235,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("currencyUsagePriority", getCurrencyUsagePriority());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
                 put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
                 put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);

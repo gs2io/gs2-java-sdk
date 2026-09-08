@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.exchange.model.TransactionSetting;
+import io.gs2.exchange.model.TransactionSettingV2;
 import io.gs2.exchange.model.ScriptSetting;
 import io.gs2.exchange.model.LogSetting;
 
@@ -36,6 +37,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private Boolean enableAwaitExchange;
     private Boolean enableDirectExchange;
     private TransactionSetting transactionSetting;
+    private TransactionSettingV2 transactionSettingV2;
     private ScriptSetting exchangeScript;
     private ScriptSetting incrementalExchangeScript;
     private ScriptSetting acquireAwaitScript;
@@ -82,14 +84,27 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.enableDirectExchange = enableDirectExchange;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public UpdateNamespaceRequest withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public ScriptSetting getExchangeScript() {
@@ -169,6 +184,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withEnableAwaitExchange(data.get("enableAwaitExchange") == null || data.get("enableAwaitExchange").isNull() ? null : data.get("enableAwaitExchange").booleanValue())
             .withEnableDirectExchange(data.get("enableDirectExchange") == null || data.get("enableDirectExchange").isNull() ? null : data.get("enableDirectExchange").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
             .withIncrementalExchangeScript(data.get("incrementalExchangeScript") == null || data.get("incrementalExchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("incrementalExchangeScript")))
             .withAcquireAwaitScript(data.get("acquireAwaitScript") == null || data.get("acquireAwaitScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireAwaitScript")))
@@ -185,6 +201,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("enableAwaitExchange", getEnableAwaitExchange());
                 put("enableDirectExchange", getEnableDirectExchange());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
                 put("incrementalExchangeScript", getIncrementalExchangeScript() != null ? getIncrementalExchangeScript().toJson() : null);
                 put("acquireAwaitScript", getAcquireAwaitScript() != null ? getAcquireAwaitScript().toJson() : null);

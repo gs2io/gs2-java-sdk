@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.inventory.model.TransactionSetting;
+import io.gs2.inventory.model.TransactionSettingV2;
 import io.gs2.inventory.model.ScriptSetting;
 import io.gs2.inventory.model.LogSetting;
 
@@ -34,6 +35,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String namespaceName;
     private String description;
     private TransactionSetting transactionSetting;
+    private TransactionSettingV2 transactionSettingV2;
     private ScriptSetting acquireScript;
     private ScriptSetting overflowScript;
     private ScriptSetting consumeScript;
@@ -62,14 +64,27 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.description = description;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public UpdateNamespaceRequest withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public ScriptSetting getAcquireScript() {
@@ -161,6 +176,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withAcquireScript(data.get("acquireScript") == null || data.get("acquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireScript")))
             .withOverflowScript(data.get("overflowScript") == null || data.get("overflowScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowScript")))
             .withConsumeScript(data.get("consumeScript") == null || data.get("consumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumeScript")))
@@ -177,6 +193,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("acquireScript", getAcquireScript() != null ? getAcquireScript().toJson() : null);
                 put("overflowScript", getOverflowScript() != null ? getOverflowScript().toJson() : null);
                 put("consumeScript", getConsumeScript() != null ? getConsumeScript().toJson() : null);

@@ -163,6 +163,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("rankCapScriptId", request.getRankCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
@@ -411,6 +412,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("rankCapScriptId", request.getRankCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);

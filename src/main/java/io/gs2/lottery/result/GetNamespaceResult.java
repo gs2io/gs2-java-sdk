@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
 import io.gs2.lottery.model.TransactionSetting;
+import io.gs2.lottery.model.TransactionSettingV2;
 import io.gs2.lottery.model.LogSetting;
 import io.gs2.lottery.model.Namespace;
 

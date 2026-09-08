@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
 import io.gs2.ranking.model.TransactionSetting;
+import io.gs2.ranking.model.TransactionSettingV2;
 import io.gs2.ranking.model.CalculatedAt;
 import io.gs2.ranking.model.LogSetting;
 import io.gs2.ranking.model.Namespace;

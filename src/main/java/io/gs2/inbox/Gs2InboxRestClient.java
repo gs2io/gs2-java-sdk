@@ -164,6 +164,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                     put("description", request.getDescription());
                     put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
                     put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
                     put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);
@@ -414,6 +415,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                     put("description", request.getDescription());
                     put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
                     put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
                     put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);

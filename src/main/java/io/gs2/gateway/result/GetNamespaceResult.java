@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.gateway.model.*;
 import io.gs2.gateway.model.TransactionSetting;
+import io.gs2.gateway.model.TransactionSettingV2;
 import io.gs2.gateway.model.LogSetting;
 import io.gs2.gateway.model.Namespace;
 

@@ -34,6 +34,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private Boolean isAutomaticDeletingEnabled;
 	private TransactionSetting transactionSetting;
+	private TransactionSettingV2 transactionSettingV2;
 	private ScriptSetting receiveMessageScript;
 	private ScriptSetting readMessageScript;
 	private ScriptSetting deleteMessageScript;
@@ -84,14 +85,27 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.isAutomaticDeletingEnabled = isAutomaticDeletingEnabled;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public Namespace withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public ScriptSetting getReceiveMessageScript() {
@@ -211,6 +225,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withIsAutomaticDeletingEnabled(data.get("isAutomaticDeletingEnabled") == null || data.get("isAutomaticDeletingEnabled").isNull() ? null : data.get("isAutomaticDeletingEnabled").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withReceiveMessageScript(data.get("receiveMessageScript") == null || data.get("receiveMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveMessageScript")))
             .withReadMessageScript(data.get("readMessageScript") == null || data.get("readMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("readMessageScript")))
             .withDeleteMessageScript(data.get("deleteMessageScript") == null || data.get("deleteMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteMessageScript")))
@@ -231,6 +246,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("isAutomaticDeletingEnabled", getIsAutomaticDeletingEnabled());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("receiveMessageScript", getReceiveMessageScript() != null ? getReceiveMessageScript().toJson() : null);
                 put("readMessageScript", getReadMessageScript() != null ? getReadMessageScript().toJson() : null);
                 put("deleteMessageScript", getDeleteMessageScript() != null ? getDeleteMessageScript().toJson() : null);
@@ -259,6 +275,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.isAutomaticDeletingEnabled == null) ? 0 : this.isAutomaticDeletingEnabled.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
+        result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.receiveMessageScript == null) ? 0 : this.receiveMessageScript.hashCode());
         result = prime * result + ((this.readMessageScript == null) ? 0 : this.readMessageScript.hashCode());
         result = prime * result + ((this.deleteMessageScript == null) ? 0 : this.deleteMessageScript.hashCode());
@@ -304,6 +321,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
+			return false;
+		}
+		if (transactionSettingV2 == null) {
+			return other.transactionSettingV2 == null;
+		} else if (!transactionSettingV2.equals(other.transactionSettingV2)) {
 			return false;
 		}
 		if (receiveMessageScript == null) {

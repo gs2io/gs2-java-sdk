@@ -34,6 +34,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private String supportSpeculativeExecution;
 	private TransactionSetting transactionSetting;
+	private TransactionSettingV2 transactionSettingV2;
 	private ScriptSetting startScript;
 	private ScriptSetting passScript;
 	private ScriptSetting errorScript;
@@ -82,14 +83,27 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.supportSpeculativeExecution = supportSpeculativeExecution;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public Namespace withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public ScriptSetting getStartScript() {
@@ -183,6 +197,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withSupportSpeculativeExecution(data.get("supportSpeculativeExecution") == null || data.get("supportSpeculativeExecution").isNull() ? null : data.get("supportSpeculativeExecution").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withStartScript(data.get("startScript") == null || data.get("startScript").isNull() ? null : ScriptSetting.fromJson(data.get("startScript")))
             .withPassScript(data.get("passScript") == null || data.get("passScript").isNull() ? null : ScriptSetting.fromJson(data.get("passScript")))
             .withErrorScript(data.get("errorScript") == null || data.get("errorScript").isNull() ? null : ScriptSetting.fromJson(data.get("errorScript")))
@@ -201,6 +216,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("supportSpeculativeExecution", getSupportSpeculativeExecution());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("startScript", getStartScript() != null ? getStartScript().toJson() : null);
                 put("passScript", getPassScript() != null ? getPassScript().toJson() : null);
                 put("errorScript", getErrorScript() != null ? getErrorScript().toJson() : null);
@@ -227,6 +243,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.supportSpeculativeExecution == null) ? 0 : this.supportSpeculativeExecution.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
+        result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.startScript == null) ? 0 : this.startScript.hashCode());
         result = prime * result + ((this.passScript == null) ? 0 : this.passScript.hashCode());
         result = prime * result + ((this.errorScript == null) ? 0 : this.errorScript.hashCode());
@@ -270,6 +287,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
+			return false;
+		}
+		if (transactionSettingV2 == null) {
+			return other.transactionSettingV2 == null;
+		} else if (!transactionSettingV2.equals(other.transactionSettingV2)) {
 			return false;
 		}
 		if (startScript == null) {

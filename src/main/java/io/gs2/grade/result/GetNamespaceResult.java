@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.grade.model.*;
 import io.gs2.grade.model.TransactionSetting;
+import io.gs2.grade.model.TransactionSettingV2;
 import io.gs2.grade.model.ScriptSetting;
 import io.gs2.grade.model.LogSetting;
 import io.gs2.grade.model.Namespace;

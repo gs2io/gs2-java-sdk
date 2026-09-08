@@ -165,6 +165,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                     put("enableAwaitExchange", request.getEnableAwaitExchange());
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("incrementalExchangeScript", request.getIncrementalExchangeScript() != null ? request.getIncrementalExchangeScript().toJson() : null);
                     put("acquireAwaitScript", request.getAcquireAwaitScript() != null ? request.getAcquireAwaitScript().toJson() : null);
@@ -415,6 +416,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                     put("enableAwaitExchange", request.getEnableAwaitExchange());
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("incrementalExchangeScript", request.getIncrementalExchangeScript() != null ? request.getIncrementalExchangeScript().toJson() : null);
                     put("acquireAwaitScript", request.getAcquireAwaitScript() != null ? request.getAcquireAwaitScript().toJson() : null);

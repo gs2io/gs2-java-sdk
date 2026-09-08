@@ -163,6 +163,7 @@ public class Gs2SkillTreeRestClient extends AbstractGs2Client<Gs2SkillTreeRestCl
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("releaseScript", request.getReleaseScript() != null ? request.getReleaseScript().toJson() : null);
                     put("restrainScript", request.getRestrainScript() != null ? request.getRestrainScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -408,6 +409,7 @@ public class Gs2SkillTreeRestClient extends AbstractGs2Client<Gs2SkillTreeRestCl
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("releaseScript", request.getReleaseScript() != null ? request.getReleaseScript().toJson() : null);
                     put("restrainScript", request.getRestrainScript() != null ? request.getRestrainScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);

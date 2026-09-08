@@ -163,6 +163,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("assumeUserId", request.getAssumeUserId());
                     put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
                     put("autoRunTransactionNotification", request.getAutoRunTransactionNotification() != null ? request.getAutoRunTransactionNotification().toJson() : null);
@@ -409,6 +410,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("assumeUserId", request.getAssumeUserId());
                     put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
                     put("autoRunTransactionNotification", request.getAutoRunTransactionNotification() != null ? request.getAutoRunTransactionNotification().toJson() : null);

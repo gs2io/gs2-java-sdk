@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.account.model.TransactionSetting;
+import io.gs2.account.model.TransactionSettingV2;
 import io.gs2.account.model.ScriptSetting;
 import io.gs2.account.model.LogSetting;
 
@@ -34,6 +35,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private TransactionSetting transactionSetting;
+    private TransactionSettingV2 transactionSettingV2;
     private Boolean changePasswordIfTakeOver;
     private Boolean differentUserIdForLoginAndDataRetention;
     private ScriptSetting createAccountScript;
@@ -63,14 +65,27 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.description = description;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public CreateNamespaceRequest withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public Boolean getChangePasswordIfTakeOver() {
@@ -172,6 +187,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withChangePasswordIfTakeOver(data.get("changePasswordIfTakeOver") == null || data.get("changePasswordIfTakeOver").isNull() ? null : data.get("changePasswordIfTakeOver").booleanValue())
             .withDifferentUserIdForLoginAndDataRetention(data.get("differentUserIdForLoginAndDataRetention") == null || data.get("differentUserIdForLoginAndDataRetention").isNull() ? null : data.get("differentUserIdForLoginAndDataRetention").booleanValue())
             .withCreateAccountScript(data.get("createAccountScript") == null || data.get("createAccountScript").isNull() ? null : ScriptSetting.fromJson(data.get("createAccountScript")))
@@ -189,6 +205,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("changePasswordIfTakeOver", getChangePasswordIfTakeOver());
                 put("differentUserIdForLoginAndDataRetention", getDifferentUserIdForLoginAndDataRetention());
                 put("createAccountScript", getCreateAccountScript() != null ? getCreateAccountScript().toJson() : null);

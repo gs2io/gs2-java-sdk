@@ -33,6 +33,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private TransactionSetting transactionSetting;
+	private TransactionSettingV2 transactionSettingV2;
 	private Boolean enableRating;
 	private String enableDisconnectDetection;
 	private Integer disconnectDetectionTimeoutSeconds;
@@ -84,14 +85,27 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.description = description;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public Namespace withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public Boolean getEnableRating() {
@@ -314,6 +328,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
             .withEnableDisconnectDetection(data.get("enableDisconnectDetection") == null || data.get("enableDisconnectDetection").isNull() ? null : data.get("enableDisconnectDetection").asText())
             .withDisconnectDetectionTimeoutSeconds(data.get("disconnectDetectionTimeoutSeconds") == null || data.get("disconnectDetectionTimeoutSeconds").isNull() ? null : data.get("disconnectDetectionTimeoutSeconds").intValue())
@@ -344,6 +359,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("enableRating", getEnableRating());
                 put("enableDisconnectDetection", getEnableDisconnectDetection());
                 put("disconnectDetectionTimeoutSeconds", getDisconnectDetectionTimeoutSeconds());
@@ -382,6 +398,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
+        result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.enableRating == null) ? 0 : this.enableRating.hashCode());
         result = prime * result + ((this.enableDisconnectDetection == null) ? 0 : this.enableDisconnectDetection.hashCode());
         result = prime * result + ((this.disconnectDetectionTimeoutSeconds == null) ? 0 : this.disconnectDetectionTimeoutSeconds.hashCode());
@@ -433,6 +450,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
+			return false;
+		}
+		if (transactionSettingV2 == null) {
+			return other.transactionSettingV2 == null;
+		} else if (!transactionSettingV2.equals(other.transactionSettingV2)) {
 			return false;
 		}
 		if (enableRating == null) {

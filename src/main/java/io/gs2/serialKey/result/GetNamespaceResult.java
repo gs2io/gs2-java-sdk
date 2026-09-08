@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.serialKey.model.*;
 import io.gs2.serialKey.model.TransactionSetting;
+import io.gs2.serialKey.model.TransactionSettingV2;
 import io.gs2.serialKey.model.LogSetting;
 import io.gs2.serialKey.model.Namespace;
 

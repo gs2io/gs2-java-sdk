@@ -33,6 +33,7 @@ public class TransactionSetting implements IModel, Serializable {
 	private Boolean transactionUseDistributor;
 	private Boolean commitScriptResultInUseDistributor;
 	private Boolean acquireActionUseJobQueue;
+	private Boolean enableSequentialExecution;
 	private String distributorNamespaceId;
 	private String queueNamespaceId;
 	public Boolean getEnableAtomicCommit() {
@@ -75,6 +76,16 @@ public class TransactionSetting implements IModel, Serializable {
 		this.acquireActionUseJobQueue = acquireActionUseJobQueue;
 		return this;
 	}
+	public Boolean getEnableSequentialExecution() {
+		return enableSequentialExecution;
+	}
+	public void setEnableSequentialExecution(Boolean enableSequentialExecution) {
+		this.enableSequentialExecution = enableSequentialExecution;
+	}
+	public TransactionSetting withEnableSequentialExecution(Boolean enableSequentialExecution) {
+		this.enableSequentialExecution = enableSequentialExecution;
+		return this;
+	}
 	public String getDistributorNamespaceId() {
 		return distributorNamespaceId;
 	}
@@ -105,6 +116,7 @@ public class TransactionSetting implements IModel, Serializable {
             .withTransactionUseDistributor(data.get("transactionUseDistributor") == null || data.get("transactionUseDistributor").isNull() ? null : data.get("transactionUseDistributor").booleanValue())
             .withCommitScriptResultInUseDistributor(data.get("commitScriptResultInUseDistributor") == null || data.get("commitScriptResultInUseDistributor").isNull() ? null : data.get("commitScriptResultInUseDistributor").booleanValue())
             .withAcquireActionUseJobQueue(data.get("acquireActionUseJobQueue") == null || data.get("acquireActionUseJobQueue").isNull() ? null : data.get("acquireActionUseJobQueue").booleanValue())
+            .withEnableSequentialExecution(data.get("enableSequentialExecution") == null || data.get("enableSequentialExecution").isNull() ? null : data.get("enableSequentialExecution").booleanValue())
             .withDistributorNamespaceId(data.get("distributorNamespaceId") == null || data.get("distributorNamespaceId").isNull() ? null : data.get("distributorNamespaceId").asText())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText());
     }
@@ -116,6 +128,7 @@ public class TransactionSetting implements IModel, Serializable {
                 put("transactionUseDistributor", getTransactionUseDistributor());
                 put("commitScriptResultInUseDistributor", getCommitScriptResultInUseDistributor());
                 put("acquireActionUseJobQueue", getAcquireActionUseJobQueue());
+                put("enableSequentialExecution", getEnableSequentialExecution());
                 put("distributorNamespaceId", getDistributorNamespaceId());
                 put("queueNamespaceId", getQueueNamespaceId());
             }}
@@ -130,6 +143,7 @@ public class TransactionSetting implements IModel, Serializable {
         result = prime * result + ((this.transactionUseDistributor == null) ? 0 : this.transactionUseDistributor.hashCode());
         result = prime * result + ((this.commitScriptResultInUseDistributor == null) ? 0 : this.commitScriptResultInUseDistributor.hashCode());
         result = prime * result + ((this.acquireActionUseJobQueue == null) ? 0 : this.acquireActionUseJobQueue.hashCode());
+        result = prime * result + ((this.enableSequentialExecution == null) ? 0 : this.enableSequentialExecution.hashCode());
         result = prime * result + ((this.distributorNamespaceId == null) ? 0 : this.distributorNamespaceId.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
 		return result;
@@ -162,6 +176,11 @@ public class TransactionSetting implements IModel, Serializable {
 		if (acquireActionUseJobQueue == null) {
 			return other.acquireActionUseJobQueue == null;
 		} else if (!acquireActionUseJobQueue.equals(other.acquireActionUseJobQueue)) {
+			return false;
+		}
+		if (enableSequentialExecution == null) {
+			return other.enableSequentialExecution == null;
+		} else if (!enableSequentialExecution.equals(other.enableSequentialExecution)) {
 			return false;
 		}
 		if (distributorNamespaceId == null) {

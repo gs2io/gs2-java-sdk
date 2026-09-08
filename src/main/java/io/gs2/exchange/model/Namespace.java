@@ -35,6 +35,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private Boolean enableDirectExchange;
 	private Boolean enableAwaitExchange;
 	private TransactionSetting transactionSetting;
+	private TransactionSettingV2 transactionSettingV2;
 	private ScriptSetting exchangeScript;
 	private ScriptSetting incrementalExchangeScript;
 	private ScriptSetting acquireAwaitScript;
@@ -94,14 +95,27 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.enableAwaitExchange = enableAwaitExchange;
 		return this;
 	}
+    @Deprecated
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
+    @Deprecated
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
+    @Deprecated
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public TransactionSettingV2 getTransactionSettingV2() {
+		return transactionSettingV2;
+	}
+	public void setTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
+	}
+	public Namespace withTransactionSettingV2(TransactionSettingV2 transactionSettingV2) {
+		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
 	public ScriptSetting getExchangeScript() {
@@ -212,6 +226,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withEnableDirectExchange(data.get("enableDirectExchange") == null || data.get("enableDirectExchange").isNull() ? null : data.get("enableDirectExchange").booleanValue())
             .withEnableAwaitExchange(data.get("enableAwaitExchange") == null || data.get("enableAwaitExchange").isNull() ? null : data.get("enableAwaitExchange").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
             .withIncrementalExchangeScript(data.get("incrementalExchangeScript") == null || data.get("incrementalExchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("incrementalExchangeScript")))
             .withAcquireAwaitScript(data.get("acquireAwaitScript") == null || data.get("acquireAwaitScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireAwaitScript")))
@@ -232,6 +247,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("enableDirectExchange", getEnableDirectExchange());
                 put("enableAwaitExchange", getEnableAwaitExchange());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
                 put("incrementalExchangeScript", getIncrementalExchangeScript() != null ? getIncrementalExchangeScript().toJson() : null);
                 put("acquireAwaitScript", getAcquireAwaitScript() != null ? getAcquireAwaitScript().toJson() : null);
@@ -260,6 +276,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.enableDirectExchange == null) ? 0 : this.enableDirectExchange.hashCode());
         result = prime * result + ((this.enableAwaitExchange == null) ? 0 : this.enableAwaitExchange.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
+        result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.exchangeScript == null) ? 0 : this.exchangeScript.hashCode());
         result = prime * result + ((this.incrementalExchangeScript == null) ? 0 : this.incrementalExchangeScript.hashCode());
         result = prime * result + ((this.acquireAwaitScript == null) ? 0 : this.acquireAwaitScript.hashCode());
@@ -309,6 +326,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
+			return false;
+		}
+		if (transactionSettingV2 == null) {
+			return other.transactionSettingV2 == null;
+		} else if (!transactionSettingV2.equals(other.transactionSettingV2)) {
 			return false;
 		}
 		if (exchangeScript == null) {

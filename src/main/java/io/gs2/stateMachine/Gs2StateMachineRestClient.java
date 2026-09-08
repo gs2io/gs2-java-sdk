@@ -164,6 +164,7 @@ public class Gs2StateMachineRestClient extends AbstractGs2Client<Gs2StateMachine
                     put("description", request.getDescription());
                     put("supportSpeculativeExecution", request.getSupportSpeculativeExecution());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("startScript", request.getStartScript() != null ? request.getStartScript().toJson() : null);
                     put("passScript", request.getPassScript() != null ? request.getPassScript().toJson() : null);
                     put("errorScript", request.getErrorScript() != null ? request.getErrorScript().toJson() : null);
@@ -412,6 +413,7 @@ public class Gs2StateMachineRestClient extends AbstractGs2Client<Gs2StateMachine
                     put("description", request.getDescription());
                     put("supportSpeculativeExecution", request.getSupportSpeculativeExecution());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("startScript", request.getStartScript() != null ? request.getStartScript().toJson() : null);
                     put("passScript", request.getPassScript() != null ? request.getPassScript().toJson() : null);
                     put("errorScript", request.getErrorScript() != null ? request.getErrorScript().toJson() : null);

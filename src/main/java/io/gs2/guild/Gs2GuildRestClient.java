@@ -163,6 +163,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("changeNotification", request.getChangeNotification() != null ? request.getChangeNotification().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
@@ -420,6 +421,7 @@ public class Gs2GuildRestClient extends AbstractGs2Client<Gs2GuildRestClient> {
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("changeNotification", request.getChangeNotification() != null ? request.getChangeNotification().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
