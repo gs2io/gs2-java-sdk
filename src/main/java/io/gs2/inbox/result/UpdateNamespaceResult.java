@@ -28,6 +28,7 @@ import io.gs2.inbox.model.*;
 import io.gs2.inbox.model.TransactionSetting;
 import io.gs2.inbox.model.TransactionSettingV2;
 import io.gs2.inbox.model.ScriptSetting;
+import io.gs2.inbox.model.MobileNotificationMessage;
 import io.gs2.inbox.model.NotificationSetting;
 import io.gs2.inbox.model.LogSetting;
 import io.gs2.inbox.model.Namespace;

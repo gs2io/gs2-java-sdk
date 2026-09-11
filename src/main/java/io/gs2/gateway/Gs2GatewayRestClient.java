@@ -1597,6 +1597,12 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                     put("payload", request.getPayload());
                     put("enableTransferMobileNotification", request.getEnableTransferMobileNotification());
                     put("sound", request.getSound());
+                    put("mobileNotificationMessages", request.getMobileNotificationMessages() == null ? null :
+                        request.getMobileNotificationMessages().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2371,6 +2377,12 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                     put("subject", request.getSubject());
                     put("payload", request.getPayload());
                     put("sound", request.getSound());
+                    put("mobileNotificationMessages", request.getMobileNotificationMessages() == null ? null :
+                        request.getMobileNotificationMessages().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

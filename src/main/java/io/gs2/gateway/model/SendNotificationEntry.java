@@ -35,6 +35,7 @@ public class SendNotificationEntry implements IModel, Serializable {
 	private String payload;
 	private Boolean enableTransferMobileNotification;
 	private String sound;
+	private List<MobileNotificationMessage> mobileNotificationMessages;
 	public String getUserId() {
 		return userId;
 	}
@@ -95,6 +96,16 @@ public class SendNotificationEntry implements IModel, Serializable {
 		this.sound = sound;
 		return this;
 	}
+	public List<MobileNotificationMessage> getMobileNotificationMessages() {
+		return mobileNotificationMessages;
+	}
+	public void setMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+	}
+	public SendNotificationEntry withMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+		return this;
+	}
 
     public static SendNotificationEntry fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,13 @@ public class SendNotificationEntry implements IModel, Serializable {
             .withSubject(data.get("subject") == null || data.get("subject").isNull() ? null : data.get("subject").asText())
             .withPayload(data.get("payload") == null || data.get("payload").isNull() ? null : data.get("payload").asText())
             .withEnableTransferMobileNotification(data.get("enableTransferMobileNotification") == null || data.get("enableTransferMobileNotification").isNull() ? null : data.get("enableTransferMobileNotification").booleanValue())
-            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText());
+            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText())
+            .withMobileNotificationMessages(data.get("mobileNotificationMessages") == null || data.get("mobileNotificationMessages").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("mobileNotificationMessages").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return MobileNotificationMessage.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -118,6 +135,12 @@ public class SendNotificationEntry implements IModel, Serializable {
                 put("payload", getPayload());
                 put("enableTransferMobileNotification", getEnableTransferMobileNotification());
                 put("sound", getSound());
+                put("mobileNotificationMessages", getMobileNotificationMessages() == null ? null :
+                    getMobileNotificationMessages().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -132,6 +155,7 @@ public class SendNotificationEntry implements IModel, Serializable {
         result = prime * result + ((this.payload == null) ? 0 : this.payload.hashCode());
         result = prime * result + ((this.enableTransferMobileNotification == null) ? 0 : this.enableTransferMobileNotification.hashCode());
         result = prime * result + ((this.sound == null) ? 0 : this.sound.hashCode());
+        result = prime * result + ((this.mobileNotificationMessages == null) ? 0 : this.mobileNotificationMessages.hashCode());
 		return result;
 	}
 
@@ -172,6 +196,11 @@ public class SendNotificationEntry implements IModel, Serializable {
 		if (sound == null) {
 			return other.sound == null;
 		} else if (!sound.equals(other.sound)) {
+			return false;
+		}
+		if (mobileNotificationMessages == null) {
+			return other.mobileNotificationMessages == null;
+		} else if (!mobileNotificationMessages.equals(other.mobileNotificationMessages)) {
 			return false;
 		}
 		return true;

@@ -32,6 +32,7 @@ public class NotificationSetting implements IModel, Serializable {
 	private String gatewayNamespaceId;
 	private Boolean enableTransferMobileNotification;
 	private String sound;
+	private List<MobileNotificationMessage> mobileNotificationMessages;
 	private String enable;
 	public String getGatewayNamespaceId() {
 		return gatewayNamespaceId;
@@ -63,6 +64,16 @@ public class NotificationSetting implements IModel, Serializable {
 		this.sound = sound;
 		return this;
 	}
+	public List<MobileNotificationMessage> getMobileNotificationMessages() {
+		return mobileNotificationMessages;
+	}
+	public void setMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+	}
+	public NotificationSetting withMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+		return this;
+	}
 	public String getEnable() {
 		return enable;
 	}
@@ -82,6 +93,12 @@ public class NotificationSetting implements IModel, Serializable {
             .withGatewayNamespaceId(data.get("gatewayNamespaceId") == null || data.get("gatewayNamespaceId").isNull() ? null : data.get("gatewayNamespaceId").asText())
             .withEnableTransferMobileNotification(data.get("enableTransferMobileNotification") == null || data.get("enableTransferMobileNotification").isNull() ? null : data.get("enableTransferMobileNotification").booleanValue())
             .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText())
+            .withMobileNotificationMessages(data.get("mobileNotificationMessages") == null || data.get("mobileNotificationMessages").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("mobileNotificationMessages").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return MobileNotificationMessage.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withEnable(data.get("enable") == null || data.get("enable").isNull() ? null : data.get("enable").asText());
     }
 
@@ -91,6 +108,12 @@ public class NotificationSetting implements IModel, Serializable {
                 put("gatewayNamespaceId", getGatewayNamespaceId());
                 put("enableTransferMobileNotification", getEnableTransferMobileNotification());
                 put("sound", getSound());
+                put("mobileNotificationMessages", getMobileNotificationMessages() == null ? null :
+                    getMobileNotificationMessages().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("enable", getEnable());
             }}
         );
@@ -103,6 +126,7 @@ public class NotificationSetting implements IModel, Serializable {
         result = prime * result + ((this.gatewayNamespaceId == null) ? 0 : this.gatewayNamespaceId.hashCode());
         result = prime * result + ((this.enableTransferMobileNotification == null) ? 0 : this.enableTransferMobileNotification.hashCode());
         result = prime * result + ((this.sound == null) ? 0 : this.sound.hashCode());
+        result = prime * result + ((this.mobileNotificationMessages == null) ? 0 : this.mobileNotificationMessages.hashCode());
         result = prime * result + ((this.enable == null) ? 0 : this.enable.hashCode());
 		return result;
 	}
@@ -129,6 +153,11 @@ public class NotificationSetting implements IModel, Serializable {
 		if (sound == null) {
 			return other.sound == null;
 		} else if (!sound.equals(other.sound)) {
+			return false;
+		}
+		if (mobileNotificationMessages == null) {
+			return other.mobileNotificationMessages == null;
+		} else if (!mobileNotificationMessages.equals(other.mobileNotificationMessages)) {
 			return false;
 		}
 		if (enable == null) {

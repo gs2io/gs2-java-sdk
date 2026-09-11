@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.jobQueue.model.*;
 import io.gs2.jobQueue.model.TransactionSetting;
 import io.gs2.jobQueue.model.TransactionSettingV2;
+import io.gs2.jobQueue.model.MobileNotificationMessage;
 import io.gs2.jobQueue.model.NotificationSetting;
 import io.gs2.jobQueue.model.LogSetting;
 import io.gs2.jobQueue.model.Namespace;

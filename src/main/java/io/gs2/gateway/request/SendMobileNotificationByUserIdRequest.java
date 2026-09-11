@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.gateway.model.MobileNotificationMessage;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -33,6 +34,7 @@ public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendM
     private String subject;
     private String payload;
     private String sound;
+    private List<MobileNotificationMessage> mobileNotificationMessages;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -85,6 +87,16 @@ public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendM
 		this.sound = sound;
 		return this;
 	}
+	public List<MobileNotificationMessage> getMobileNotificationMessages() {
+		return mobileNotificationMessages;
+	}
+	public void setMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+	}
+	public SendMobileNotificationByUserIdRequest withMobileNotificationMessages(List<MobileNotificationMessage> mobileNotificationMessages) {
+		this.mobileNotificationMessages = mobileNotificationMessages;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -119,6 +131,12 @@ public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendM
             .withSubject(data.get("subject") == null || data.get("subject").isNull() ? null : data.get("subject").asText())
             .withPayload(data.get("payload") == null || data.get("payload").isNull() ? null : data.get("payload").asText())
             .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText())
+            .withMobileNotificationMessages(data.get("mobileNotificationMessages") == null || data.get("mobileNotificationMessages").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("mobileNotificationMessages").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return MobileNotificationMessage.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -130,6 +148,12 @@ public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendM
                 put("subject", getSubject());
                 put("payload", getPayload());
                 put("sound", getSound());
+                put("mobileNotificationMessages", getMobileNotificationMessages() == null ? null :
+                    getMobileNotificationMessages().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

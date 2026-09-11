@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.guild.model.*;
 import io.gs2.guild.model.TransactionSetting;
 import io.gs2.guild.model.TransactionSettingV2;
+import io.gs2.guild.model.MobileNotificationMessage;
 import io.gs2.guild.model.NotificationSetting;
 import io.gs2.guild.model.ScriptSetting;
 import io.gs2.guild.model.LogSetting;

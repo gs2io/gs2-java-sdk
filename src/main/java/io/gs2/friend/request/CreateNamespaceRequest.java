@@ -27,6 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.friend.model.TransactionSetting;
 import io.gs2.friend.model.TransactionSettingV2;
 import io.gs2.friend.model.ScriptSetting;
+import io.gs2.friend.model.MobileNotificationMessage;
 import io.gs2.friend.model.NotificationSetting;
 import io.gs2.friend.model.LogSetting;
 

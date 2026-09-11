@@ -28,6 +28,7 @@ import io.gs2.matchmaking.model.*;
 import io.gs2.matchmaking.model.TransactionSetting;
 import io.gs2.matchmaking.model.TransactionSettingV2;
 import io.gs2.matchmaking.model.ScriptSetting;
+import io.gs2.matchmaking.model.MobileNotificationMessage;
 import io.gs2.matchmaking.model.NotificationSetting;
 import io.gs2.matchmaking.model.LogSetting;
 import io.gs2.matchmaking.model.Namespace;

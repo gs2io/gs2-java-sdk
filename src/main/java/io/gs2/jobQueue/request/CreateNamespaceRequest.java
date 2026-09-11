@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.jobQueue.model.TransactionSetting;
 import io.gs2.jobQueue.model.TransactionSettingV2;
+import io.gs2.jobQueue.model.MobileNotificationMessage;
 import io.gs2.jobQueue.model.NotificationSetting;
 import io.gs2.jobQueue.model.LogSetting;
 

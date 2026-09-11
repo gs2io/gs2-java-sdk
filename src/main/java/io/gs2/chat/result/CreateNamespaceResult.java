@@ -28,6 +28,7 @@ import io.gs2.chat.model.*;
 import io.gs2.chat.model.TransactionSetting;
 import io.gs2.chat.model.TransactionSettingV2;
 import io.gs2.chat.model.ScriptSetting;
+import io.gs2.chat.model.MobileNotificationMessage;
 import io.gs2.chat.model.NotificationSetting;
 import io.gs2.chat.model.LogSetting;
 import io.gs2.chat.model.Namespace;
