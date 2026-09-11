@@ -31,6 +31,7 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
     private String namespaceName;
     private String accessToken;
     private String token;
+    private String locale;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
 		this.token = token;
 		return this;
 	}
+	public String getLocale() {
+		return locale;
+	}
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	public SetFirebaseTokenRequest withLocale(String locale) {
+		this.locale = locale;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
         return new SetFirebaseTokenRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText());
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withLocale(data.get("locale") == null || data.get("locale").isNull() ? null : data.get("locale").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("token", getToken());
+                put("locale", getLocale());
             }}
         );
     }

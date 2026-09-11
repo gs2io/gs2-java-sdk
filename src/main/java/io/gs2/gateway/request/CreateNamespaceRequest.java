@@ -36,6 +36,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private TransactionSetting transactionSetting;
     private TransactionSettingV2 transactionSettingV2;
     private String firebaseSecret;
+    private String firebaseProjectId;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -80,14 +81,27 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
+    @Deprecated
 	public String getFirebaseSecret() {
 		return firebaseSecret;
 	}
+    @Deprecated
 	public void setFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
 	}
+    @Deprecated
 	public CreateNamespaceRequest withFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
+		return this;
+	}
+	public String getFirebaseProjectId() {
+		return firebaseProjectId;
+	}
+	public void setFirebaseProjectId(String firebaseProjectId) {
+		this.firebaseProjectId = firebaseProjectId;
+	}
+	public CreateNamespaceRequest withFirebaseProjectId(String firebaseProjectId) {
+		this.firebaseProjectId = firebaseProjectId;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -111,6 +125,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withFirebaseSecret(data.get("firebaseSecret") == null || data.get("firebaseSecret").isNull() ? null : data.get("firebaseSecret").asText())
+            .withFirebaseProjectId(data.get("firebaseProjectId") == null || data.get("firebaseProjectId").isNull() ? null : data.get("firebaseProjectId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -122,6 +137,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("firebaseSecret", getFirebaseSecret());
+                put("firebaseProjectId", getFirebaseProjectId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

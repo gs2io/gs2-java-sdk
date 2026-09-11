@@ -32,6 +32,7 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
 	private String firebaseTokenId;
 	private String userId;
 	private String token;
+	private String locale;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -63,6 +64,16 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
 	}
 	public FirebaseToken withToken(String token) {
 		this.token = token;
+		return this;
+	}
+	public String getLocale() {
+		return locale;
+	}
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	public FirebaseToken withLocale(String locale) {
+		this.locale = locale;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -104,6 +115,7 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
             .withFirebaseTokenId(data.get("firebaseTokenId") == null || data.get("firebaseTokenId").isNull() ? null : data.get("firebaseTokenId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withLocale(data.get("locale") == null || data.get("locale").isNull() ? null : data.get("locale").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -115,6 +127,7 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
                 put("firebaseTokenId", getFirebaseTokenId());
                 put("userId", getUserId());
                 put("token", getToken());
+                put("locale", getLocale());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -134,6 +147,7 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
         result = prime * result + ((this.firebaseTokenId == null) ? 0 : this.firebaseTokenId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
+        result = prime * result + ((this.locale == null) ? 0 : this.locale.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -162,6 +176,11 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
 		if (token == null) {
 			return other.token == null;
 		} else if (!token.equals(other.token)) {
+			return false;
+		}
+		if (locale == null) {
+			return other.locale == null;
+		} else if (!locale.equals(other.locale)) {
 			return false;
 		}
 		if (createdAt == null) {

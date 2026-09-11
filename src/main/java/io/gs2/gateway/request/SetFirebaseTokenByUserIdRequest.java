@@ -31,6 +31,7 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
     private String namespaceName;
     private String userId;
     private String token;
+    private String locale;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -61,6 +62,16 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
 	}
 	public SetFirebaseTokenByUserIdRequest withToken(String token) {
 		this.token = token;
+		return this;
+	}
+	public String getLocale() {
+		return locale;
+	}
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	public SetFirebaseTokenByUserIdRequest withLocale(String locale) {
+		this.locale = locale;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -95,6 +106,7 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withLocale(data.get("locale") == null || data.get("locale").isNull() ? null : data.get("locale").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -104,6 +116,7 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("token", getToken());
+                put("locale", getLocale());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

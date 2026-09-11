@@ -165,6 +165,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("firebaseSecret", request.getFirebaseSecret());
+                    put("firebaseProjectId", request.getFirebaseProjectId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -410,6 +411,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("firebaseSecret", request.getFirebaseSecret());
+                    put("firebaseProjectId", request.getFirebaseProjectId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -1849,6 +1851,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("token", request.getToken());
+                    put("locale", request.getLocale());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1937,6 +1940,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("token", request.getToken());
+                    put("locale", request.getLocale());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

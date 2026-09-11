@@ -35,6 +35,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private TransactionSetting transactionSetting;
 	private TransactionSettingV2 transactionSettingV2;
 	private String firebaseSecret;
+	private String firebaseProjectId;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -92,14 +93,27 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.transactionSettingV2 = transactionSettingV2;
 		return this;
 	}
+    @Deprecated
 	public String getFirebaseSecret() {
 		return firebaseSecret;
 	}
+    @Deprecated
 	public void setFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
 	}
+    @Deprecated
 	public Namespace withFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
+		return this;
+	}
+	public String getFirebaseProjectId() {
+		return firebaseProjectId;
+	}
+	public void setFirebaseProjectId(String firebaseProjectId) {
+		this.firebaseProjectId = firebaseProjectId;
+	}
+	public Namespace withFirebaseProjectId(String firebaseProjectId) {
+		this.firebaseProjectId = firebaseProjectId;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -154,6 +168,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withFirebaseSecret(data.get("firebaseSecret") == null || data.get("firebaseSecret").isNull() ? null : data.get("firebaseSecret").asText())
+            .withFirebaseProjectId(data.get("firebaseProjectId") == null || data.get("firebaseProjectId").isNull() ? null : data.get("firebaseProjectId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -169,6 +184,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("firebaseSecret", getFirebaseSecret());
+                put("firebaseProjectId", getFirebaseProjectId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -192,6 +208,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.firebaseSecret == null) ? 0 : this.firebaseSecret.hashCode());
+        result = prime * result + ((this.firebaseProjectId == null) ? 0 : this.firebaseProjectId.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -236,6 +253,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (firebaseSecret == null) {
 			return other.firebaseSecret == null;
 		} else if (!firebaseSecret.equals(other.firebaseSecret)) {
+			return false;
+		}
+		if (firebaseProjectId == null) {
+			return other.firebaseProjectId == null;
+		} else if (!firebaseProjectId.equals(other.firebaseProjectId)) {
 			return false;
 		}
 		if (logSetting == null) {
