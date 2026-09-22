@@ -40,6 +40,7 @@ public class Project implements IModel, Serializable, Comparable<Project> {
 	private String currency;
 	private String eventBridgeAwsAccountId;
 	private String eventBridgeAwsRegion;
+	private String dataStoreKeyScheme;
 	private Long createdAt;
 	private Long updatedAt;
 	public String getProjectId() {
@@ -152,6 +153,16 @@ public class Project implements IModel, Serializable, Comparable<Project> {
 		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
 		return this;
 	}
+	public String getDataStoreKeyScheme() {
+		return dataStoreKeyScheme;
+	}
+	public void setDataStoreKeyScheme(String dataStoreKeyScheme) {
+		this.dataStoreKeyScheme = dataStoreKeyScheme;
+	}
+	public Project withDataStoreKeyScheme(String dataStoreKeyScheme) {
+		this.dataStoreKeyScheme = dataStoreKeyScheme;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -194,6 +205,7 @@ public class Project implements IModel, Serializable, Comparable<Project> {
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
             .withEventBridgeAwsAccountId(data.get("eventBridgeAwsAccountId") == null || data.get("eventBridgeAwsAccountId").isNull() ? null : data.get("eventBridgeAwsAccountId").asText())
             .withEventBridgeAwsRegion(data.get("eventBridgeAwsRegion") == null || data.get("eventBridgeAwsRegion").isNull() ? null : data.get("eventBridgeAwsRegion").asText())
+            .withDataStoreKeyScheme(data.get("dataStoreKeyScheme") == null || data.get("dataStoreKeyScheme").isNull() ? null : data.get("dataStoreKeyScheme").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -217,6 +229,7 @@ public class Project implements IModel, Serializable, Comparable<Project> {
                 put("currency", getCurrency());
                 put("eventBridgeAwsAccountId", getEventBridgeAwsAccountId());
                 put("eventBridgeAwsRegion", getEventBridgeAwsRegion());
+                put("dataStoreKeyScheme", getDataStoreKeyScheme());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -243,6 +256,7 @@ public class Project implements IModel, Serializable, Comparable<Project> {
         result = prime * result + ((this.currency == null) ? 0 : this.currency.hashCode());
         result = prime * result + ((this.eventBridgeAwsAccountId == null) ? 0 : this.eventBridgeAwsAccountId.hashCode());
         result = prime * result + ((this.eventBridgeAwsRegion == null) ? 0 : this.eventBridgeAwsRegion.hashCode());
+        result = prime * result + ((this.dataStoreKeyScheme == null) ? 0 : this.dataStoreKeyScheme.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -310,6 +324,11 @@ public class Project implements IModel, Serializable, Comparable<Project> {
 		if (eventBridgeAwsRegion == null) {
 			return other.eventBridgeAwsRegion == null;
 		} else if (!eventBridgeAwsRegion.equals(other.eventBridgeAwsRegion)) {
+			return false;
+		}
+		if (dataStoreKeyScheme == null) {
+			return other.dataStoreKeyScheme == null;
+		} else if (!dataStoreKeyScheme.equals(other.dataStoreKeyScheme)) {
 			return false;
 		}
 		if (createdAt == null) {

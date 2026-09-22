@@ -38,6 +38,7 @@ public class CreateProjectRequest extends Gs2BasicRequest<CreateProjectRequest> 
     private String enableEventBridge;
     private String eventBridgeAwsAccountId;
     private String eventBridgeAwsRegion;
+    private String dataStoreKeyScheme;
 	public String getAccountToken() {
 		return accountToken;
 	}
@@ -138,6 +139,16 @@ public class CreateProjectRequest extends Gs2BasicRequest<CreateProjectRequest> 
 		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
 		return this;
 	}
+	public String getDataStoreKeyScheme() {
+		return dataStoreKeyScheme;
+	}
+	public void setDataStoreKeyScheme(String dataStoreKeyScheme) {
+		this.dataStoreKeyScheme = dataStoreKeyScheme;
+	}
+	public CreateProjectRequest withDataStoreKeyScheme(String dataStoreKeyScheme) {
+		this.dataStoreKeyScheme = dataStoreKeyScheme;
+		return this;
+	}
 
     public static CreateProjectRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -153,7 +164,8 @@ public class CreateProjectRequest extends Gs2BasicRequest<CreateProjectRequest> 
             .withBillingMethodName(data.get("billingMethodName") == null || data.get("billingMethodName").isNull() ? null : data.get("billingMethodName").asText())
             .withEnableEventBridge(data.get("enableEventBridge") == null || data.get("enableEventBridge").isNull() ? null : data.get("enableEventBridge").asText())
             .withEventBridgeAwsAccountId(data.get("eventBridgeAwsAccountId") == null || data.get("eventBridgeAwsAccountId").isNull() ? null : data.get("eventBridgeAwsAccountId").asText())
-            .withEventBridgeAwsRegion(data.get("eventBridgeAwsRegion") == null || data.get("eventBridgeAwsRegion").isNull() ? null : data.get("eventBridgeAwsRegion").asText());
+            .withEventBridgeAwsRegion(data.get("eventBridgeAwsRegion") == null || data.get("eventBridgeAwsRegion").isNull() ? null : data.get("eventBridgeAwsRegion").asText())
+            .withDataStoreKeyScheme(data.get("dataStoreKeyScheme") == null || data.get("dataStoreKeyScheme").isNull() ? null : data.get("dataStoreKeyScheme").asText());
     }
 
     public JsonNode toJson() {
@@ -169,6 +181,7 @@ public class CreateProjectRequest extends Gs2BasicRequest<CreateProjectRequest> 
                 put("enableEventBridge", getEnableEventBridge());
                 put("eventBridgeAwsAccountId", getEventBridgeAwsAccountId());
                 put("eventBridgeAwsRegion", getEventBridgeAwsRegion());
+                put("dataStoreKeyScheme", getDataStoreKeyScheme());
             }}
         );
     }

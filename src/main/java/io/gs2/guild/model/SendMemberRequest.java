@@ -30,6 +30,7 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SendMemberRequest implements IModel, Serializable, Comparable<SendMemberRequest> {
 	private String userId;
+	private String targetGuildModelName;
 	private String targetGuildName;
 	private String metadata;
 	private Long createdAt;
@@ -41,6 +42,16 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 	}
 	public SendMemberRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getTargetGuildModelName() {
+		return targetGuildModelName;
+	}
+	public void setTargetGuildModelName(String targetGuildModelName) {
+		this.targetGuildModelName = targetGuildModelName;
+	}
+	public SendMemberRequest withTargetGuildModelName(String targetGuildModelName) {
+		this.targetGuildModelName = targetGuildModelName;
 		return this;
 	}
 	public String getTargetGuildName() {
@@ -80,6 +91,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         }
         return new SendMemberRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetGuildModelName(data.get("targetGuildModelName") == null || data.get("targetGuildModelName").isNull() ? null : data.get("targetGuildModelName").asText())
             .withTargetGuildName(data.get("targetGuildName") == null || data.get("targetGuildName").isNull() ? null : data.get("targetGuildName").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
@@ -89,6 +101,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
+                put("targetGuildModelName", getTargetGuildModelName());
                 put("targetGuildName", getTargetGuildName());
                 put("metadata", getMetadata());
                 put("createdAt", getCreatedAt());
@@ -106,6 +119,7 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.targetGuildModelName == null) ? 0 : this.targetGuildModelName.hashCode());
         result = prime * result + ((this.targetGuildName == null) ? 0 : this.targetGuildName.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -124,6 +138,11 @@ public class SendMemberRequest implements IModel, Serializable, Comparable<SendM
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
+			return false;
+		}
+		if (targetGuildModelName == null) {
+			return other.targetGuildModelName == null;
+		} else if (!targetGuildModelName.equals(other.targetGuildModelName)) {
 			return false;
 		}
 		if (targetGuildName == null) {

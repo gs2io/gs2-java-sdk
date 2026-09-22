@@ -3160,6 +3160,182 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeUserDataTask extends Gs2RestSessionTask<DescribeUserDataResult> {
+        private DescribeUserDataRequest request;
+
+        public DescribeUserDataTask(
+            DescribeUserDataRequest request,
+            AsyncAction<AsyncResult<DescribeUserDataResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeUserDataResult parse(JsonNode data) {
+            return DescribeUserDataResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/me/data";
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeUserDataAsync(
+            DescribeUserDataRequest request,
+            AsyncAction<AsyncResult<DescribeUserDataResult>> callback
+    ) {
+        DescribeUserDataTask task = new DescribeUserDataTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeUserDataResult describeUserData(
+            DescribeUserDataRequest request
+    ) {
+        final AsyncResult<DescribeUserDataResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeUserDataAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeUserDataByUserIdTask extends Gs2RestSessionTask<DescribeUserDataByUserIdResult> {
+        private DescribeUserDataByUserIdRequest request;
+
+        public DescribeUserDataByUserIdTask(
+            DescribeUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeUserDataByUserIdResult parse(JsonNode data) {
+            return DescribeUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userId}/data";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeUserDataByUserIdAsync(
+            DescribeUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeUserDataByUserIdResult>> callback
+    ) {
+        DescribeUserDataByUserIdTask task = new DescribeUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeUserDataByUserIdResult describeUserDataByUserId(
+            DescribeUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IfExpressionByUserIdTask extends Gs2RestSessionTask<IfExpressionByUserIdResult> {
         private IfExpressionByUserIdRequest request;
 

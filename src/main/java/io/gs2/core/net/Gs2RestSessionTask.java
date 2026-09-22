@@ -23,6 +23,16 @@ public abstract class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTa
         super(gs2RestSession);
 
         this.builder = HttpTaskBuilder.create();
+        if (gs2RestSession != null) {
+            // ★Steady: 生成クライアントは Gs2RestSession.EndpointHost から URL を組むので、
+            // 組み上がった URL を build() で <steady>/<service> に差し替える（生成物は触らない）。
+            // ★template を実行時に書き換える運用（dev 向け）では、タスクを作る前に書き換えておくこと。
+            this.builder.setSteadyEndpoint(
+                    gs2RestSession.getSteadyEndpoint(),
+                    Gs2RestSession.EndpointHost,
+                    gs2RestSession.getRegion().getName()
+            );
+        }
         this.callback = callback;
     }
 

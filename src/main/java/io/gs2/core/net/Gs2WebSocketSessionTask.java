@@ -23,6 +23,16 @@ public abstract class Gs2WebSocketSessionTask<T extends IResult> extends Gs2Sess
         super(gs2WebSocketSession);
 
         this.builder = HttpTaskBuilder.create();
+        if (gs2WebSocketSession != null) {
+            // ★Steady: 生成クライアントは Gs2WebSocketSession.EndpointHost から URL を組むので、
+            // 組み上がった URL を build() で <steady>/<service> に差し替える（生成物は触らない）。
+            // ★template を実行時に書き換える運用（dev 向け）では、タスクを作る前に書き換えておくこと。
+            this.builder.setSteadyEndpoint(
+                    gs2WebSocketSession.getSteadyEndpoint(),
+                    Gs2WebSocketSession.EndpointHost,
+                    gs2WebSocketSession.getRegion().getName()
+            );
+        }
         this.callback = callback;
     }
 

@@ -1054,6 +1054,7 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                     put("enableEventBridge", request.getEnableEventBridge());
                     put("eventBridgeAwsAccountId", request.getEventBridgeAwsAccountId());
                     put("eventBridgeAwsRegion", request.getEventBridgeAwsRegion());
+                    put("dataStoreKeyScheme", request.getDataStoreKeyScheme());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
