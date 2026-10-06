@@ -30,7 +30,9 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UnleashRateEntryModel implements IModel, Serializable {
 	private Long gradeValue;
+	private String type;
 	private Integer needCount;
+	private List<UnleashRecipe> recipes;
 	public Long getGradeValue() {
 		return gradeValue;
 	}
@@ -39,6 +41,16 @@ public class UnleashRateEntryModel implements IModel, Serializable {
 	}
 	public UnleashRateEntryModel withGradeValue(Long gradeValue) {
 		this.gradeValue = gradeValue;
+		return this;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public UnleashRateEntryModel withType(String type) {
+		this.type = type;
 		return this;
 	}
 	public Integer getNeedCount() {
@@ -51,6 +63,16 @@ public class UnleashRateEntryModel implements IModel, Serializable {
 		this.needCount = needCount;
 		return this;
 	}
+	public List<UnleashRecipe> getRecipes() {
+		return recipes;
+	}
+	public void setRecipes(List<UnleashRecipe> recipes) {
+		this.recipes = recipes;
+	}
+	public UnleashRateEntryModel withRecipes(List<UnleashRecipe> recipes) {
+		this.recipes = recipes;
+		return this;
+	}
 
     public static UnleashRateEntryModel fromJson(JsonNode data) {
         if (data == null) {
@@ -58,14 +80,28 @@ public class UnleashRateEntryModel implements IModel, Serializable {
         }
         return new UnleashRateEntryModel()
             .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue())
-            .withNeedCount(data.get("needCount") == null || data.get("needCount").isNull() ? null : data.get("needCount").intValue());
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withNeedCount(data.get("needCount") == null || data.get("needCount").isNull() ? null : data.get("needCount").intValue())
+            .withRecipes(data.get("recipes") == null || data.get("recipes").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("recipes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return UnleashRecipe.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("gradeValue", getGradeValue());
+                put("type", getType());
                 put("needCount", getNeedCount());
+                put("recipes", getRecipes() == null ? null :
+                    getRecipes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -75,7 +111,9 @@ public class UnleashRateEntryModel implements IModel, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.gradeValue == null) ? 0 : this.gradeValue.hashCode());
+        result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.needCount == null) ? 0 : this.needCount.hashCode());
+        result = prime * result + ((this.recipes == null) ? 0 : this.recipes.hashCode());
 		return result;
 	}
 
@@ -93,9 +131,19 @@ public class UnleashRateEntryModel implements IModel, Serializable {
 		} else if (!gradeValue.equals(other.gradeValue)) {
 			return false;
 		}
+		if (type == null) {
+			return other.type == null;
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
 		if (needCount == null) {
 			return other.needCount == null;
 		} else if (!needCount.equals(other.needCount)) {
+			return false;
+		}
+		if (recipes == null) {
+			return other.recipes == null;
+		} else if (!recipes.equals(other.recipes)) {
 			return false;
 		}
 		return true;

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.enhance.model.UnleashMaterialSelection;
 import io.gs2.enhance.model.Config;
 
 @SuppressWarnings("serial")
@@ -34,6 +35,8 @@ public class UnleashByUserIdRequest extends Gs2BasicRequest<UnleashByUserIdReque
     private String userId;
     private String targetItemSetId;
     private List<String> materials;
+    private String recipeName;
+    private List<UnleashMaterialSelection> recipeMaterials;
     private List<Config> config;
     private String timeOffsetToken;
     private String duplicationAvoider;
@@ -87,6 +90,26 @@ public class UnleashByUserIdRequest extends Gs2BasicRequest<UnleashByUserIdReque
 		this.materials = materials;
 		return this;
 	}
+	public String getRecipeName() {
+		return recipeName;
+	}
+	public void setRecipeName(String recipeName) {
+		this.recipeName = recipeName;
+	}
+	public UnleashByUserIdRequest withRecipeName(String recipeName) {
+		this.recipeName = recipeName;
+		return this;
+	}
+	public List<UnleashMaterialSelection> getRecipeMaterials() {
+		return recipeMaterials;
+	}
+	public void setRecipeMaterials(List<UnleashMaterialSelection> recipeMaterials) {
+		this.recipeMaterials = recipeMaterials;
+	}
+	public UnleashByUserIdRequest withRecipeMaterials(List<UnleashMaterialSelection> recipeMaterials) {
+		this.recipeMaterials = recipeMaterials;
+		return this;
+	}
 	public List<Config> getConfig() {
 		return config;
 	}
@@ -135,6 +158,13 @@ public class UnleashByUserIdRequest extends Gs2BasicRequest<UnleashByUserIdReque
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withRecipeName(data.get("recipeName") == null || data.get("recipeName").isNull() ? null : data.get("recipeName").asText())
+            .withRecipeMaterials(data.get("recipeMaterials") == null || data.get("recipeMaterials").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("recipeMaterials").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return UnleashMaterialSelection.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConfig(data.get("config") == null || data.get("config").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -154,6 +184,13 @@ public class UnleashByUserIdRequest extends Gs2BasicRequest<UnleashByUserIdReque
                 put("materials", getMaterials() == null ? null :
                     getMaterials().stream().map(item -> {
                         return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("recipeName", getRecipeName());
+                put("recipeMaterials", getRecipeMaterials() == null ? null :
+                    getRecipeMaterials().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
                     }
                 ).collect(Collectors.toList()));
                 put("config", getConfig() == null ? null :

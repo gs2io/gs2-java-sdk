@@ -19,7 +19,6 @@ import java.util.zip.GZIPOutputStream;
 
 public class HttpTask {
 
-    // ★テストから差し替えられるように package-private（本番では差し替えない）
     static HttpClient client = HttpClientBuilder.create().build();
 
     protected HttpRequestBase httpRequest;
@@ -28,9 +27,7 @@ public class HttpTask {
     private IResponseHandler handler;
     private boolean enableCompressRequest = true;
     private boolean enableDecompressResponse = true;
-    // 送信するエンティティ（圧縮後）。Steady の再送で要求を作り直すために保持する
     private byte[] entityBytes;
-    // Steady（専用フリート）の基点。null なら共有クラウド（接続段階の上限も再送も掛からない）
     private String steadyEndpoint;
 
     public enum Method {
@@ -65,7 +62,6 @@ public class HttpTask {
         return null;
     }
 
-    // 最大1回までしか呼べません
     public void send() {
         new Thread(
                 () -> {
@@ -75,10 +71,6 @@ public class HttpTask {
                         callback(httpRequest, response, true);
                         return;
                     } catch (IOException e) {
-                        // ★Steady の再送: 基点への**接続段階**の失敗（DNS / TCP connect / TLS handshake。
-                        // 1 バイトも送っていない）だけ、同じ要求をもう 1 回だけ送る。フリートが手放した公開 IP に
-                        // 当たったとき、名前を引き直して別のノードへ着く機会を 1 回だけ作る。送信後の失敗は
-                        // 届いたかもしれないので再送しない（非冪等要求の二重実行を作らない）。再送は 1 回だけ。
                         boolean requestSent = context.getAttribute(HttpCoreContext.HTTP_REQ_SENT) != null;
                         if (Steady.isSteadyUrl(steadyEndpoint, url) && Steady.isConnectFailure(e, requestSent)) {
                             HttpRequestBase retry = createRequest(method, url);
@@ -92,7 +84,6 @@ public class HttpTask {
                                 callback(retry, response, true);
                                 return;
                             } catch (IOException retryError) {
-                                // 2 回目も失敗: 従来どおり失敗として返す（3 回目は無い）
                             }
                         }
                     }
@@ -104,7 +95,6 @@ public class HttpTask {
         ).start();
     }
 
-    // ユーザデータは設定しても send 時に上書きされます
     public HttpRequestBase getHttpRequest() {
         return httpRequest;
     }
@@ -138,7 +128,6 @@ public class HttpTask {
         }
     }
 
-    // ユーティリティ
     public void addHeaderEntry(String key, String value) {
         httpRequest.addHeader(key, value);
     }
@@ -152,7 +141,6 @@ public class HttpTask {
             }
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             bout.write(bodyToSend);
-            // ★本文は byte[] で持ち、要求ごとにストリームを作り直す（Steady の再送で同じ要求をもう一度組むため）
             this.entityBytes = bout.toByteArray();
             applyEntity(this.httpRequest, this.entityBytes);
         } catch (IOException e) {
@@ -182,11 +170,6 @@ public class HttpTask {
         this.enableDecompressResponse = enableDecompressResponse;
     }
 
-    /**
-     * Steady（専用フリート）の基点を関連づける。宛先が基点配下なら接続段階に上限
-     * （{@link Steady#CONNECT_TIMEOUT_MILLIS}）を置き、接続段階の失敗だけ同じ要求をもう 1 回だけ送る。
-     * null（共有クラウド）なら従来どおり。
-     */
     void setSteadyEndpoint(String steadyEndpoint) {
         this.steadyEndpoint = Steady.normalize(steadyEndpoint);
         if (Steady.isSteadyUrl(this.steadyEndpoint, url)) {

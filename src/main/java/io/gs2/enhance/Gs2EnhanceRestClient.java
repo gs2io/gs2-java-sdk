@@ -2101,6 +2101,11 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                     put("metadata", request.getMetadata());
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("gradeModelId", request.getGradeModelId());
+                    put("groupKeyHierarchy", request.getGroupKeyHierarchy() == null ? null :
+                        request.getGroupKeyHierarchy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -2273,6 +2278,11 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                     put("metadata", request.getMetadata());
                     put("targetInventoryModelId", request.getTargetInventoryModelId());
                     put("gradeModelId", request.getGradeModelId());
+                    put("groupKeyHierarchy", request.getGroupKeyHierarchy() == null ? null :
+                        request.getGroupKeyHierarchy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("gradeEntries", request.getGradeEntries() == null ? null :
                         request.getGradeEntries().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -2728,6 +2738,13 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                             return item;
                         }
                     ).collect(Collectors.toList()));
+                    put("recipeName", request.getRecipeName());
+                    put("recipeMaterials", request.getRecipeMaterials() == null ? null :
+                        request.getRecipeMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("config", request.getConfig() == null ? null :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -2826,6 +2843,13 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                     put("materials", request.getMaterials() == null ? null :
                         request.getMaterials().stream().map(item -> {
                             return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("recipeName", request.getRecipeName());
+                    put("recipeMaterials", request.getRecipeMaterials() == null ? null :
+                        request.getRecipeMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
                         }
                     ).collect(Collectors.toList()));
                     put("config", request.getConfig() == null ? null :

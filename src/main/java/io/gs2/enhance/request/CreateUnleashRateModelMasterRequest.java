@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.enhance.model.UnleashIndividualMaterialSetting;
+import io.gs2.enhance.model.UnleashQuantityMaterialSetting;
+import io.gs2.enhance.model.UnleashMaterial;
+import io.gs2.enhance.model.UnleashRecipe;
 import io.gs2.enhance.model.UnleashRateEntryModel;
 
 @SuppressWarnings("serial")
@@ -35,6 +39,7 @@ public class CreateUnleashRateModelMasterRequest extends Gs2BasicRequest<CreateU
     private String metadata;
     private String targetInventoryModelId;
     private String gradeModelId;
+    private List<String> groupKeyHierarchy;
     private List<UnleashRateEntryModel> gradeEntries;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +101,16 @@ public class CreateUnleashRateModelMasterRequest extends Gs2BasicRequest<CreateU
 		this.gradeModelId = gradeModelId;
 		return this;
 	}
+	public List<String> getGroupKeyHierarchy() {
+		return groupKeyHierarchy;
+	}
+	public void setGroupKeyHierarchy(List<String> groupKeyHierarchy) {
+		this.groupKeyHierarchy = groupKeyHierarchy;
+	}
+	public CreateUnleashRateModelMasterRequest withGroupKeyHierarchy(List<String> groupKeyHierarchy) {
+		this.groupKeyHierarchy = groupKeyHierarchy;
+		return this;
+	}
 	public List<UnleashRateEntryModel> getGradeEntries() {
 		return gradeEntries;
 	}
@@ -118,6 +133,11 @@ public class CreateUnleashRateModelMasterRequest extends Gs2BasicRequest<CreateU
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
             .withGradeModelId(data.get("gradeModelId") == null || data.get("gradeModelId").isNull() ? null : data.get("gradeModelId").asText())
+            .withGroupKeyHierarchy(data.get("groupKeyHierarchy") == null || data.get("groupKeyHierarchy").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("groupKeyHierarchy").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gradeEntries").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -135,6 +155,11 @@ public class CreateUnleashRateModelMasterRequest extends Gs2BasicRequest<CreateU
                 put("metadata", getMetadata());
                 put("targetInventoryModelId", getTargetInventoryModelId());
                 put("gradeModelId", getGradeModelId());
+                put("groupKeyHierarchy", getGroupKeyHierarchy() == null ? null :
+                    getGroupKeyHierarchy().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("gradeEntries", getGradeEntries() == null ? null :
                     getGradeEntries().stream().map(item -> {
                         //noinspection Convert2MethodRef

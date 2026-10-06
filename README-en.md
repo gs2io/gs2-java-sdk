@@ -21,7 +21,8 @@ Follow the instructions in [GS2 Setup](https://docs.gs2.io/en/get_start/tutorial
 
 ### Requirements
 
-- Java8+
+- Java 8+
+- Android API 26 (Android 8.0)+ when using the SDK on Android
 - Maven2+
 
 [⇒Start using GS2 - SDK - Various programming languages](https://docs.gs2.io/en/get_start/#various-programming-languages)

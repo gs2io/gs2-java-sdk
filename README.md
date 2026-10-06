@@ -21,7 +21,8 @@ SDKを利用するには GS2 のクレデンシャルが必要です。
 
 ### 動作条件
 
-- Java8+
+- Java 8以上
+- Androidで利用する場合はAPI 26（Android 8.0）以上
 - Maven2+
 
 [⇒GS2の利用を開始 - SDK - 各種プログラミング言語](https://docs.gs2.io/ja/get_start/#%E5%90%84%E7%A8%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9E)

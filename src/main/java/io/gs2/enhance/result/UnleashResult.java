@@ -25,6 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.UnleashIndividualMaterialSetting;
+import io.gs2.enhance.model.UnleashQuantityMaterialSetting;
+import io.gs2.enhance.model.UnleashMaterial;
+import io.gs2.enhance.model.UnleashRecipe;
 import io.gs2.enhance.model.UnleashRateEntryModel;
 import io.gs2.enhance.model.UnleashRateModel;
 

@@ -35,6 +35,7 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
 	private String metadata;
 	private String targetInventoryModelId;
 	private String gradeModelId;
+	private List<String> groupKeyHierarchy;
 	private List<UnleashRateEntryModel> gradeEntries;
 	public String getUnleashRateModelId() {
 		return unleashRateModelId;
@@ -96,6 +97,16 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
 		this.gradeModelId = gradeModelId;
 		return this;
 	}
+	public List<String> getGroupKeyHierarchy() {
+		return groupKeyHierarchy;
+	}
+	public void setGroupKeyHierarchy(List<String> groupKeyHierarchy) {
+		this.groupKeyHierarchy = groupKeyHierarchy;
+	}
+	public UnleashRateModel withGroupKeyHierarchy(List<String> groupKeyHierarchy) {
+		this.groupKeyHierarchy = groupKeyHierarchy;
+		return this;
+	}
 	public List<UnleashRateEntryModel> getGradeEntries() {
 		return gradeEntries;
 	}
@@ -118,6 +129,11 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
             .withGradeModelId(data.get("gradeModelId") == null || data.get("gradeModelId").isNull() ? null : data.get("gradeModelId").asText())
+            .withGroupKeyHierarchy(data.get("groupKeyHierarchy") == null || data.get("groupKeyHierarchy").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("groupKeyHierarchy").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withGradeEntries(data.get("gradeEntries") == null || data.get("gradeEntries").isNull() ? null :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gradeEntries").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -135,6 +151,11 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
                 put("metadata", getMetadata());
                 put("targetInventoryModelId", getTargetInventoryModelId());
                 put("gradeModelId", getGradeModelId());
+                put("groupKeyHierarchy", getGroupKeyHierarchy() == null ? null :
+                    getGroupKeyHierarchy().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("gradeEntries", getGradeEntries() == null ? null :
                     getGradeEntries().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -160,6 +181,7 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.targetInventoryModelId == null) ? 0 : this.targetInventoryModelId.hashCode());
         result = prime * result + ((this.gradeModelId == null) ? 0 : this.gradeModelId.hashCode());
+        result = prime * result + ((this.groupKeyHierarchy == null) ? 0 : this.groupKeyHierarchy.hashCode());
         result = prime * result + ((this.gradeEntries == null) ? 0 : this.gradeEntries.hashCode());
 		return result;
 	}
@@ -201,6 +223,11 @@ public class UnleashRateModel implements IModel, Serializable, Comparable<Unleas
 		if (gradeModelId == null) {
 			return other.gradeModelId == null;
 		} else if (!gradeModelId.equals(other.gradeModelId)) {
+			return false;
+		}
+		if (groupKeyHierarchy == null) {
+			return other.groupKeyHierarchy == null;
+		} else if (!groupKeyHierarchy.equals(other.groupKeyHierarchy)) {
 			return false;
 		}
 		if (gradeEntries == null) {
