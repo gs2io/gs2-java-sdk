@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.realtime.model.TransactionSetting;
 import io.gs2.realtime.model.TransactionSettingV2;
+import io.gs2.realtime.model.SyncSetting;
+import io.gs2.realtime.model.StateMachineSetting;
 import io.gs2.realtime.model.MobileNotificationMessage;
 import io.gs2.realtime.model.NotificationSetting;
 import io.gs2.realtime.model.LogSetting;
@@ -39,9 +41,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private TransactionSettingV2 transactionSettingV2;
     private String serverType;
     private String serverSpec;
-    private String objectCatalog;
-    private String stateMachineNamespaceId;
-    private Long stateMachineVersion;
+    private SyncSetting syncSetting;
+    private StateMachineSetting stateMachineSetting;
     private NotificationSetting createNotification;
     private LogSetting logSetting;
 	public String getNamespaceName() {
@@ -107,34 +108,24 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.serverSpec = serverSpec;
 		return this;
 	}
-	public String getObjectCatalog() {
-		return objectCatalog;
+	public SyncSetting getSyncSetting() {
+		return syncSetting;
 	}
-	public void setObjectCatalog(String objectCatalog) {
-		this.objectCatalog = objectCatalog;
+	public void setSyncSetting(SyncSetting syncSetting) {
+		this.syncSetting = syncSetting;
 	}
-	public UpdateNamespaceRequest withObjectCatalog(String objectCatalog) {
-		this.objectCatalog = objectCatalog;
+	public UpdateNamespaceRequest withSyncSetting(SyncSetting syncSetting) {
+		this.syncSetting = syncSetting;
 		return this;
 	}
-	public String getStateMachineNamespaceId() {
-		return stateMachineNamespaceId;
+	public StateMachineSetting getStateMachineSetting() {
+		return stateMachineSetting;
 	}
-	public void setStateMachineNamespaceId(String stateMachineNamespaceId) {
-		this.stateMachineNamespaceId = stateMachineNamespaceId;
+	public void setStateMachineSetting(StateMachineSetting stateMachineSetting) {
+		this.stateMachineSetting = stateMachineSetting;
 	}
-	public UpdateNamespaceRequest withStateMachineNamespaceId(String stateMachineNamespaceId) {
-		this.stateMachineNamespaceId = stateMachineNamespaceId;
-		return this;
-	}
-	public Long getStateMachineVersion() {
-		return stateMachineVersion;
-	}
-	public void setStateMachineVersion(Long stateMachineVersion) {
-		this.stateMachineVersion = stateMachineVersion;
-	}
-	public UpdateNamespaceRequest withStateMachineVersion(Long stateMachineVersion) {
-		this.stateMachineVersion = stateMachineVersion;
+	public UpdateNamespaceRequest withStateMachineSetting(StateMachineSetting stateMachineSetting) {
+		this.stateMachineSetting = stateMachineSetting;
 		return this;
 	}
 	public NotificationSetting getCreateNotification() {
@@ -169,9 +160,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withServerType(data.get("serverType") == null || data.get("serverType").isNull() ? null : data.get("serverType").asText())
             .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
-            .withObjectCatalog(data.get("objectCatalog") == null || data.get("objectCatalog").isNull() ? null : data.get("objectCatalog").asText())
-            .withStateMachineNamespaceId(data.get("stateMachineNamespaceId") == null || data.get("stateMachineNamespaceId").isNull() ? null : data.get("stateMachineNamespaceId").asText())
-            .withStateMachineVersion(data.get("stateMachineVersion") == null || data.get("stateMachineVersion").isNull() ? null : data.get("stateMachineVersion").longValue())
+            .withSyncSetting(data.get("syncSetting") == null || data.get("syncSetting").isNull() ? null : SyncSetting.fromJson(data.get("syncSetting")))
+            .withStateMachineSetting(data.get("stateMachineSetting") == null || data.get("stateMachineSetting").isNull() ? null : StateMachineSetting.fromJson(data.get("stateMachineSetting")))
             .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
@@ -185,9 +175,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("serverType", getServerType());
                 put("serverSpec", getServerSpec());
-                put("objectCatalog", getObjectCatalog());
-                put("stateMachineNamespaceId", getStateMachineNamespaceId());
-                put("stateMachineVersion", getStateMachineVersion());
+                put("syncSetting", getSyncSetting() != null ? getSyncSetting().toJson() : null);
+                put("stateMachineSetting", getStateMachineSetting() != null ? getStateMachineSetting().toJson() : null);
                 put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
