@@ -166,6 +166,9 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                     put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("serverType", request.getServerType());
                     put("serverSpec", request.getServerSpec());
+                    put("objectCatalog", request.getObjectCatalog());
+                    put("stateMachineNamespaceId", request.getStateMachineNamespaceId());
+                    put("stateMachineVersion", request.getStateMachineVersion());
                     put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -413,6 +416,9 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                     put("transactionSettingV2", request.getTransactionSettingV2() != null ? request.getTransactionSettingV2().toJson() : null);
                     put("serverType", request.getServerType());
                     put("serverSpec", request.getServerSpec());
+                    put("objectCatalog", request.getObjectCatalog());
+                    put("stateMachineNamespaceId", request.getStateMachineNamespaceId());
+                    put("stateMachineVersion", request.getStateMachineVersion());
                     put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());

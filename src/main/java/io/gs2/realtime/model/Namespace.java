@@ -36,6 +36,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private TransactionSettingV2 transactionSettingV2;
 	private String serverType;
 	private String serverSpec;
+	private String objectCatalog;
+	private String stateMachineNamespaceId;
+	private Long stateMachineVersion;
 	private NotificationSetting createNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
@@ -114,6 +117,36 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.serverSpec = serverSpec;
 		return this;
 	}
+	public String getObjectCatalog() {
+		return objectCatalog;
+	}
+	public void setObjectCatalog(String objectCatalog) {
+		this.objectCatalog = objectCatalog;
+	}
+	public Namespace withObjectCatalog(String objectCatalog) {
+		this.objectCatalog = objectCatalog;
+		return this;
+	}
+	public String getStateMachineNamespaceId() {
+		return stateMachineNamespaceId;
+	}
+	public void setStateMachineNamespaceId(String stateMachineNamespaceId) {
+		this.stateMachineNamespaceId = stateMachineNamespaceId;
+	}
+	public Namespace withStateMachineNamespaceId(String stateMachineNamespaceId) {
+		this.stateMachineNamespaceId = stateMachineNamespaceId;
+		return this;
+	}
+	public Long getStateMachineVersion() {
+		return stateMachineVersion;
+	}
+	public void setStateMachineVersion(Long stateMachineVersion) {
+		this.stateMachineVersion = stateMachineVersion;
+	}
+	public Namespace withStateMachineVersion(Long stateMachineVersion) {
+		this.stateMachineVersion = stateMachineVersion;
+		return this;
+	}
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
@@ -177,6 +210,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withTransactionSettingV2(data.get("transactionSettingV2") == null || data.get("transactionSettingV2").isNull() ? null : TransactionSettingV2.fromJson(data.get("transactionSettingV2")))
             .withServerType(data.get("serverType") == null || data.get("serverType").isNull() ? null : data.get("serverType").asText())
             .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
+            .withObjectCatalog(data.get("objectCatalog") == null || data.get("objectCatalog").isNull() ? null : data.get("objectCatalog").asText())
+            .withStateMachineNamespaceId(data.get("stateMachineNamespaceId") == null || data.get("stateMachineNamespaceId").isNull() ? null : data.get("stateMachineNamespaceId").asText())
+            .withStateMachineVersion(data.get("stateMachineVersion") == null || data.get("stateMachineVersion").isNull() ? null : data.get("stateMachineVersion").longValue())
             .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -194,6 +230,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("transactionSettingV2", getTransactionSettingV2() != null ? getTransactionSettingV2().toJson() : null);
                 put("serverType", getServerType());
                 put("serverSpec", getServerSpec());
+                put("objectCatalog", getObjectCatalog());
+                put("stateMachineNamespaceId", getStateMachineNamespaceId());
+                put("stateMachineVersion", getStateMachineVersion());
                 put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -219,6 +258,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.transactionSettingV2 == null) ? 0 : this.transactionSettingV2.hashCode());
         result = prime * result + ((this.serverType == null) ? 0 : this.serverType.hashCode());
         result = prime * result + ((this.serverSpec == null) ? 0 : this.serverSpec.hashCode());
+        result = prime * result + ((this.objectCatalog == null) ? 0 : this.objectCatalog.hashCode());
+        result = prime * result + ((this.stateMachineNamespaceId == null) ? 0 : this.stateMachineNamespaceId.hashCode());
+        result = prime * result + ((this.stateMachineVersion == null) ? 0 : this.stateMachineVersion.hashCode());
         result = prime * result + ((this.createNotification == null) ? 0 : this.createNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -269,6 +311,21 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (serverSpec == null) {
 			return other.serverSpec == null;
 		} else if (!serverSpec.equals(other.serverSpec)) {
+			return false;
+		}
+		if (objectCatalog == null) {
+			return other.objectCatalog == null;
+		} else if (!objectCatalog.equals(other.objectCatalog)) {
+			return false;
+		}
+		if (stateMachineNamespaceId == null) {
+			return other.stateMachineNamespaceId == null;
+		} else if (!stateMachineNamespaceId.equals(other.stateMachineNamespaceId)) {
+			return false;
+		}
+		if (stateMachineVersion == null) {
+			return other.stateMachineVersion == null;
+		} else if (!stateMachineVersion.equals(other.stateMachineVersion)) {
 			return false;
 		}
 		if (createNotification == null) {
