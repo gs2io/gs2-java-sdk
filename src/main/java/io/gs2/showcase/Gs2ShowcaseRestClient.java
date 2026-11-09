@@ -1346,6 +1346,12 @@ public class Gs2ShowcaseRestClient extends AbstractGs2Client<Gs2ShowcaseRestClie
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("bonuses", request.getBonuses() == null ? null :
+                        request.getBonuses().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1524,6 +1530,12 @@ public class Gs2ShowcaseRestClient extends AbstractGs2Client<Gs2ShowcaseRestClie
                     ).collect(Collectors.toList()));
                     put("acquireActions", request.getAcquireActions() == null ? null :
                         request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("bonuses", request.getBonuses() == null ? null :
+                        request.getBonuses().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }
@@ -3428,6 +3440,7 @@ public class Gs2ShowcaseRestClient extends AbstractGs2Client<Gs2ShowcaseRestClie
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("routeKey", request.getRouteKey());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

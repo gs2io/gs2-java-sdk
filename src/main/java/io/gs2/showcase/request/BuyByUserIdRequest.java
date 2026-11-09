@@ -35,6 +35,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
     private String userId;
     private Integer quantity;
     private List<Config> config;
+    private String routeKey;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -97,6 +98,16 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
 		this.config = config;
 		return this;
 	}
+	public String getRouteKey() {
+		return routeKey;
+	}
+	public void setRouteKey(String routeKey) {
+		this.routeKey = routeKey;
+	}
+	public BuyByUserIdRequest withRouteKey(String routeKey) {
+		this.routeKey = routeKey;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -137,6 +148,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
                     return Config.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withRouteKey(data.get("routeKey") == null || data.get("routeKey").isNull() ? null : data.get("routeKey").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -154,6 +166,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("routeKey", getRouteKey());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

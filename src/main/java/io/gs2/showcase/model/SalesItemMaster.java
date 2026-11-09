@@ -36,6 +36,7 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
+	private List<Bonus> bonuses;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -109,6 +110,16 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 		this.acquireActions = acquireActions;
 		return this;
 	}
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	public void setBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+	}
+	public SalesItemMaster withBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -167,6 +178,12 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withBonuses(data.get("bonuses") == null || data.get("bonuses").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Bonus.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -197,6 +214,12 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("bonuses", getBonuses() == null ? null :
+                    getBonuses().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -220,6 +243,7 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
         result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
+        result = prime * result + ((this.bonuses == null) ? 0 : this.bonuses.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -268,6 +292,11 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 		if (acquireActions == null) {
 			return other.acquireActions == null;
 		} else if (!acquireActions.equals(other.acquireActions)) {
+			return false;
+		}
+		if (bonuses == null) {
+			return other.bonuses == null;
+		} else if (!bonuses.equals(other.bonuses)) {
 			return false;
 		}
 		if (createdAt == null) {

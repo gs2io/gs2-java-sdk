@@ -28,6 +28,7 @@ import io.gs2.showcase.model.*;
 import io.gs2.showcase.model.VerifyAction;
 import io.gs2.showcase.model.ConsumeAction;
 import io.gs2.showcase.model.AcquireAction;
+import io.gs2.showcase.model.Bonus;
 import io.gs2.showcase.model.SalesItemMaster;
 
 @SuppressWarnings("serial")

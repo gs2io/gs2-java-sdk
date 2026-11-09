@@ -27,6 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.showcase.model.VerifyAction;
 import io.gs2.showcase.model.ConsumeAction;
 import io.gs2.showcase.model.AcquireAction;
+import io.gs2.showcase.model.Bonus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -38,6 +39,7 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
     private List<VerifyAction> verifyActions;
     private List<ConsumeAction> consumeActions;
     private List<AcquireAction> acquireActions;
+    private List<Bonus> bonuses;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -108,6 +110,16 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
 		this.acquireActions = acquireActions;
 		return this;
 	}
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	public void setBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+	}
+	public CreateSalesItemMasterRequest withBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+		return this;
+	}
 
     public static CreateSalesItemMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -135,6 +147,12 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
                 }
+            ).collect(Collectors.toList()))
+            .withBonuses(data.get("bonuses") == null || data.get("bonuses").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Bonus.fromJson(item);
+                }
             ).collect(Collectors.toList()));
     }
 
@@ -159,6 +177,12 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
                 ).collect(Collectors.toList()));
                 put("acquireActions", getAcquireActions() == null ? null :
                     getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("bonuses", getBonuses() == null ? null :
+                    getBonuses().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }

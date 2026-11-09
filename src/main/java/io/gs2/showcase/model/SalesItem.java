@@ -34,6 +34,7 @@ public class SalesItem implements IModel, Serializable {
 	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
+	private List<Bonus> bonuses;
 	public String getName() {
 		return name;
 	}
@@ -84,6 +85,16 @@ public class SalesItem implements IModel, Serializable {
 		this.acquireActions = acquireActions;
 		return this;
 	}
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	public void setBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+	}
+	public SalesItem withBonuses(List<Bonus> bonuses) {
+		this.bonuses = bonuses;
+		return this;
+	}
 
     public static SalesItem fromJson(JsonNode data) {
         if (data == null) {
@@ -108,6 +119,12 @@ public class SalesItem implements IModel, Serializable {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withBonuses(data.get("bonuses") == null || data.get("bonuses").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Bonus.fromJson(item);
                 }
             ).collect(Collectors.toList()));
     }
@@ -135,6 +152,12 @@ public class SalesItem implements IModel, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("bonuses", getBonuses() == null ? null :
+                    getBonuses().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -148,6 +171,7 @@ public class SalesItem implements IModel, Serializable {
         result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
+        result = prime * result + ((this.bonuses == null) ? 0 : this.bonuses.hashCode());
 		return result;
 	}
 
@@ -183,6 +207,11 @@ public class SalesItem implements IModel, Serializable {
 		if (acquireActions == null) {
 			return other.acquireActions == null;
 		} else if (!acquireActions.equals(other.acquireActions)) {
+			return false;
+		}
+		if (bonuses == null) {
+			return other.bonuses == null;
+		} else if (!bonuses.equals(other.bonuses)) {
 			return false;
 		}
 		return true;
