@@ -38,6 +38,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String serverSpec;
 	private SyncSetting syncSetting;
 	private StateMachineSetting stateMachineSetting;
+	private ParticipantSetting participantSetting;
 	private NotificationSetting createNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
@@ -136,6 +137,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.stateMachineSetting = stateMachineSetting;
 		return this;
 	}
+	public ParticipantSetting getParticipantSetting() {
+		return participantSetting;
+	}
+	public void setParticipantSetting(ParticipantSetting participantSetting) {
+		this.participantSetting = participantSetting;
+	}
+	public Namespace withParticipantSetting(ParticipantSetting participantSetting) {
+		this.participantSetting = participantSetting;
+		return this;
+	}
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
@@ -201,6 +212,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
             .withSyncSetting(data.get("syncSetting") == null || data.get("syncSetting").isNull() ? null : SyncSetting.fromJson(data.get("syncSetting")))
             .withStateMachineSetting(data.get("stateMachineSetting") == null || data.get("stateMachineSetting").isNull() ? null : StateMachineSetting.fromJson(data.get("stateMachineSetting")))
+            .withParticipantSetting(data.get("participantSetting") == null || data.get("participantSetting").isNull() ? null : ParticipantSetting.fromJson(data.get("participantSetting")))
             .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -220,6 +232,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("serverSpec", getServerSpec());
                 put("syncSetting", getSyncSetting() != null ? getSyncSetting().toJson() : null);
                 put("stateMachineSetting", getStateMachineSetting() != null ? getStateMachineSetting().toJson() : null);
+                put("participantSetting", getParticipantSetting() != null ? getParticipantSetting().toJson() : null);
                 put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -247,6 +260,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.serverSpec == null) ? 0 : this.serverSpec.hashCode());
         result = prime * result + ((this.syncSetting == null) ? 0 : this.syncSetting.hashCode());
         result = prime * result + ((this.stateMachineSetting == null) ? 0 : this.stateMachineSetting.hashCode());
+        result = prime * result + ((this.participantSetting == null) ? 0 : this.participantSetting.hashCode());
         result = prime * result + ((this.createNotification == null) ? 0 : this.createNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -307,6 +321,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (stateMachineSetting == null) {
 			return other.stateMachineSetting == null;
 		} else if (!stateMachineSetting.equals(other.stateMachineSetting)) {
+			return false;
+		}
+		if (participantSetting == null) {
+			return other.participantSetting == null;
+		} else if (!participantSetting.equals(other.participantSetting)) {
 			return false;
 		}
 		if (createNotification == null) {

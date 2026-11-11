@@ -168,6 +168,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                     put("serverSpec", request.getServerSpec());
                     put("syncSetting", request.getSyncSetting() != null ? request.getSyncSetting().toJson() : null);
                     put("stateMachineSetting", request.getStateMachineSetting() != null ? request.getStateMachineSetting().toJson() : null);
+                    put("participantSetting", request.getParticipantSetting() != null ? request.getParticipantSetting().toJson() : null);
                     put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -417,6 +418,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                     put("serverSpec", request.getServerSpec());
                     put("syncSetting", request.getSyncSetting() != null ? request.getSyncSetting().toJson() : null);
                     put("stateMachineSetting", request.getStateMachineSetting() != null ? request.getStateMachineSetting().toJson() : null);
+                    put("participantSetting", request.getParticipantSetting() != null ? request.getParticipantSetting().toJson() : null);
                     put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());

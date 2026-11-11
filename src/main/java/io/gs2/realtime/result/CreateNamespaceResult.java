@@ -29,6 +29,7 @@ import io.gs2.realtime.model.TransactionSetting;
 import io.gs2.realtime.model.TransactionSettingV2;
 import io.gs2.realtime.model.SyncSetting;
 import io.gs2.realtime.model.StateMachineSetting;
+import io.gs2.realtime.model.ParticipantSetting;
 import io.gs2.realtime.model.MobileNotificationMessage;
 import io.gs2.realtime.model.NotificationSetting;
 import io.gs2.realtime.model.LogSetting;

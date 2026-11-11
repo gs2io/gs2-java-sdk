@@ -28,6 +28,7 @@ import io.gs2.realtime.model.TransactionSetting;
 import io.gs2.realtime.model.TransactionSettingV2;
 import io.gs2.realtime.model.SyncSetting;
 import io.gs2.realtime.model.StateMachineSetting;
+import io.gs2.realtime.model.ParticipantSetting;
 import io.gs2.realtime.model.MobileNotificationMessage;
 import io.gs2.realtime.model.NotificationSetting;
 import io.gs2.realtime.model.LogSetting;
@@ -43,6 +44,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String serverSpec;
     private SyncSetting syncSetting;
     private StateMachineSetting stateMachineSetting;
+    private ParticipantSetting participantSetting;
     private NotificationSetting createNotification;
     private LogSetting logSetting;
 	public String getName() {
@@ -128,6 +130,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.stateMachineSetting = stateMachineSetting;
 		return this;
 	}
+	public ParticipantSetting getParticipantSetting() {
+		return participantSetting;
+	}
+	public void setParticipantSetting(ParticipantSetting participantSetting) {
+		this.participantSetting = participantSetting;
+	}
+	public CreateNamespaceRequest withParticipantSetting(ParticipantSetting participantSetting) {
+		this.participantSetting = participantSetting;
+		return this;
+	}
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
@@ -162,6 +174,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
             .withSyncSetting(data.get("syncSetting") == null || data.get("syncSetting").isNull() ? null : SyncSetting.fromJson(data.get("syncSetting")))
             .withStateMachineSetting(data.get("stateMachineSetting") == null || data.get("stateMachineSetting").isNull() ? null : StateMachineSetting.fromJson(data.get("stateMachineSetting")))
+            .withParticipantSetting(data.get("participantSetting") == null || data.get("participantSetting").isNull() ? null : ParticipantSetting.fromJson(data.get("participantSetting")))
             .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
@@ -177,6 +190,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("serverSpec", getServerSpec());
                 put("syncSetting", getSyncSetting() != null ? getSyncSetting().toJson() : null);
                 put("stateMachineSetting", getStateMachineSetting() != null ? getStateMachineSetting().toJson() : null);
+                put("participantSetting", getParticipantSetting() != null ? getParticipantSetting().toJson() : null);
                 put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
