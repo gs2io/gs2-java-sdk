@@ -4081,6 +4081,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("withProfile", request.getWithProfile());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -4169,6 +4170,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("withProfile", request.getWithProfile());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
