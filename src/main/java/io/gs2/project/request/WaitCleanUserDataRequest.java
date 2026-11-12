@@ -31,6 +31,7 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
     private String ownerId;
     private String transactionId;
     private String userId;
+    private List<String> excludeMicroservices;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getOwnerId() {
@@ -61,6 +62,16 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
 	}
 	public WaitCleanUserDataRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public List<String> getExcludeMicroservices() {
+		return excludeMicroservices;
+	}
+	public void setExcludeMicroservices(List<String> excludeMicroservices) {
+		this.excludeMicroservices = excludeMicroservices;
+	}
+	public WaitCleanUserDataRequest withExcludeMicroservices(List<String> excludeMicroservices) {
+		this.excludeMicroservices = excludeMicroservices;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -95,6 +106,11 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
             .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withExcludeMicroservices(data.get("excludeMicroservices") == null || data.get("excludeMicroservices").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("excludeMicroservices").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -104,6 +120,11 @@ public class WaitCleanUserDataRequest extends Gs2BasicRequest<WaitCleanUserDataR
                 put("ownerId", getOwnerId());
                 put("transactionId", getTransactionId());
                 put("userId", getUserId());
+                put("excludeMicroservices", getExcludeMicroservices() == null ? null :
+                    getExcludeMicroservices().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

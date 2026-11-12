@@ -3062,6 +3062,11 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("userId", request.getUserId());
+                    put("excludeMicroservices", request.getExcludeMicroservices() == null ? null :
+                        request.getExcludeMicroservices().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3148,6 +3153,11 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("excludeMicroservices", request.getExcludeMicroservices() == null ? null :
+                        request.getExcludeMicroservices().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

@@ -42,6 +42,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting doTakeOverScript;
 	private ScriptSetting banScript;
 	private ScriptSetting unBanScript;
+	private AccountDeletionSetting accountDeletionSetting;
+	private ScriptSetting requestDeletionScript;
+	private ScriptSetting cancelDeletionScript;
+	private ScriptSetting executeDeletionScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -179,6 +183,46 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.unBanScript = unBanScript;
 		return this;
 	}
+	public AccountDeletionSetting getAccountDeletionSetting() {
+		return accountDeletionSetting;
+	}
+	public void setAccountDeletionSetting(AccountDeletionSetting accountDeletionSetting) {
+		this.accountDeletionSetting = accountDeletionSetting;
+	}
+	public Namespace withAccountDeletionSetting(AccountDeletionSetting accountDeletionSetting) {
+		this.accountDeletionSetting = accountDeletionSetting;
+		return this;
+	}
+	public ScriptSetting getRequestDeletionScript() {
+		return requestDeletionScript;
+	}
+	public void setRequestDeletionScript(ScriptSetting requestDeletionScript) {
+		this.requestDeletionScript = requestDeletionScript;
+	}
+	public Namespace withRequestDeletionScript(ScriptSetting requestDeletionScript) {
+		this.requestDeletionScript = requestDeletionScript;
+		return this;
+	}
+	public ScriptSetting getCancelDeletionScript() {
+		return cancelDeletionScript;
+	}
+	public void setCancelDeletionScript(ScriptSetting cancelDeletionScript) {
+		this.cancelDeletionScript = cancelDeletionScript;
+	}
+	public Namespace withCancelDeletionScript(ScriptSetting cancelDeletionScript) {
+		this.cancelDeletionScript = cancelDeletionScript;
+		return this;
+	}
+	public ScriptSetting getExecuteDeletionScript() {
+		return executeDeletionScript;
+	}
+	public void setExecuteDeletionScript(ScriptSetting executeDeletionScript) {
+		this.executeDeletionScript = executeDeletionScript;
+	}
+	public Namespace withExecuteDeletionScript(ScriptSetting executeDeletionScript) {
+		this.executeDeletionScript = executeDeletionScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -238,6 +282,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDoTakeOverScript(data.get("doTakeOverScript") == null || data.get("doTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("doTakeOverScript")))
             .withBanScript(data.get("banScript") == null || data.get("banScript").isNull() ? null : ScriptSetting.fromJson(data.get("banScript")))
             .withUnBanScript(data.get("unBanScript") == null || data.get("unBanScript").isNull() ? null : ScriptSetting.fromJson(data.get("unBanScript")))
+            .withAccountDeletionSetting(data.get("accountDeletionSetting") == null || data.get("accountDeletionSetting").isNull() ? null : AccountDeletionSetting.fromJson(data.get("accountDeletionSetting")))
+            .withRequestDeletionScript(data.get("requestDeletionScript") == null || data.get("requestDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("requestDeletionScript")))
+            .withCancelDeletionScript(data.get("cancelDeletionScript") == null || data.get("cancelDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("cancelDeletionScript")))
+            .withExecuteDeletionScript(data.get("executeDeletionScript") == null || data.get("executeDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("executeDeletionScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -260,6 +308,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("doTakeOverScript", getDoTakeOverScript() != null ? getDoTakeOverScript().toJson() : null);
                 put("banScript", getBanScript() != null ? getBanScript().toJson() : null);
                 put("unBanScript", getUnBanScript() != null ? getUnBanScript().toJson() : null);
+                put("accountDeletionSetting", getAccountDeletionSetting() != null ? getAccountDeletionSetting().toJson() : null);
+                put("requestDeletionScript", getRequestDeletionScript() != null ? getRequestDeletionScript().toJson() : null);
+                put("cancelDeletionScript", getCancelDeletionScript() != null ? getCancelDeletionScript().toJson() : null);
+                put("executeDeletionScript", getExecuteDeletionScript() != null ? getExecuteDeletionScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -290,6 +342,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.doTakeOverScript == null) ? 0 : this.doTakeOverScript.hashCode());
         result = prime * result + ((this.banScript == null) ? 0 : this.banScript.hashCode());
         result = prime * result + ((this.unBanScript == null) ? 0 : this.unBanScript.hashCode());
+        result = prime * result + ((this.accountDeletionSetting == null) ? 0 : this.accountDeletionSetting.hashCode());
+        result = prime * result + ((this.requestDeletionScript == null) ? 0 : this.requestDeletionScript.hashCode());
+        result = prime * result + ((this.cancelDeletionScript == null) ? 0 : this.cancelDeletionScript.hashCode());
+        result = prime * result + ((this.executeDeletionScript == null) ? 0 : this.executeDeletionScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -369,6 +425,26 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (unBanScript == null) {
 			return other.unBanScript == null;
 		} else if (!unBanScript.equals(other.unBanScript)) {
+			return false;
+		}
+		if (accountDeletionSetting == null) {
+			return other.accountDeletionSetting == null;
+		} else if (!accountDeletionSetting.equals(other.accountDeletionSetting)) {
+			return false;
+		}
+		if (requestDeletionScript == null) {
+			return other.requestDeletionScript == null;
+		} else if (!requestDeletionScript.equals(other.requestDeletionScript)) {
+			return false;
+		}
+		if (cancelDeletionScript == null) {
+			return other.cancelDeletionScript == null;
+		} else if (!cancelDeletionScript.equals(other.cancelDeletionScript)) {
+			return false;
+		}
+		if (executeDeletionScript == null) {
+			return other.executeDeletionScript == null;
+		} else if (!executeDeletionScript.equals(other.executeDeletionScript)) {
 			return false;
 		}
 		if (logSetting == null) {

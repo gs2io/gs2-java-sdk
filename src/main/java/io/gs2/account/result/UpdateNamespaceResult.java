@@ -28,6 +28,7 @@ import io.gs2.account.model.*;
 import io.gs2.account.model.TransactionSetting;
 import io.gs2.account.model.TransactionSettingV2;
 import io.gs2.account.model.ScriptSetting;
+import io.gs2.account.model.AccountDeletionSetting;
 import io.gs2.account.model.LogSetting;
 import io.gs2.account.model.Namespace;
 

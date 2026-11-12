@@ -36,6 +36,8 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private List<BanStatus> banStatuses;
 	private Boolean banned;
 	private Long lastAuthenticatedAt;
+	private Long deletionRequestedAt;
+	private Long deletionScheduledAt;
 	private Long createdAt;
 	private Long revision;
 	public String getAccountId() {
@@ -108,6 +110,26 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		this.lastAuthenticatedAt = lastAuthenticatedAt;
 		return this;
 	}
+	public Long getDeletionRequestedAt() {
+		return deletionRequestedAt;
+	}
+	public void setDeletionRequestedAt(Long deletionRequestedAt) {
+		this.deletionRequestedAt = deletionRequestedAt;
+	}
+	public Account withDeletionRequestedAt(Long deletionRequestedAt) {
+		this.deletionRequestedAt = deletionRequestedAt;
+		return this;
+	}
+	public Long getDeletionScheduledAt() {
+		return deletionScheduledAt;
+	}
+	public void setDeletionScheduledAt(Long deletionScheduledAt) {
+		this.deletionScheduledAt = deletionScheduledAt;
+	}
+	public Account withDeletionScheduledAt(Long deletionScheduledAt) {
+		this.deletionScheduledAt = deletionScheduledAt;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -146,6 +168,8 @@ public class Account implements IModel, Serializable, Comparable<Account> {
             ).collect(Collectors.toList()))
             .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
             .withLastAuthenticatedAt(data.get("lastAuthenticatedAt") == null || data.get("lastAuthenticatedAt").isNull() ? null : data.get("lastAuthenticatedAt").longValue())
+            .withDeletionRequestedAt(data.get("deletionRequestedAt") == null || data.get("deletionRequestedAt").isNull() ? null : data.get("deletionRequestedAt").longValue())
+            .withDeletionScheduledAt(data.get("deletionScheduledAt") == null || data.get("deletionScheduledAt").isNull() ? null : data.get("deletionScheduledAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -165,6 +189,8 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 ).collect(Collectors.toList()));
                 put("banned", getBanned());
                 put("lastAuthenticatedAt", getLastAuthenticatedAt());
+                put("deletionRequestedAt", getDeletionRequestedAt());
+                put("deletionScheduledAt", getDeletionScheduledAt());
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -187,6 +213,8 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.banStatuses == null) ? 0 : this.banStatuses.hashCode());
         result = prime * result + ((this.banned == null) ? 0 : this.banned.hashCode());
         result = prime * result + ((this.lastAuthenticatedAt == null) ? 0 : this.lastAuthenticatedAt.hashCode());
+        result = prime * result + ((this.deletionRequestedAt == null) ? 0 : this.deletionRequestedAt.hashCode());
+        result = prime * result + ((this.deletionScheduledAt == null) ? 0 : this.deletionScheduledAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -234,6 +262,16 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (lastAuthenticatedAt == null) {
 			return other.lastAuthenticatedAt == null;
 		} else if (!lastAuthenticatedAt.equals(other.lastAuthenticatedAt)) {
+			return false;
+		}
+		if (deletionRequestedAt == null) {
+			return other.deletionRequestedAt == null;
+		} else if (!deletionRequestedAt.equals(other.deletionRequestedAt)) {
+			return false;
+		}
+		if (deletionScheduledAt == null) {
+			return other.deletionScheduledAt == null;
+		} else if (!deletionScheduledAt.equals(other.deletionScheduledAt)) {
 			return false;
 		}
 		if (createdAt == null) {

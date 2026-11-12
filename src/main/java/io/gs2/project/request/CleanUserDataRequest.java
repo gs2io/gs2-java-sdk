@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CleanUserDataRequest extends Gs2BasicRequest<CleanUserDataRequest> {
     private String userId;
+    private List<String> excludeMicroservices;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getUserId() {
@@ -39,6 +40,16 @@ public class CleanUserDataRequest extends Gs2BasicRequest<CleanUserDataRequest> 
 	}
 	public CleanUserDataRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public List<String> getExcludeMicroservices() {
+		return excludeMicroservices;
+	}
+	public void setExcludeMicroservices(List<String> excludeMicroservices) {
+		this.excludeMicroservices = excludeMicroservices;
+	}
+	public CleanUserDataRequest withExcludeMicroservices(List<String> excludeMicroservices) {
+		this.excludeMicroservices = excludeMicroservices;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -71,6 +82,11 @@ public class CleanUserDataRequest extends Gs2BasicRequest<CleanUserDataRequest> 
         }
         return new CleanUserDataRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withExcludeMicroservices(data.get("excludeMicroservices") == null || data.get("excludeMicroservices").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("excludeMicroservices").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -78,6 +94,11 @@ public class CleanUserDataRequest extends Gs2BasicRequest<CleanUserDataRequest> 
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
+                put("excludeMicroservices", getExcludeMicroservices() == null ? null :
+                    getExcludeMicroservices().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

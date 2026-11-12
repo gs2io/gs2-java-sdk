@@ -27,6 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.account.model.TransactionSetting;
 import io.gs2.account.model.TransactionSettingV2;
 import io.gs2.account.model.ScriptSetting;
+import io.gs2.account.model.AccountDeletionSetting;
 import io.gs2.account.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -43,6 +44,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting doTakeOverScript;
     private ScriptSetting banScript;
     private ScriptSetting unBanScript;
+    private AccountDeletionSetting accountDeletionSetting;
+    private ScriptSetting requestDeletionScript;
+    private ScriptSetting cancelDeletionScript;
+    private ScriptSetting executeDeletionScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -157,6 +162,46 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.unBanScript = unBanScript;
 		return this;
 	}
+	public AccountDeletionSetting getAccountDeletionSetting() {
+		return accountDeletionSetting;
+	}
+	public void setAccountDeletionSetting(AccountDeletionSetting accountDeletionSetting) {
+		this.accountDeletionSetting = accountDeletionSetting;
+	}
+	public UpdateNamespaceRequest withAccountDeletionSetting(AccountDeletionSetting accountDeletionSetting) {
+		this.accountDeletionSetting = accountDeletionSetting;
+		return this;
+	}
+	public ScriptSetting getRequestDeletionScript() {
+		return requestDeletionScript;
+	}
+	public void setRequestDeletionScript(ScriptSetting requestDeletionScript) {
+		this.requestDeletionScript = requestDeletionScript;
+	}
+	public UpdateNamespaceRequest withRequestDeletionScript(ScriptSetting requestDeletionScript) {
+		this.requestDeletionScript = requestDeletionScript;
+		return this;
+	}
+	public ScriptSetting getCancelDeletionScript() {
+		return cancelDeletionScript;
+	}
+	public void setCancelDeletionScript(ScriptSetting cancelDeletionScript) {
+		this.cancelDeletionScript = cancelDeletionScript;
+	}
+	public UpdateNamespaceRequest withCancelDeletionScript(ScriptSetting cancelDeletionScript) {
+		this.cancelDeletionScript = cancelDeletionScript;
+		return this;
+	}
+	public ScriptSetting getExecuteDeletionScript() {
+		return executeDeletionScript;
+	}
+	public void setExecuteDeletionScript(ScriptSetting executeDeletionScript) {
+		this.executeDeletionScript = executeDeletionScript;
+	}
+	public UpdateNamespaceRequest withExecuteDeletionScript(ScriptSetting executeDeletionScript) {
+		this.executeDeletionScript = executeDeletionScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -184,6 +229,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withDoTakeOverScript(data.get("doTakeOverScript") == null || data.get("doTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("doTakeOverScript")))
             .withBanScript(data.get("banScript") == null || data.get("banScript").isNull() ? null : ScriptSetting.fromJson(data.get("banScript")))
             .withUnBanScript(data.get("unBanScript") == null || data.get("unBanScript").isNull() ? null : ScriptSetting.fromJson(data.get("unBanScript")))
+            .withAccountDeletionSetting(data.get("accountDeletionSetting") == null || data.get("accountDeletionSetting").isNull() ? null : AccountDeletionSetting.fromJson(data.get("accountDeletionSetting")))
+            .withRequestDeletionScript(data.get("requestDeletionScript") == null || data.get("requestDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("requestDeletionScript")))
+            .withCancelDeletionScript(data.get("cancelDeletionScript") == null || data.get("cancelDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("cancelDeletionScript")))
+            .withExecuteDeletionScript(data.get("executeDeletionScript") == null || data.get("executeDeletionScript").isNull() ? null : ScriptSetting.fromJson(data.get("executeDeletionScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -201,6 +250,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("doTakeOverScript", getDoTakeOverScript() != null ? getDoTakeOverScript().toJson() : null);
                 put("banScript", getBanScript() != null ? getBanScript().toJson() : null);
                 put("unBanScript", getUnBanScript() != null ? getUnBanScript().toJson() : null);
+                put("accountDeletionSetting", getAccountDeletionSetting() != null ? getAccountDeletionSetting().toJson() : null);
+                put("requestDeletionScript", getRequestDeletionScript() != null ? getRequestDeletionScript().toJson() : null);
+                put("cancelDeletionScript", getCancelDeletionScript() != null ? getCancelDeletionScript().toJson() : null);
+                put("executeDeletionScript", getExecuteDeletionScript() != null ? getExecuteDeletionScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

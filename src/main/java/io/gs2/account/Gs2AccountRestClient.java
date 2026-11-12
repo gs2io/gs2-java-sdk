@@ -172,6 +172,10 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
                     put("unBanScript", request.getUnBanScript() != null ? request.getUnBanScript().toJson() : null);
+                    put("accountDeletionSetting", request.getAccountDeletionSetting() != null ? request.getAccountDeletionSetting().toJson() : null);
+                    put("requestDeletionScript", request.getRequestDeletionScript() != null ? request.getRequestDeletionScript().toJson() : null);
+                    put("cancelDeletionScript", request.getCancelDeletionScript() != null ? request.getCancelDeletionScript().toJson() : null);
+                    put("executeDeletionScript", request.getExecuteDeletionScript() != null ? request.getExecuteDeletionScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -423,6 +427,10 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                     put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("banScript", request.getBanScript() != null ? request.getBanScript().toJson() : null);
                     put("unBanScript", request.getUnBanScript() != null ? request.getUnBanScript().toJson() : null);
+                    put("accountDeletionSetting", request.getAccountDeletionSetting() != null ? request.getAccountDeletionSetting().toJson() : null);
+                    put("requestDeletionScript", request.getRequestDeletionScript() != null ? request.getRequestDeletionScript().toJson() : null);
+                    put("cancelDeletionScript", request.getCancelDeletionScript() != null ? request.getCancelDeletionScript().toJson() : null);
+                    put("executeDeletionScript", request.getExecuteDeletionScript() != null ? request.getExecuteDeletionScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -1979,6 +1987,441 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
     ) {
         final AsyncResult<AuthenticationResult>[] resultAsyncResult = new AsyncResult[]{null};
         authenticationAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RequestDeletionTask extends Gs2RestSessionTask<RequestDeletionResult> {
+        private RequestDeletionRequest request;
+
+        public RequestDeletionTask(
+            RequestDeletionRequest request,
+            AsyncAction<AsyncResult<RequestDeletionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RequestDeletionResult parse(JsonNode data) {
+            return RequestDeletionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/deletion";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void requestDeletionAsync(
+            RequestDeletionRequest request,
+            AsyncAction<AsyncResult<RequestDeletionResult>> callback
+    ) {
+        RequestDeletionTask task = new RequestDeletionTask(request, callback);
+        session.execute(task);
+    }
+
+    public RequestDeletionResult requestDeletion(
+            RequestDeletionRequest request
+    ) {
+        final AsyncResult<RequestDeletionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        requestDeletionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RequestDeletionByUserIdTask extends Gs2RestSessionTask<RequestDeletionByUserIdResult> {
+        private RequestDeletionByUserIdRequest request;
+
+        public RequestDeletionByUserIdTask(
+            RequestDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<RequestDeletionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RequestDeletionByUserIdResult parse(JsonNode data) {
+            return RequestDeletionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/deletion";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void requestDeletionByUserIdAsync(
+            RequestDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<RequestDeletionByUserIdResult>> callback
+    ) {
+        RequestDeletionByUserIdTask task = new RequestDeletionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public RequestDeletionByUserIdResult requestDeletionByUserId(
+            RequestDeletionByUserIdRequest request
+    ) {
+        final AsyncResult<RequestDeletionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        requestDeletionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CancelDeletionTask extends Gs2RestSessionTask<CancelDeletionResult> {
+        private CancelDeletionRequest request;
+
+        public CancelDeletionTask(
+            CancelDeletionRequest request,
+            AsyncAction<AsyncResult<CancelDeletionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CancelDeletionResult parse(JsonNode data) {
+            return CancelDeletionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/deletion/cancel";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void cancelDeletionAsync(
+            CancelDeletionRequest request,
+            AsyncAction<AsyncResult<CancelDeletionResult>> callback
+    ) {
+        CancelDeletionTask task = new CancelDeletionTask(request, callback);
+        session.execute(task);
+    }
+
+    public CancelDeletionResult cancelDeletion(
+            CancelDeletionRequest request
+    ) {
+        final AsyncResult<CancelDeletionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        cancelDeletionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CancelDeletionByUserIdTask extends Gs2RestSessionTask<CancelDeletionByUserIdResult> {
+        private CancelDeletionByUserIdRequest request;
+
+        public CancelDeletionByUserIdTask(
+            CancelDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<CancelDeletionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CancelDeletionByUserIdResult parse(JsonNode data) {
+            return CancelDeletionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/deletion";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void cancelDeletionByUserIdAsync(
+            CancelDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<CancelDeletionByUserIdResult>> callback
+    ) {
+        CancelDeletionByUserIdTask task = new CancelDeletionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CancelDeletionByUserIdResult cancelDeletionByUserId(
+            CancelDeletionByUserIdRequest request
+    ) {
+        final AsyncResult<CancelDeletionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        cancelDeletionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ExecuteDeletionByUserIdTask extends Gs2RestSessionTask<ExecuteDeletionByUserIdResult> {
+        private ExecuteDeletionByUserIdRequest request;
+
+        public ExecuteDeletionByUserIdTask(
+            ExecuteDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<ExecuteDeletionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExecuteDeletionByUserIdResult parse(JsonNode data) {
+            return ExecuteDeletionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/deletion/execute";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void executeDeletionByUserIdAsync(
+            ExecuteDeletionByUserIdRequest request,
+            AsyncAction<AsyncResult<ExecuteDeletionByUserIdResult>> callback
+    ) {
+        ExecuteDeletionByUserIdTask task = new ExecuteDeletionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExecuteDeletionByUserIdResult executeDeletionByUserId(
+            ExecuteDeletionByUserIdRequest request
+    ) {
+        final AsyncResult<ExecuteDeletionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        executeDeletionByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
