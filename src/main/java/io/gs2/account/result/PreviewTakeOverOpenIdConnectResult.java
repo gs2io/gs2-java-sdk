@@ -1,0 +1,122 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.account.result;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.gs2.core.model.*;
+import io.gs2.account.model.*;
+import io.gs2.account.model.BanStatus;
+import io.gs2.account.model.Account;
+
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class PreviewTakeOverOpenIdConnectResult implements IResult, Serializable {
+    private Account item;
+    private List<BanStatus> banStatuses;
+    private String token;
+    private Long expire;
+
+	public Account getItem() {
+		return item;
+	}
+
+	public void setItem(Account item) {
+		this.item = item;
+	}
+
+	public PreviewTakeOverOpenIdConnectResult withItem(Account item) {
+		this.item = item;
+		return this;
+	}
+
+	public List<BanStatus> getBanStatuses() {
+		return banStatuses;
+	}
+
+	public void setBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
+	}
+
+	public PreviewTakeOverOpenIdConnectResult withBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
+		return this;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public PreviewTakeOverOpenIdConnectResult withToken(String token) {
+		this.token = token;
+		return this;
+	}
+
+	public Long getExpire() {
+		return expire;
+	}
+
+	public void setExpire(Long expire) {
+		this.expire = expire;
+	}
+
+	public PreviewTakeOverOpenIdConnectResult withExpire(Long expire) {
+		this.expire = expire;
+		return this;
+	}
+
+    public static PreviewTakeOverOpenIdConnectResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PreviewTakeOverOpenIdConnectResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")))
+            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("banStatuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BanStatus.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("banStatuses", getBanStatuses() == null ? null :
+                    getBanStatuses().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("token", getToken());
+                put("expire", getExpire());
+            }}
+        );
+    }
+}

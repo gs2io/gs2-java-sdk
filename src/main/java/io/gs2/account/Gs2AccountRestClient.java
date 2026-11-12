@@ -2003,6 +2003,171 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class PreviewTakeOverTask extends Gs2RestSessionTask<PreviewTakeOverResult> {
+        private PreviewTakeOverRequest request;
+
+        public PreviewTakeOverTask(
+            PreviewTakeOverRequest request,
+            AsyncAction<AsyncResult<PreviewTakeOverResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreviewTakeOverResult parse(JsonNode data) {
+            return PreviewTakeOverResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/takeover/type/{type}/preview";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void previewTakeOverAsync(
+            PreviewTakeOverRequest request,
+            AsyncAction<AsyncResult<PreviewTakeOverResult>> callback
+    ) {
+        PreviewTakeOverTask task = new PreviewTakeOverTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreviewTakeOverResult previewTakeOver(
+            PreviewTakeOverRequest request
+    ) {
+        final AsyncResult<PreviewTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
+        previewTakeOverAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PreviewTakeOverOpenIdConnectTask extends Gs2RestSessionTask<PreviewTakeOverOpenIdConnectResult> {
+        private PreviewTakeOverOpenIdConnectRequest request;
+
+        public PreviewTakeOverOpenIdConnectTask(
+            PreviewTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<PreviewTakeOverOpenIdConnectResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PreviewTakeOverOpenIdConnectResult parse(JsonNode data) {
+            return PreviewTakeOverOpenIdConnectResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/takeover/type/{type}/openIdConnect/preview";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("idToken", request.getIdToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void previewTakeOverOpenIdConnectAsync(
+            PreviewTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<PreviewTakeOverOpenIdConnectResult>> callback
+    ) {
+        PreviewTakeOverOpenIdConnectTask task = new PreviewTakeOverOpenIdConnectTask(request, callback);
+        session.execute(task);
+    }
+
+    public PreviewTakeOverOpenIdConnectResult previewTakeOverOpenIdConnect(
+            PreviewTakeOverOpenIdConnectRequest request
+    ) {
+        final AsyncResult<PreviewTakeOverOpenIdConnectResult>[] resultAsyncResult = new AsyncResult[]{null};
+        previewTakeOverOpenIdConnectAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class RequestDeletionTask extends Gs2RestSessionTask<RequestDeletionResult> {
         private RequestDeletionRequest request;
 
