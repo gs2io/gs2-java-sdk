@@ -2961,6 +2961,175 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class IssueTakeOverCodeTask extends Gs2RestSessionTask<IssueTakeOverCodeResult> {
+        private IssueTakeOverCodeRequest request;
+
+        public IssueTakeOverCodeTask(
+            IssueTakeOverCodeRequest request,
+            AsyncAction<AsyncResult<IssueTakeOverCodeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IssueTakeOverCodeResult parse(JsonNode data) {
+            return IssueTakeOverCodeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/takeover/type/{type}/issue";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void issueTakeOverCodeAsync(
+            IssueTakeOverCodeRequest request,
+            AsyncAction<AsyncResult<IssueTakeOverCodeResult>> callback
+    ) {
+        IssueTakeOverCodeTask task = new IssueTakeOverCodeTask(request, callback);
+        session.execute(task);
+    }
+
+    public IssueTakeOverCodeResult issueTakeOverCode(
+            IssueTakeOverCodeRequest request
+    ) {
+        final AsyncResult<IssueTakeOverCodeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        issueTakeOverCodeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IssueTakeOverCodeByUserIdTask extends Gs2RestSessionTask<IssueTakeOverCodeByUserIdResult> {
+        private IssueTakeOverCodeByUserIdRequest request;
+
+        public IssueTakeOverCodeByUserIdTask(
+            IssueTakeOverCodeByUserIdRequest request,
+            AsyncAction<AsyncResult<IssueTakeOverCodeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IssueTakeOverCodeByUserIdResult parse(JsonNode data) {
+            return IssueTakeOverCodeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/takeover/type/{type}/issue";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void issueTakeOverCodeByUserIdAsync(
+            IssueTakeOverCodeByUserIdRequest request,
+            AsyncAction<AsyncResult<IssueTakeOverCodeByUserIdResult>> callback
+    ) {
+        IssueTakeOverCodeByUserIdTask task = new IssueTakeOverCodeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public IssueTakeOverCodeByUserIdResult issueTakeOverCodeByUserId(
+            IssueTakeOverCodeByUserIdRequest request
+    ) {
+        final AsyncResult<IssueTakeOverCodeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        issueTakeOverCodeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class CreateTakeOverOpenIdConnectTask extends Gs2RestSessionTask<CreateTakeOverOpenIdConnectResult> {
         private CreateTakeOverOpenIdConnectRequest request;
 
@@ -5494,7 +5663,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                     put("type", request.getType());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("takeOverMethod", request.getTakeOverMethod());
                     put("openIdConnectSetting", request.getOpenIdConnectSetting() != null ? request.getOpenIdConnectSetting().toJson() : null);
+                    put("issuedCodeSetting", request.getIssuedCodeSetting() != null ? request.getIssuedCodeSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -5659,7 +5830,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("takeOverMethod", request.getTakeOverMethod());
                     put("openIdConnectSetting", request.getOpenIdConnectSetting() != null ? request.getOpenIdConnectSetting().toJson() : null);
+                    put("issuedCodeSetting", request.getIssuedCodeSetting() != null ? request.getIssuedCodeSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

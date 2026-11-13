@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.account.model.ScopeValue;
 import io.gs2.account.model.OpenIdConnectSetting;
+import io.gs2.account.model.IssuedCodeSetting;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -34,7 +35,9 @@ public class CreateTakeOverTypeModelMasterRequest extends Gs2BasicRequest<Create
     private Integer type;
     private String description;
     private String metadata;
+    private String takeOverMethod;
     private OpenIdConnectSetting openIdConnectSetting;
+    private IssuedCodeSetting issuedCodeSetting;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -75,6 +78,16 @@ public class CreateTakeOverTypeModelMasterRequest extends Gs2BasicRequest<Create
 		this.metadata = metadata;
 		return this;
 	}
+	public String getTakeOverMethod() {
+		return takeOverMethod;
+	}
+	public void setTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+	}
+	public CreateTakeOverTypeModelMasterRequest withTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+		return this;
+	}
 	public OpenIdConnectSetting getOpenIdConnectSetting() {
 		return openIdConnectSetting;
 	}
@@ -83,6 +96,16 @@ public class CreateTakeOverTypeModelMasterRequest extends Gs2BasicRequest<Create
 	}
 	public CreateTakeOverTypeModelMasterRequest withOpenIdConnectSetting(OpenIdConnectSetting openIdConnectSetting) {
 		this.openIdConnectSetting = openIdConnectSetting;
+		return this;
+	}
+	public IssuedCodeSetting getIssuedCodeSetting() {
+		return issuedCodeSetting;
+	}
+	public void setIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
+	}
+	public CreateTakeOverTypeModelMasterRequest withIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
 		return this;
 	}
 
@@ -95,7 +118,9 @@ public class CreateTakeOverTypeModelMasterRequest extends Gs2BasicRequest<Create
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withOpenIdConnectSetting(data.get("openIdConnectSetting") == null || data.get("openIdConnectSetting").isNull() ? null : OpenIdConnectSetting.fromJson(data.get("openIdConnectSetting")));
+            .withTakeOverMethod(data.get("takeOverMethod") == null || data.get("takeOverMethod").isNull() ? null : data.get("takeOverMethod").asText())
+            .withOpenIdConnectSetting(data.get("openIdConnectSetting") == null || data.get("openIdConnectSetting").isNull() ? null : OpenIdConnectSetting.fromJson(data.get("openIdConnectSetting")))
+            .withIssuedCodeSetting(data.get("issuedCodeSetting") == null || data.get("issuedCodeSetting").isNull() ? null : IssuedCodeSetting.fromJson(data.get("issuedCodeSetting")));
     }
 
     public JsonNode toJson() {
@@ -105,7 +130,9 @@ public class CreateTakeOverTypeModelMasterRequest extends Gs2BasicRequest<Create
                 put("type", getType());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("takeOverMethod", getTakeOverMethod());
                 put("openIdConnectSetting", getOpenIdConnectSetting() != null ? getOpenIdConnectSetting().toJson() : null);
+                put("issuedCodeSetting", getIssuedCodeSetting() != null ? getIssuedCodeSetting().toJson() : null);
             }}
         );
     }

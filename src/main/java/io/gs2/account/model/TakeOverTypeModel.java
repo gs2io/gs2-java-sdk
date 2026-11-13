@@ -32,7 +32,9 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
 	private String takeOverTypeModelId;
 	private Integer type;
 	private String metadata;
+	private String takeOverMethod;
 	private OpenIdConnectSetting openIdConnectSetting;
+	private IssuedCodeSetting issuedCodeSetting;
 	public String getTakeOverTypeModelId() {
 		return takeOverTypeModelId;
 	}
@@ -63,6 +65,16 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
 		this.metadata = metadata;
 		return this;
 	}
+	public String getTakeOverMethod() {
+		return takeOverMethod;
+	}
+	public void setTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+	}
+	public TakeOverTypeModel withTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+		return this;
+	}
 	public OpenIdConnectSetting getOpenIdConnectSetting() {
 		return openIdConnectSetting;
 	}
@@ -71,6 +83,16 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
 	}
 	public TakeOverTypeModel withOpenIdConnectSetting(OpenIdConnectSetting openIdConnectSetting) {
 		this.openIdConnectSetting = openIdConnectSetting;
+		return this;
+	}
+	public IssuedCodeSetting getIssuedCodeSetting() {
+		return issuedCodeSetting;
+	}
+	public void setIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
+	}
+	public TakeOverTypeModel withIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
 		return this;
 	}
 
@@ -82,7 +104,9 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
             .withTakeOverTypeModelId(data.get("takeOverTypeModelId") == null || data.get("takeOverTypeModelId").isNull() ? null : data.get("takeOverTypeModelId").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withOpenIdConnectSetting(data.get("openIdConnectSetting") == null || data.get("openIdConnectSetting").isNull() ? null : OpenIdConnectSetting.fromJson(data.get("openIdConnectSetting")));
+            .withTakeOverMethod(data.get("takeOverMethod") == null || data.get("takeOverMethod").isNull() ? null : data.get("takeOverMethod").asText())
+            .withOpenIdConnectSetting(data.get("openIdConnectSetting") == null || data.get("openIdConnectSetting").isNull() ? null : OpenIdConnectSetting.fromJson(data.get("openIdConnectSetting")))
+            .withIssuedCodeSetting(data.get("issuedCodeSetting") == null || data.get("issuedCodeSetting").isNull() ? null : IssuedCodeSetting.fromJson(data.get("issuedCodeSetting")));
     }
 
     public JsonNode toJson() {
@@ -91,7 +115,9 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
                 put("takeOverTypeModelId", getTakeOverTypeModelId());
                 put("type", getType());
                 put("metadata", getMetadata());
+                put("takeOverMethod", getTakeOverMethod());
                 put("openIdConnectSetting", getOpenIdConnectSetting() != null ? getOpenIdConnectSetting().toJson() : null);
+                put("issuedCodeSetting", getIssuedCodeSetting() != null ? getIssuedCodeSetting().toJson() : null);
             }}
         );
     }
@@ -108,7 +134,9 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
         result = prime * result + ((this.takeOverTypeModelId == null) ? 0 : this.takeOverTypeModelId.hashCode());
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.takeOverMethod == null) ? 0 : this.takeOverMethod.hashCode());
         result = prime * result + ((this.openIdConnectSetting == null) ? 0 : this.openIdConnectSetting.hashCode());
+        result = prime * result + ((this.issuedCodeSetting == null) ? 0 : this.issuedCodeSetting.hashCode());
 		return result;
 	}
 
@@ -136,9 +164,19 @@ public class TakeOverTypeModel implements IModel, Serializable, Comparable<TakeO
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
+		if (takeOverMethod == null) {
+			return other.takeOverMethod == null;
+		} else if (!takeOverMethod.equals(other.takeOverMethod)) {
+			return false;
+		}
 		if (openIdConnectSetting == null) {
 			return other.openIdConnectSetting == null;
 		} else if (!openIdConnectSetting.equals(other.openIdConnectSetting)) {
+			return false;
+		}
+		if (issuedCodeSetting == null) {
+			return other.issuedCodeSetting == null;
+		} else if (!issuedCodeSetting.equals(other.issuedCodeSetting)) {
 			return false;
 		}
 		return true;

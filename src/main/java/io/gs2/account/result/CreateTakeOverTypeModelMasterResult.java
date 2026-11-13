@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.account.model.*;
 import io.gs2.account.model.ScopeValue;
 import io.gs2.account.model.OpenIdConnectSetting;
+import io.gs2.account.model.IssuedCodeSetting;
 import io.gs2.account.model.TakeOverTypeModelMaster;
 
 @SuppressWarnings("serial")

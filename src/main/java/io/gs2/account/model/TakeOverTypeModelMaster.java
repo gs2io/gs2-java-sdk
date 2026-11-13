@@ -33,7 +33,9 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
 	private Integer type;
 	private String description;
 	private String metadata;
+	private String takeOverMethod;
 	private OpenIdConnectSetting openIdConnectSetting;
+	private IssuedCodeSetting issuedCodeSetting;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -77,6 +79,16 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
 		this.metadata = metadata;
 		return this;
 	}
+	public String getTakeOverMethod() {
+		return takeOverMethod;
+	}
+	public void setTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+	}
+	public TakeOverTypeModelMaster withTakeOverMethod(String takeOverMethod) {
+		this.takeOverMethod = takeOverMethod;
+		return this;
+	}
 	public OpenIdConnectSetting getOpenIdConnectSetting() {
 		return openIdConnectSetting;
 	}
@@ -85,6 +97,16 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
 	}
 	public TakeOverTypeModelMaster withOpenIdConnectSetting(OpenIdConnectSetting openIdConnectSetting) {
 		this.openIdConnectSetting = openIdConnectSetting;
+		return this;
+	}
+	public IssuedCodeSetting getIssuedCodeSetting() {
+		return issuedCodeSetting;
+	}
+	public void setIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
+	}
+	public TakeOverTypeModelMaster withIssuedCodeSetting(IssuedCodeSetting issuedCodeSetting) {
+		this.issuedCodeSetting = issuedCodeSetting;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -127,7 +149,9 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withTakeOverMethod(data.get("takeOverMethod") == null || data.get("takeOverMethod").isNull() ? null : data.get("takeOverMethod").asText())
             .withOpenIdConnectSetting(data.get("openIdConnectSetting") == null || data.get("openIdConnectSetting").isNull() ? null : OpenIdConnectSetting.fromJson(data.get("openIdConnectSetting")))
+            .withIssuedCodeSetting(data.get("issuedCodeSetting") == null || data.get("issuedCodeSetting").isNull() ? null : IssuedCodeSetting.fromJson(data.get("issuedCodeSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -140,7 +164,9 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
                 put("type", getType());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("takeOverMethod", getTakeOverMethod());
                 put("openIdConnectSetting", getOpenIdConnectSetting() != null ? getOpenIdConnectSetting().toJson() : null);
+                put("issuedCodeSetting", getIssuedCodeSetting() != null ? getIssuedCodeSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -161,7 +187,9 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.takeOverMethod == null) ? 0 : this.takeOverMethod.hashCode());
         result = prime * result + ((this.openIdConnectSetting == null) ? 0 : this.openIdConnectSetting.hashCode());
+        result = prime * result + ((this.issuedCodeSetting == null) ? 0 : this.issuedCodeSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -197,9 +225,19 @@ public class TakeOverTypeModelMaster implements IModel, Serializable, Comparable
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
+		if (takeOverMethod == null) {
+			return other.takeOverMethod == null;
+		} else if (!takeOverMethod.equals(other.takeOverMethod)) {
+			return false;
+		}
 		if (openIdConnectSetting == null) {
 			return other.openIdConnectSetting == null;
 		} else if (!openIdConnectSetting.equals(other.openIdConnectSetting)) {
+			return false;
+		}
+		if (issuedCodeSetting == null) {
+			return other.issuedCodeSetting == null;
+		} else if (!issuedCodeSetting.equals(other.issuedCodeSetting)) {
 			return false;
 		}
 		if (createdAt == null) {

@@ -35,6 +35,8 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 	private String userIdentifier;
 	private String password;
 	private Long createdAt;
+	private Long expiresAt;
+	private Integer failedAttempts;
 	private Long revision;
 	public String getTakeOverId() {
 		return takeOverId;
@@ -96,6 +98,26 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getExpiresAt() {
+		return expiresAt;
+	}
+	public void setExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+	public TakeOver withExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+		return this;
+	}
+	public Integer getFailedAttempts() {
+		return failedAttempts;
+	}
+	public void setFailedAttempts(Integer failedAttempts) {
+		this.failedAttempts = failedAttempts;
+	}
+	public TakeOver withFailedAttempts(Integer failedAttempts) {
+		this.failedAttempts = failedAttempts;
+		return this;
+	}
 	public Long getRevision() {
 		return revision;
 	}
@@ -118,6 +140,8 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
             .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withFailedAttempts(data.get("failedAttempts") == null || data.get("failedAttempts").isNull() ? null : data.get("failedAttempts").intValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
@@ -130,6 +154,8 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
                 put("userIdentifier", getUserIdentifier());
                 put("password", getPassword());
                 put("createdAt", getCreatedAt());
+                put("expiresAt", getExpiresAt());
+                put("failedAttempts", getFailedAttempts());
                 put("revision", getRevision());
             }}
         );
@@ -150,6 +176,8 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
         result = prime * result + ((this.userIdentifier == null) ? 0 : this.userIdentifier.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.failedAttempts == null) ? 0 : this.failedAttempts.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
@@ -191,6 +219,16 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (expiresAt == null) {
+			return other.expiresAt == null;
+		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (failedAttempts == null) {
+			return other.failedAttempts == null;
+		} else if (!failedAttempts.equals(other.failedAttempts)) {
 			return false;
 		}
 		if (revision == null) {
