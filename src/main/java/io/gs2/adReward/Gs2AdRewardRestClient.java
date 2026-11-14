@@ -1651,6 +1651,185 @@ public class Gs2AdRewardRestClient extends AbstractGs2Client<Gs2AdRewardRestClie
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyPointTask extends Gs2RestSessionTask<VerifyPointResult> {
+        private VerifyPointRequest request;
+
+        public VerifyPointTask(
+            VerifyPointRequest request,
+            AsyncAction<AsyncResult<VerifyPointResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyPointResult parse(JsonNode data) {
+            return VerifyPointResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ad-reward")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/point/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("point", request.getPoint());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyPointAsync(
+            VerifyPointRequest request,
+            AsyncAction<AsyncResult<VerifyPointResult>> callback
+    ) {
+        VerifyPointTask task = new VerifyPointTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyPointResult verifyPoint(
+            VerifyPointRequest request
+    ) {
+        final AsyncResult<VerifyPointResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyPointAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyPointByUserIdTask extends Gs2RestSessionTask<VerifyPointByUserIdResult> {
+        private VerifyPointByUserIdRequest request;
+
+        public VerifyPointByUserIdTask(
+            VerifyPointByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyPointByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyPointByUserIdResult parse(JsonNode data) {
+            return VerifyPointByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ad-reward")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/point/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("point", request.getPoint());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyPointByUserIdAsync(
+            VerifyPointByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyPointByUserIdResult>> callback
+    ) {
+        VerifyPointByUserIdTask task = new VerifyPointByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyPointByUserIdResult verifyPointByUserId(
+            VerifyPointByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyPointByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyPointByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeletePointByUserIdTask extends Gs2RestSessionTask<DeletePointByUserIdResult> {
         private DeletePointByUserIdRequest request;
 
@@ -1802,6 +1981,86 @@ public class Gs2AdRewardRestClient extends AbstractGs2Client<Gs2AdRewardRestClie
     ) {
         final AsyncResult<ConsumePointByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         consumePointByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyPointByStampTaskTask extends Gs2RestSessionTask<VerifyPointByStampTaskResult> {
+        private VerifyPointByStampTaskRequest request;
+
+        public VerifyPointByStampTaskTask(
+            VerifyPointByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyPointByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyPointByStampTaskResult parse(JsonNode data) {
+            return VerifyPointByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ad-reward")
+                .replace("{region}", session.getRegion().getName())
+                + "/point/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyPointByStampTaskAsync(
+            VerifyPointByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyPointByStampTaskResult>> callback
+    ) {
+        VerifyPointByStampTaskTask task = new VerifyPointByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyPointByStampTaskResult verifyPointByStampTask(
+            VerifyPointByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyPointByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyPointByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
