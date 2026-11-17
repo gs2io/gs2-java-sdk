@@ -5761,6 +5761,185 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyRatingTask extends Gs2RestSessionTask<VerifyRatingResult> {
+        private VerifyRatingRequest request;
+
+        public VerifyRatingTask(
+            VerifyRatingRequest request,
+            AsyncAction<AsyncResult<VerifyRatingResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRatingResult parse(JsonNode data) {
+            return VerifyRatingResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/rating/{ratingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rateValue", request.getRateValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRatingAsync(
+            VerifyRatingRequest request,
+            AsyncAction<AsyncResult<VerifyRatingResult>> callback
+    ) {
+        VerifyRatingTask task = new VerifyRatingTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRatingResult verifyRating(
+            VerifyRatingRequest request
+    ) {
+        final AsyncResult<VerifyRatingResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRatingAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRatingByUserIdTask extends Gs2RestSessionTask<VerifyRatingByUserIdResult> {
+        private VerifyRatingByUserIdRequest request;
+
+        public VerifyRatingByUserIdTask(
+            VerifyRatingByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRatingByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRatingByUserIdResult parse(JsonNode data) {
+            return VerifyRatingByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/rating/{ratingName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rateValue", request.getRateValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRatingByUserIdAsync(
+            VerifyRatingByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRatingByUserIdResult>> callback
+    ) {
+        VerifyRatingByUserIdTask task = new VerifyRatingByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRatingByUserIdResult verifyRatingByUserId(
+            VerifyRatingByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyRatingByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRatingByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class PutResultTask extends Gs2RestSessionTask<PutResultResult> {
         private PutResultRequest request;
 
@@ -5920,6 +6099,86 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
     ) {
         final AsyncResult<DeleteRatingResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteRatingAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRatingByStampTaskTask extends Gs2RestSessionTask<VerifyRatingByStampTaskResult> {
+        private VerifyRatingByStampTaskRequest request;
+
+        public VerifyRatingByStampTaskTask(
+            VerifyRatingByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRatingByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRatingByStampTaskResult parse(JsonNode data) {
+            return VerifyRatingByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/rating/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRatingByStampTaskAsync(
+            VerifyRatingByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRatingByStampTaskResult>> callback
+    ) {
+        VerifyRatingByStampTaskTask task = new VerifyRatingByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRatingByStampTaskResult verifyRatingByStampTask(
+            VerifyRatingByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyRatingByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRatingByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
