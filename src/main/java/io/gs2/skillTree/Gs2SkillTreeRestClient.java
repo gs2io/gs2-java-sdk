@@ -2837,6 +2837,185 @@ public class Gs2SkillTreeRestClient extends AbstractGs2Client<Gs2SkillTreeRestCl
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyStatusTask extends Gs2RestSessionTask<VerifyStatusResult> {
+        private VerifyStatusRequest request;
+
+        public VerifyStatusTask(
+            VerifyStatusRequest request,
+            AsyncAction<AsyncResult<VerifyStatusResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStatusResult parse(JsonNode data) {
+            return VerifyStatusResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "skill-tree")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/{propertyId}/node/{nodeModelName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{nodeModelName}", this.request.getNodeModelName() == null || this.request.getNodeModelName().length() == 0 ? "null" : String.valueOf(this.request.getNodeModelName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStatusAsync(
+            VerifyStatusRequest request,
+            AsyncAction<AsyncResult<VerifyStatusResult>> callback
+    ) {
+        VerifyStatusTask task = new VerifyStatusTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStatusResult verifyStatus(
+            VerifyStatusRequest request
+    ) {
+        final AsyncResult<VerifyStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStatusAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStatusByUserIdTask extends Gs2RestSessionTask<VerifyStatusByUserIdResult> {
+        private VerifyStatusByUserIdRequest request;
+
+        public VerifyStatusByUserIdTask(
+            VerifyStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStatusByUserIdResult parse(JsonNode data) {
+            return VerifyStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "skill-tree")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/node/{nodeModelName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{nodeModelName}", this.request.getNodeModelName() == null || this.request.getNodeModelName().length() == 0 ? "null" : String.valueOf(this.request.getNodeModelName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStatusByUserIdAsync(
+            VerifyStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyStatusByUserIdResult>> callback
+    ) {
+        VerifyStatusByUserIdTask task = new VerifyStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStatusByUserIdResult verifyStatusByUserId(
+            VerifyStatusByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ResetTask extends Gs2RestSessionTask<ResetResult> {
         private ResetRequest request;
 
@@ -3162,6 +3341,86 @@ public class Gs2SkillTreeRestClient extends AbstractGs2Client<Gs2SkillTreeRestCl
     ) {
         final AsyncResult<MarkRestrainByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         markRestrainByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyStatusByStampTaskTask extends Gs2RestSessionTask<VerifyStatusByStampTaskResult> {
+        private VerifyStatusByStampTaskRequest request;
+
+        public VerifyStatusByStampTaskTask(
+            VerifyStatusByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStatusByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyStatusByStampTaskResult parse(JsonNode data) {
+            return VerifyStatusByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "skill-tree")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/status/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyStatusByStampTaskAsync(
+            VerifyStatusByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyStatusByStampTaskResult>> callback
+    ) {
+        VerifyStatusByStampTaskTask task = new VerifyStatusByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyStatusByStampTaskResult verifyStatusByStampTask(
+            VerifyStatusByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyStatusByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyStatusByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
