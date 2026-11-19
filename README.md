@@ -1,4 +1,4 @@
-[⇒README in English](README-en.md)
+**日本語** | [English](README-en.md) | [한국어](README-ko.md)
 
 # gs2-java-sdk
 
@@ -29,13 +29,14 @@ SDKを利用するには GS2 のクレデンシャルが必要です。
 
 ## SDK のインストール
 
-すべてのサービスの GS2-SDK をインストール
+すべてのサービスの GS2 SDK を利用するには、以下の依存関係を追加してください。`GS2_SDK_VERSION` は使用する SDK のバージョンに置き換えてください。
 
 ```xml
 <dependencies>
   <dependency>
     <groupId>io.gs2</groupId>
     <artifactId>gs2-java-sdk</artifactId>
+    <version>GS2_SDK_VERSION</version>
   </dependency>
 </dependencies>
 ```
@@ -47,17 +48,15 @@ GS2-Account の HTTP & 同期処理 の例
 ```java
 import io.gs2.core.model.Region;
 import io.gs2.core.model.BasicGs2Credential;
-import io.gs2.core.rest.Gs2RestSession;
-import io.gs2.account.rest.Gs2AccountRestClient;
+import io.gs2.core.net.Gs2RestSession;
+import io.gs2.account.Gs2AccountRestClient;
 
-Gs2RestSession session = new Gs2RestSession(
-    Region.AP_NORTHEAST_1,
-    new BasicGs2Credential(
-        'your client id',
-        'your client secret'
-    )
+BasicGs2Credential credential = new BasicGs2Credential(
+    "your client id",
+    "your client secret"
 );
-session.connect();
+Gs2RestSession session = new Gs2RestSession(credential, Region.AP_NORTHEAST_1);
+session.open();
 Gs2AccountRestClient client = new Gs2AccountRestClient(session);
 ```
 

@@ -1,4 +1,4 @@
-[⇒日本語のREADMEへ](README.md)
+[日本語](README.md) | **English** | [한국어](README-ko.md)
 
 # gs2-java-sdk
 
@@ -29,13 +29,14 @@ Follow the instructions in [GS2 Setup](https://docs.gs2.io/en/get_start/tutorial
 
 ## SDK Installation
 
-Install GS2-SDK for all services
+To install the GS2 SDK for all services, add the following dependency. Replace `GS2_SDK_VERSION` with the SDK version you want to use.
 
 ```xml
 <dependencies>
   <dependency>
     <groupId>io.gs2</groupId>
     <artifactId>gs2-java-sdk</artifactId>
+    <version>GS2_SDK_VERSION</version>
   </dependency>
 </dependencies>
 ```
@@ -47,17 +48,15 @@ GS2-Account HTTP & Synchronization Example
 ```java
 import io.gs2.core.model.Region;
 import io.gs2.core.model.BasicGs2Credential;
-import io.gs2.core.rest.Gs2RestSession;
-import io.gs2.account.rest.Gs2AccountRestClient;
+import io.gs2.core.net.Gs2RestSession;
+import io.gs2.account.Gs2AccountRestClient;
 
-Gs2RestSession session = new Gs2RestSession(
-    Region.AP_NORTHEAST_1,
-    new BasicGs2Credential(
-        'your client id',
-        'your client secret'
-    )
+BasicGs2Credential credential = new BasicGs2Credential(
+    "your client id",
+    "your client secret"
 );
-session.connect();
+Gs2RestSession session = new Gs2RestSession(credential, Region.AP_NORTHEAST_1);
+session.open();
 Gs2AccountRestClient client = new Gs2AccountRestClient(session);
 ```
 
