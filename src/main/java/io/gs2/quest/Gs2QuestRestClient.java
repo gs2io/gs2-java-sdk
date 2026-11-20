@@ -3987,6 +3987,185 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyCompletedQuestListTask extends Gs2RestSessionTask<VerifyCompletedQuestListResult> {
+        private VerifyCompletedQuestListRequest request;
+
+        public VerifyCompletedQuestListTask(
+            VerifyCompletedQuestListRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCompletedQuestListResult parse(JsonNode data) {
+            return VerifyCompletedQuestListResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "quest")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/completed/group/{questGroupName}/quest/{questName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCompletedQuestListAsync(
+            VerifyCompletedQuestListRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListResult>> callback
+    ) {
+        VerifyCompletedQuestListTask task = new VerifyCompletedQuestListTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCompletedQuestListResult verifyCompletedQuestList(
+            VerifyCompletedQuestListRequest request
+    ) {
+        final AsyncResult<VerifyCompletedQuestListResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCompletedQuestListAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCompletedQuestListByUserIdTask extends Gs2RestSessionTask<VerifyCompletedQuestListByUserIdResult> {
+        private VerifyCompletedQuestListByUserIdRequest request;
+
+        public VerifyCompletedQuestListByUserIdTask(
+            VerifyCompletedQuestListByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCompletedQuestListByUserIdResult parse(JsonNode data) {
+            return VerifyCompletedQuestListByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "quest")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/completed/group/{questGroupName}/quest/{questName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCompletedQuestListByUserIdAsync(
+            VerifyCompletedQuestListByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListByUserIdResult>> callback
+    ) {
+        VerifyCompletedQuestListByUserIdTask task = new VerifyCompletedQuestListByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCompletedQuestListByUserIdResult verifyCompletedQuestListByUserId(
+            VerifyCompletedQuestListByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyCompletedQuestListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCompletedQuestListByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteCompletedQuestListByUserIdTask extends Gs2RestSessionTask<DeleteCompletedQuestListByUserIdResult> {
         private DeleteCompletedQuestListByUserIdRequest request;
 
@@ -4059,6 +4238,86 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
     ) {
         final AsyncResult<DeleteCompletedQuestListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteCompletedQuestListByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCompletedQuestListByStampTaskTask extends Gs2RestSessionTask<VerifyCompletedQuestListByStampTaskResult> {
+        private VerifyCompletedQuestListByStampTaskRequest request;
+
+        public VerifyCompletedQuestListByStampTaskTask(
+            VerifyCompletedQuestListByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCompletedQuestListByStampTaskResult parse(JsonNode data) {
+            return VerifyCompletedQuestListByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "quest")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/completed/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCompletedQuestListByStampTaskAsync(
+            VerifyCompletedQuestListByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCompletedQuestListByStampTaskResult>> callback
+    ) {
+        VerifyCompletedQuestListByStampTaskTask task = new VerifyCompletedQuestListByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCompletedQuestListByStampTaskResult verifyCompletedQuestListByStampTask(
+            VerifyCompletedQuestListByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyCompletedQuestListByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCompletedQuestListByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
