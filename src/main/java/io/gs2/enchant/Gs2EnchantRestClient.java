@@ -3190,6 +3190,189 @@ public class Gs2EnchantRestClient extends AbstractGs2Client<Gs2EnchantRestClient
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyBalanceParameterStatusTask extends Gs2RestSessionTask<VerifyBalanceParameterStatusResult> {
+        private VerifyBalanceParameterStatusRequest request;
+
+        public VerifyBalanceParameterStatusTask(
+            VerifyBalanceParameterStatusRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBalanceParameterStatusResult parse(JsonNode data) {
+            return VerifyBalanceParameterStatusResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/balance/{parameterName}/{propertyId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{parameterName}", this.request.getParameterName() == null || this.request.getParameterName().length() == 0 ? "null" : String.valueOf(this.request.getParameterName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("parameterValueName", request.getParameterValueName());
+                    put("parameterValue", request.getParameterValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBalanceParameterStatusAsync(
+            VerifyBalanceParameterStatusRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusResult>> callback
+    ) {
+        VerifyBalanceParameterStatusTask task = new VerifyBalanceParameterStatusTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBalanceParameterStatusResult verifyBalanceParameterStatus(
+            VerifyBalanceParameterStatusRequest request
+    ) {
+        final AsyncResult<VerifyBalanceParameterStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBalanceParameterStatusAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyBalanceParameterStatusByUserIdTask extends Gs2RestSessionTask<VerifyBalanceParameterStatusByUserIdResult> {
+        private VerifyBalanceParameterStatusByUserIdRequest request;
+
+        public VerifyBalanceParameterStatusByUserIdTask(
+            VerifyBalanceParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBalanceParameterStatusByUserIdResult parse(JsonNode data) {
+            return VerifyBalanceParameterStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/balance/{parameterName}/{propertyId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{parameterName}", this.request.getParameterName() == null || this.request.getParameterName().length() == 0 ? "null" : String.valueOf(this.request.getParameterName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("parameterValueName", request.getParameterValueName());
+                    put("parameterValue", request.getParameterValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBalanceParameterStatusByUserIdAsync(
+            VerifyBalanceParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusByUserIdResult>> callback
+    ) {
+        VerifyBalanceParameterStatusByUserIdTask task = new VerifyBalanceParameterStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBalanceParameterStatusByUserIdResult verifyBalanceParameterStatusByUserId(
+            VerifyBalanceParameterStatusByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyBalanceParameterStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBalanceParameterStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteBalanceParameterStatusByUserIdTask extends Gs2RestSessionTask<DeleteBalanceParameterStatusByUserIdResult> {
         private DeleteBalanceParameterStatusByUserIdRequest request;
 
@@ -3612,6 +3795,86 @@ public class Gs2EnchantRestClient extends AbstractGs2Client<Gs2EnchantRestClient
     ) {
         final AsyncResult<SetBalanceParameterStatusByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         setBalanceParameterStatusByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyBalanceParameterStatusByStampTaskTask extends Gs2RestSessionTask<VerifyBalanceParameterStatusByStampTaskResult> {
+        private VerifyBalanceParameterStatusByStampTaskRequest request;
+
+        public VerifyBalanceParameterStatusByStampTaskTask(
+            VerifyBalanceParameterStatusByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBalanceParameterStatusByStampTaskResult parse(JsonNode data) {
+            return VerifyBalanceParameterStatusByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/balance/parameter/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBalanceParameterStatusByStampTaskAsync(
+            VerifyBalanceParameterStatusByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyBalanceParameterStatusByStampTaskResult>> callback
+    ) {
+        VerifyBalanceParameterStatusByStampTaskTask task = new VerifyBalanceParameterStatusByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBalanceParameterStatusByStampTaskResult verifyBalanceParameterStatusByStampTask(
+            VerifyBalanceParameterStatusByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyBalanceParameterStatusByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBalanceParameterStatusByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
