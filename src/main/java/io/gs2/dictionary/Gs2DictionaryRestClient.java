@@ -3083,6 +3083,273 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyEntryCountTask extends Gs2RestSessionTask<VerifyEntryCountResult> {
+        private VerifyEntryCountRequest request;
+
+        public VerifyEntryCountTask(
+            VerifyEntryCountRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryCountResult parse(JsonNode data) {
+            return VerifyEntryCountResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/entryCount/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryCountAsync(
+            VerifyEntryCountRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountResult>> callback
+    ) {
+        VerifyEntryCountTask task = new VerifyEntryCountTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryCountResult verifyEntryCount(
+            VerifyEntryCountRequest request
+    ) {
+        final AsyncResult<VerifyEntryCountResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryCountAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyEntryCountByUserIdTask extends Gs2RestSessionTask<VerifyEntryCountByUserIdResult> {
+        private VerifyEntryCountByUserIdRequest request;
+
+        public VerifyEntryCountByUserIdTask(
+            VerifyEntryCountByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryCountByUserIdResult parse(JsonNode data) {
+            return VerifyEntryCountByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/entryCount/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? null :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryCountByUserIdAsync(
+            VerifyEntryCountByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountByUserIdResult>> callback
+    ) {
+        VerifyEntryCountByUserIdTask task = new VerifyEntryCountByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryCountByUserIdResult verifyEntryCountByUserId(
+            VerifyEntryCountByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyEntryCountByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryCountByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyEntryCountByStampTaskTask extends Gs2RestSessionTask<VerifyEntryCountByStampTaskResult> {
+        private VerifyEntryCountByStampTaskRequest request;
+
+        public VerifyEntryCountByStampTaskTask(
+            VerifyEntryCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryCountByStampTaskResult parse(JsonNode data) {
+            return VerifyEntryCountByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/entry/count/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryCountByStampTaskAsync(
+            VerifyEntryCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyEntryCountByStampTaskResult>> callback
+    ) {
+        VerifyEntryCountByStampTaskTask task = new VerifyEntryCountByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryCountByStampTaskResult verifyEntryCountByStampTask(
+            VerifyEntryCountByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyEntryCountByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryCountByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeLikesTask extends Gs2RestSessionTask<DescribeLikesResult> {
         private DescribeLikesRequest request;
 
