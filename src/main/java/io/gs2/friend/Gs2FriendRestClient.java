@@ -1740,6 +1740,263 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyFollowTask extends Gs2RestSessionTask<VerifyFollowResult> {
+        private VerifyFollowRequest request;
+
+        public VerifyFollowTask(
+            VerifyFollowRequest request,
+            AsyncAction<AsyncResult<VerifyFollowResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFollowResult parse(JsonNode data) {
+            return VerifyFollowResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/follow/{targetUserId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFollowAsync(
+            VerifyFollowRequest request,
+            AsyncAction<AsyncResult<VerifyFollowResult>> callback
+    ) {
+        VerifyFollowTask task = new VerifyFollowTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFollowResult verifyFollow(
+            VerifyFollowRequest request
+    ) {
+        final AsyncResult<VerifyFollowResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFollowAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFollowByUserIdTask extends Gs2RestSessionTask<VerifyFollowByUserIdResult> {
+        private VerifyFollowByUserIdRequest request;
+
+        public VerifyFollowByUserIdTask(
+            VerifyFollowByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFollowByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFollowByUserIdResult parse(JsonNode data) {
+            return VerifyFollowByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/follow/{targetUserId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFollowByUserIdAsync(
+            VerifyFollowByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFollowByUserIdResult>> callback
+    ) {
+        VerifyFollowByUserIdTask task = new VerifyFollowByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFollowByUserIdResult verifyFollowByUserId(
+            VerifyFollowByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyFollowByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFollowByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFollowByStampTaskTask extends Gs2RestSessionTask<VerifyFollowByStampTaskResult> {
+        private VerifyFollowByStampTaskRequest request;
+
+        public VerifyFollowByStampTaskTask(
+            VerifyFollowByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFollowByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFollowByStampTaskResult parse(JsonNode data) {
+            return VerifyFollowByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/follow/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFollowByStampTaskAsync(
+            VerifyFollowByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFollowByStampTaskResult>> callback
+    ) {
+        VerifyFollowByStampTaskTask task = new VerifyFollowByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFollowByStampTaskResult verifyFollowByStampTask(
+            VerifyFollowByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyFollowByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFollowByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeFriendsTask extends Gs2RestSessionTask<DescribeFriendsResult> {
         private DescribeFriendsRequest request;
 
@@ -1909,6 +2166,520 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
     ) {
         final AsyncResult<DescribeFriendsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         describeFriendsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendTask extends Gs2RestSessionTask<VerifyFriendResult> {
+        private VerifyFriendRequest request;
+
+        public VerifyFriendTask(
+            VerifyFriendRequest request,
+            AsyncAction<AsyncResult<VerifyFriendResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendResult parse(JsonNode data) {
+            return VerifyFriendResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/friend/{targetUserId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendAsync(
+            VerifyFriendRequest request,
+            AsyncAction<AsyncResult<VerifyFriendResult>> callback
+    ) {
+        VerifyFriendTask task = new VerifyFriendTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendResult verifyFriend(
+            VerifyFriendRequest request
+    ) {
+        final AsyncResult<VerifyFriendResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendByUserIdTask extends Gs2RestSessionTask<VerifyFriendByUserIdResult> {
+        private VerifyFriendByUserIdRequest request;
+
+        public VerifyFriendByUserIdTask(
+            VerifyFriendByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFriendByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendByUserIdResult parse(JsonNode data) {
+            return VerifyFriendByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/friend/{targetUserId}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendByUserIdAsync(
+            VerifyFriendByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFriendByUserIdResult>> callback
+    ) {
+        VerifyFriendByUserIdTask task = new VerifyFriendByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendByUserIdResult verifyFriendByUserId(
+            VerifyFriendByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyFriendByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendByStampTaskTask extends Gs2RestSessionTask<VerifyFriendByStampTaskResult> {
+        private VerifyFriendByStampTaskRequest request;
+
+        public VerifyFriendByStampTaskTask(
+            VerifyFriendByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFriendByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendByStampTaskResult parse(JsonNode data) {
+            return VerifyFriendByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/friend/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendByStampTaskAsync(
+            VerifyFriendByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFriendByStampTaskResult>> callback
+    ) {
+        VerifyFriendByStampTaskTask task = new VerifyFriendByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendByStampTaskResult verifyFriendByStampTask(
+            VerifyFriendByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyFriendByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendCountTask extends Gs2RestSessionTask<VerifyFriendCountResult> {
+        private VerifyFriendCountRequest request;
+
+        public VerifyFriendCountTask(
+            VerifyFriendCountRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendCountResult parse(JsonNode data) {
+            return VerifyFriendCountResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/friendCount/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendCountAsync(
+            VerifyFriendCountRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountResult>> callback
+    ) {
+        VerifyFriendCountTask task = new VerifyFriendCountTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendCountResult verifyFriendCount(
+            VerifyFriendCountRequest request
+    ) {
+        final AsyncResult<VerifyFriendCountResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendCountAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendCountByUserIdTask extends Gs2RestSessionTask<VerifyFriendCountByUserIdResult> {
+        private VerifyFriendCountByUserIdRequest request;
+
+        public VerifyFriendCountByUserIdTask(
+            VerifyFriendCountByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendCountByUserIdResult parse(JsonNode data) {
+            return VerifyFriendCountByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/friendCount/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendCountByUserIdAsync(
+            VerifyFriendCountByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountByUserIdResult>> callback
+    ) {
+        VerifyFriendCountByUserIdTask task = new VerifyFriendCountByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendCountByUserIdResult verifyFriendCountByUserId(
+            VerifyFriendCountByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyFriendCountByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendCountByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFriendCountByStampTaskTask extends Gs2RestSessionTask<VerifyFriendCountByStampTaskResult> {
+        private VerifyFriendCountByStampTaskRequest request;
+
+        public VerifyFriendCountByStampTaskTask(
+            VerifyFriendCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFriendCountByStampTaskResult parse(JsonNode data) {
+            return VerifyFriendCountByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/friend/count/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFriendCountByStampTaskAsync(
+            VerifyFriendCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFriendCountByStampTaskResult>> callback
+    ) {
+        VerifyFriendCountByStampTaskTask task = new VerifyFriendCountByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFriendCountByStampTaskResult verifyFriendCountByStampTask(
+            VerifyFriendCountByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyFriendCountByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFriendCountByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
