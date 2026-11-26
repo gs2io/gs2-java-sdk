@@ -5693,6 +5693,273 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyFormTask extends Gs2RestSessionTask<VerifyFormResult> {
+        private VerifyFormRequest request;
+
+        public VerifyFormTask(
+            VerifyFormRequest request,
+            AsyncAction<AsyncResult<VerifyFormResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFormResult parse(JsonNode data) {
+            return VerifyFormResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slotName", request.getSlotName());
+                    put("propertyIdRegex", request.getPropertyIdRegex());
+                    put("countType", request.getCountType());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFormAsync(
+            VerifyFormRequest request,
+            AsyncAction<AsyncResult<VerifyFormResult>> callback
+    ) {
+        VerifyFormTask task = new VerifyFormTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFormResult verifyForm(
+            VerifyFormRequest request
+    ) {
+        final AsyncResult<VerifyFormResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFormAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFormByUserIdTask extends Gs2RestSessionTask<VerifyFormByUserIdResult> {
+        private VerifyFormByUserIdRequest request;
+
+        public VerifyFormByUserIdTask(
+            VerifyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFormByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFormByUserIdResult parse(JsonNode data) {
+            return VerifyFormByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slotName", request.getSlotName());
+                    put("propertyIdRegex", request.getPropertyIdRegex());
+                    put("countType", request.getCountType());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFormByUserIdAsync(
+            VerifyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyFormByUserIdResult>> callback
+    ) {
+        VerifyFormByUserIdTask task = new VerifyFormByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFormByUserIdResult verifyFormByUserId(
+            VerifyFormByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyFormByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFormByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyFormByStampTaskTask extends Gs2RestSessionTask<VerifyFormByStampTaskResult> {
+        private VerifyFormByStampTaskRequest request;
+
+        public VerifyFormByStampTaskTask(
+            VerifyFormByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFormByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyFormByStampTaskResult parse(JsonNode data) {
+            return VerifyFormByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/form/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyFormByStampTaskAsync(
+            VerifyFormByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyFormByStampTaskResult>> callback
+    ) {
+        VerifyFormByStampTaskTask task = new VerifyFormByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyFormByStampTaskResult verifyFormByStampTask(
+            VerifyFormByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyFormByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyFormByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribePropertyFormsTask extends Gs2RestSessionTask<DescribePropertyFormsResult> {
         private DescribePropertyFormsRequest request;
 
