@@ -36,6 +36,7 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 	private TimeSpan expiresTimeSpan;
 	private Long expiresAt;
 	private String messageReceptionPeriodEventId;
+	private List<VerifyAction> verifyActions;
 	public String getGlobalMessageId() {
 		return globalMessageId;
 	}
@@ -109,6 +110,16 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public GlobalMessage withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 
     public static GlobalMessage fromJson(JsonNode data) {
         if (data == null) {
@@ -126,7 +137,13 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
             ).collect(Collectors.toList()))
             .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
-            .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText());
+            .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -144,6 +161,12 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
                 put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
                 put("expiresAt", getExpiresAt());
                 put("messageReceptionPeriodEventId", getMessageReceptionPeriodEventId());
+                put("verifyActions", getVerifyActions() == null ? null :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -164,6 +187,7 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
         result = prime * result + ((this.expiresTimeSpan == null) ? 0 : this.expiresTimeSpan.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
         result = prime * result + ((this.messageReceptionPeriodEventId == null) ? 0 : this.messageReceptionPeriodEventId.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
 		return result;
 	}
 
@@ -209,6 +233,11 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 		if (messageReceptionPeriodEventId == null) {
 			return other.messageReceptionPeriodEventId == null;
 		} else if (!messageReceptionPeriodEventId.equals(other.messageReceptionPeriodEventId)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		return true;

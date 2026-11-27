@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
 import io.gs2.inbox.model.AcquireAction;
 import io.gs2.inbox.model.TimeSpan;
+import io.gs2.inbox.model.VerifyAction;
 import io.gs2.inbox.model.GlobalMessage;
 
 @SuppressWarnings("serial")

@@ -36,6 +36,7 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 	private TimeSpan expiresTimeSpan;
 	private Long expiresAt;
 	private String messageReceptionPeriodEventId;
+	private List<VerifyAction> verifyActions;
 	private Long createdAt;
 	private Long revision;
 	public String getGlobalMessageId() {
@@ -111,6 +112,16 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public GlobalMessageMaster withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -149,6 +160,12 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
             .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
             .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? null :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -168,6 +185,12 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
                 put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
                 put("expiresAt", getExpiresAt());
                 put("messageReceptionPeriodEventId", getMessageReceptionPeriodEventId());
+                put("verifyActions", getVerifyActions() == null ? null :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -190,6 +213,7 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
         result = prime * result + ((this.expiresTimeSpan == null) ? 0 : this.expiresTimeSpan.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
         result = prime * result + ((this.messageReceptionPeriodEventId == null) ? 0 : this.messageReceptionPeriodEventId.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -237,6 +261,11 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 		if (messageReceptionPeriodEventId == null) {
 			return other.messageReceptionPeriodEventId == null;
 		} else if (!messageReceptionPeriodEventId.equals(other.messageReceptionPeriodEventId)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (createdAt == null) {

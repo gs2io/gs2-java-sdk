@@ -3469,6 +3469,12 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                     put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
                     put("expiresAt", request.getExpiresAt());
                     put("messageReceptionPeriodEventId", request.getMessageReceptionPeriodEventId());
+                    put("verifyActions", request.getVerifyActions() == null ? null :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3641,6 +3647,12 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                     put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
                     put("expiresAt", request.getExpiresAt());
                     put("messageReceptionPeriodEventId", request.getMessageReceptionPeriodEventId());
+                    put("verifyActions", request.getVerifyActions() == null ? null :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
